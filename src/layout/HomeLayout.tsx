@@ -22,7 +22,9 @@ export default function HomeLayout() {
         <div className='bg-[#166aac] items-stretch h-full hidden lg:block rounded-t-[40px] mx-5'>
           <NavigationBar></NavigationBar>
         </div>
-        <Outlet></Outlet>
+        <div className='overflow-y-auto'>
+          <Outlet></Outlet>
+        </div>
       </div>
     </>
   );

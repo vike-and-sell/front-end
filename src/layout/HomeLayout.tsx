@@ -9,7 +9,7 @@ export default function HomeLayout() {
 
   return (
     <>
-      <div className='lg:grid h-screen lg:items-start lg:grid-rows-[107px] lg:auto-rows-fr lg:grid-cols-[300px_1fr] bg-white lg:gap-y-4'>
+      <div className='lg:grid h-screen lg:items-start lg:grid-rows-[140px_1fr]  lg:grid-cols-[300px_1fr]'>
         <div className='lg:flex lg:border-b-[0.5px] border-slate-300  lg:p-4 col-span-full'>
           <Header
             isActive={isActive}
@@ -21,8 +21,8 @@ export default function HomeLayout() {
         </div>
         <div className='bg-[#166aac] items-stretch h-full hidden lg:block rounded-t-[40px] mx-5'>
           <NavigationBar></NavigationBar>
-          <Outlet></Outlet>
         </div>
+        <Outlet></Outlet>
       </div>
     </>
   );

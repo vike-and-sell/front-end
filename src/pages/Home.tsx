@@ -1,8 +1,12 @@
+import { Outlet } from "react-router-dom"
+
 export default function Home() {
 
     return(
-        <body className="bg-indigo-500">
-            
+        <body className="">
+            <div className="">
+                <Outlet></Outlet>
+            </div>
         </body>
     )
 }

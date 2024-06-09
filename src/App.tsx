@@ -7,8 +7,8 @@ import Chat from './pages/chat';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<Home />}>
-      <Route path='dash' element={<Dashboard />} />
-      <Route path='chat' element={<Chat />} />
+      <Route path='dash' element={<Dashboard></Dashboard> } />
+      <Route path='chat' element={<Chat></Chat> } />
     </Route>
     
   )
@@ -16,8 +16,9 @@ const router = createBrowserRouter(
 
 function App() {
   return (
+    
     <ChakraProvider>
-      <RouterProvider router={router} />  
+      <RouterProvider router={router}></RouterProvider> 
     </ChakraProvider>
   )
 }

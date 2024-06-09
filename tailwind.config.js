@@ -5,16 +5,19 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    colors: {
-      'pri-blue': '#166aac',
-      'sec-yellow': '#ffc427',
-      'acc-gray': '#8795a5',
-      'rt-dark-cover': '#072438' 
-    },
+    
     fontFamily: {
       inter: 'Inter, ui-serif',
     },
-    extend: {},
+    extend: {
+      colors: {
+        'pri-blue': '#166aac',
+        'sec-yellow': '#ffc427',
+        'acc-gray': '#8795a5',
+        'rt-dark-blue': '#072438' 
+      },
+    },
   },
   plugins: [],
+  
 }

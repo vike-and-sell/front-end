@@ -27,11 +27,7 @@ const router = createBrowserRouter(
 function App() {
   return (
     <ChakraProvider>
-<<<<<<< HEAD
       <RouterProvider router={router}></RouterProvider> 
-=======
-      <RouterProvider router={router} />  
->>>>>>> 3b6ecd9 (router setup and postcss config)
     </ChakraProvider>
   );
 }

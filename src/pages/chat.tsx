@@ -1,7 +1,7 @@
-import { useRef, useState } from "react"
+import { useState } from "react"
 import ChatPane from "../components/ChatPane"
 import { ChatPaneItem } from "../components/ChatPane"
-import { IconButton, Input } from "@chakra-ui/react"
+import { Box, IconButton, Input } from "@chakra-ui/react"
 import { ArrowBackIcon, ArrowUpIcon } from "@chakra-ui/icons"
 
 
@@ -34,22 +34,25 @@ export default function Chat() {
         setChatPaneHidden(status)
     }
 
-
-    const windowWidth = useRef(window.innerWidth);
-
     return(
         
-        <div className="flex flex-col sm:flex-row h-screen">
+        <div className="flex flex-row h-screen">
             
-            <div className={`w-full sm:max-w-max sm:basis-1/5 h-screen sm:visible ${ChatPaneHidden === false ? '' : 'hidden'}`}>
+            <div className={`${ChatPaneHidden === true? 'max-sm:hidden' : ''} w-full sm:max-w-max sm:basis-1/5 h-screen `}>
                 <ChatPane ChatPaneItems={mockdata} fromChatPane = {PfromChatPane} ChatPaneDisplayToggle={ChatPaneDisplayToggle}></ChatPane>
             </div> 
 
-            <div className={`sm:flex flex-col flex-grow h-screen p-3 sm:visible ${ChatPaneHidden === true ? '' : 'sm:hidden'}`}> 
-                <div className=" bg-acc-gray rounded-sm p-3">
-                    <IconButton className= "" aria-label='Search database'  onClick={() => {setChatPaneHidden(false)}} icon={<ArrowBackIcon/>} />
-                    <span>{header + ChatPaneHidden + windowWidth.current}</span>
-                </div>
+            <div className={`${ChatPaneHidden === false? 'max-sm:hidden' : ''} flex flex-col flex-grow h-screen p-3 `}> 
+                <Box className=" bg-acc-gray rounded-md p-3">
+                    <IconButton
+                        aria-label='Search database' 
+                        icon={<ArrowBackIcon/>}  
+                        onClick={() => ChatPaneDisplayToggle(false)} 
+                        variant='ghost' />
+
+                    
+                    <span className="">{header}</span>
+                </Box>
 
                 <div className="bg-teal-500 grow my-5">
                     Chat Area
@@ -57,14 +60,13 @@ export default function Chat() {
 
                 <div className="flex">
                     <Input colorScheme='teal'></Input>
-                    <IconButton aria-label='Search database' icon={<ArrowUpIcon />} />
+                    <IconButton isRound ={true} aria-label='Search database' icon={<ArrowUpIcon />} />
                 </div>
             </div> 
 
            
         </div>
             
-        
         
     )
 }

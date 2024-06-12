@@ -4,8 +4,12 @@
 import { Review, Reviews } from "./Reviews";
 import UserReview from "./UserReview";
 
-export default function RatingSection() {
-  const reviewCount = 0;
+interface RatingSectionProps {
+  reviews: string[];
+}
+
+export default function RatingSection({ reviews }: RatingSectionProps) {
+  let reviewCount = reviews.length;
   return (
     <div>
       <hr className='mb-7'></hr>
@@ -14,7 +18,9 @@ export default function RatingSection() {
         {reviewCount == 0 ? (
           <div className='text-slate-400'>Nothing here...</div>
         ) : (
-          <Review review='This was okay'></Review>
+          reviews.map((review, index) => (
+            <Review key={index} review={review}></Review>
+          ))
         )}
       </Reviews>
     </div>

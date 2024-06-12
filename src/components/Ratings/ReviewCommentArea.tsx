@@ -6,8 +6,8 @@ import UserReview from "./UserReview";
 export default function RatingSection() {
   return (
     <div>
+      <hr className='mb-7'></hr>
       <UserReview></UserReview>
-      {/* This area will be where user comments are if there are any, maybe generate a dummy text if nothing? */}
     </div>
   );
 }

@@ -4,16 +4,58 @@
 import DefaultButton from "../Button";
 import { Textarea } from "@chakra-ui/react";
 import StarRatings from "./StarRatings";
+import { useState } from "react";
+import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 
 export default function UserReview() {
+  const [ratingValue, setRatingValue] = useState(0);
+  const [textInput, setTextInput] = useState("");
+  const [formError, setFormError] = useState(false);
+  console.log(`Lifted State to Parent ${ratingValue}`);
+
+  function handleSubmit() {
+    if (ratingValue !== 0 && textInput !== "") {
+      console.log("Submitting values...");
+      setFormError(false);
+    } else {
+      setFormError(true);
+    }
+  }
+
+  function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    let inputValue = e.target.value;
+    setTextInput(inputValue);
+  }
+
   return (
-    <div>
-      Your Rating
-      <Textarea placeholder='Leave your comment here!' resize='none'></Textarea>
-      <div className='flex items-center justify-between'>
-        <StarRatings></StarRatings>
-        <DefaultButton title='Submit'></DefaultButton>
+    <FormControl isInvalid={formError}>
+      <FormLabel className='text-pri-blue font-semibold m-0'>
+        Leave a rating!
+      </FormLabel>
+      <Textarea
+        placeholder='Leave your comment here!'
+        resize='none'
+        value={textInput}
+        onChange={(e) => handleTextChange(e)}
+        required
+      ></Textarea>
+      {formError && textInput === "" ? (
+        <FormErrorMessage>Please enter in a review message.</FormErrorMessage>
+      ) : (
+        ""
+      )}
+      <div className='flex items-center justify-between mt-4'>
+        <StarRatings setValue={setRatingValue}></StarRatings>
+        <DefaultButton
+          title='Submit'
+          clickHandle={handleSubmit}
+        ></DefaultButton>
       </div>
-    </div>
+      {formError && ratingValue === 0 ? (
+        <FormErrorMessage>Please enter in a rating.</FormErrorMessage>
+      ) : (
+        ""
+      )}
+    </FormControl>
   );
 }

@@ -1,11 +1,12 @@
-// This makes my life a lot harder as we have to download huge libraries
-
 import { useState } from "react";
 import { GoStarFill } from "react-icons/go";
 
-export default function StarRatings() {
+interface StarRatingsProps {
+  setValue: (value: number) => void;
+}
+
+export default function StarRatings({ setValue }: StarRatingsProps) {
   const [rating, setRating] = useState([false, false, false, false, false]);
-  const [ratingValue, setRatingValue] = useState(0);
 
   function handleChange(index: number) {
     let newValue = 0;
@@ -16,7 +17,7 @@ export default function StarRatings() {
       }
       return false;
     });
-    setRatingValue(newValue);
+    setValue(newValue);
     setRating(newRating);
     console.log(newValue);
   }
@@ -45,20 +46,10 @@ interface StarProps {
 
 function Star({ active, index, handleChange }: StarProps) {
   return (
-    <>
-      {active ? (
-        <GoStarFill
-          size='28px'
-          color='red'
-          onClick={() => handleChange(index)}
-        ></GoStarFill>
-      ) : (
-        <GoStarFill
-          size='28px'
-          color='green'
-          onClick={() => handleChange(index)}
-        ></GoStarFill>
-      )}
-    </>
+    <GoStarFill
+      size='28px'
+      color={active ? "#166aac" : "#9da3b0"}
+      onClick={() => handleChange(index)}
+    ></GoStarFill>
   );
 }

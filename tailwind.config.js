@@ -15,6 +15,7 @@ export default {
         'sec-yellow': '#ffc427',
         'acc-gray': '#8795a5',
         'rt-dark-blue': '#072438' 
+        
       },
     },
   },

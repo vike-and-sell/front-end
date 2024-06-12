@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
+import { useRef, useState } from "react"
 import ChatPane from "../components/ChatPane"
 import { ChatPaneItem } from "../components/ChatPane"
 import { IconButton, Input } from "@chakra-ui/react"
-import { ArrowUpIcon } from "@chakra-ui/icons"
+import { ArrowBackIcon, ArrowUpIcon } from "@chakra-ui/icons"
 
 
 export default function Chat() {
@@ -22,17 +22,33 @@ export default function Chat() {
         }
     ]
 
+    const [header, setHeader] = useState("Header");
+
+    const [ChatPaneHidden, setChatPaneHidden] = useState<boolean|null>(false)
+
+    const PfromChatPane = (clickedChat:string) =>{
+        setHeader(clickedChat)
+    }
+
+    const ChatPaneDisplayToggle = (status: boolean) =>{
+        setChatPaneHidden(status)
+    }
+
+
+    const windowWidth = useRef(window.innerWidth);
+
     return(
         
         <div className="flex flex-col sm:flex-row h-screen">
             
-            <div className="w-full sm:max-w-max sm:basis-1/5 h-screen">
-                <ChatPane ChatPaneItems={mockdata}></ChatPane>
+            <div className={`w-full sm:max-w-max sm:basis-1/5 h-screen sm:visible ${ChatPaneHidden === false ? '' : 'hidden'}`}>
+                <ChatPane ChatPaneItems={mockdata} fromChatPane = {PfromChatPane} ChatPaneDisplayToggle={ChatPaneDisplayToggle}></ChatPane>
             </div> 
 
-            <div className="hidden sm:flex sm:flex-col sm:flex-grow h-screen p-3"> 
+            <div className={`sm:flex flex-col flex-grow h-screen p-3 sm:visible ${ChatPaneHidden === true ? '' : 'sm:hidden'}`}> 
                 <div className=" bg-acc-gray rounded-sm p-3">
-                    <span>Header</span>
+                    <IconButton className= "" aria-label='Search database'  onClick={() => {setChatPaneHidden(false)}} icon={<ArrowBackIcon/>} />
+                    <span>{header + ChatPaneHidden + windowWidth.current}</span>
                 </div>
 
                 <div className="bg-teal-500 grow my-5">

@@ -1,4 +1,4 @@
-import { Avatar, Button, IconButton, Input, Stack } from "@chakra-ui/react";
+import { Avatar, Button, Input, Stack } from "@chakra-ui/react";
 
 
 export interface ChatPaneItem {
@@ -8,10 +8,12 @@ export interface ChatPaneItem {
 
 export interface ChatPaneProps {
     ChatPaneItems: ChatPaneItem[]
+    fromChatPane: (username: string) => void;
+    ChatPaneDisplayToggle: (status: boolean) => void;
 }
 
 
-export default function ChatPane({ChatPaneItems}:ChatPaneProps) {
+export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayToggle}:ChatPaneProps) {
     return(
         <div className="bg-rt-dark-blue h-screen ">
             <Stack direction='column' spacing={3} className="mx-3" >
@@ -27,7 +29,7 @@ export default function ChatPane({ChatPaneItems}:ChatPaneProps) {
                 </Input>
 
                 <>
-                {ChatPaneItems.map((chat, index) => {
+                {ChatPaneItems.map((chat:any, index:number) => {
                     return(
                         <Button
                             _active={{ bg: '#166aac' }}
@@ -35,9 +37,12 @@ export default function ChatPane({ChatPaneItems}:ChatPaneProps) {
                             className=""
                             color='#ffffff'
                             height='68px'
-                            
-                            _hover={{ bg: '#166aac' }}>
-
+                            _hover={{ bg: '#166aac' }}
+                            onClick={() => {
+                                fromChatPane(chat.username);
+                                ChatPaneDisplayToggle(true);
+                                }
+                            }>
                                 <div className="">
                                     <Avatar size='md' />
                                 </div>

@@ -37,6 +37,7 @@ export default function UserReview() {
         resize='none'
         value={textInput}
         onChange={(e) => handleTextChange(e)}
+        aria-label='Text Review Area'
         required
       ></Textarea>
       {formError && textInput === "" ? (

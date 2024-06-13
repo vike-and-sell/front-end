@@ -3,7 +3,6 @@ import DefaultButton from "../components/Button";
 import RatingSection from "../components/Ratings/ReviewCommentArea";
 import { getListingInfoFromID, getReviews } from "../utils/FakeListingsMock";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 
 interface Listing {
   sellerId: string;

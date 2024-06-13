@@ -282,7 +282,6 @@ const listingReviews = {
 };
 
 
-
 const listingIDs = mockListingData.map(obj => obj.listingId)
 
 export function getListingIDs () {

@@ -281,12 +281,9 @@ const listingReviews = {
     "456789123": []  // No reviews yet for this listing
 };
 
-const listingIDs = []
 
-Object.keys(mockListingData).forEach(function(key) {
-    listingIDs.push(mockListingData[key])
-});
 
+const listingIDs = mockListingData.map(obj => obj.listingId)
 
 export function getListingIDs () {
     return listingIDs;
@@ -299,7 +296,18 @@ export function getListingInfoFromID(listingID:string | undefined) {
             return listing;
         }
     })
-
+    if (targetListing.length == 0) {
+        return {
+            "sellerId": "86420",
+            "listingId": "2468013572",
+            "title": "Apple iPad Pro 12.9-Inch (2021)",
+            "price": 1099.00,
+            "location": "V8Z",
+            "status": "AVAILABLE",
+            "listedAt": "2024-06-03T09:45:00Z",
+            "lastUpdatedAt": "2024-06-03T09:45:00Z"
+        }
+    }
     return targetListing[0];
 }
 

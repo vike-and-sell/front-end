@@ -12,9 +12,11 @@ import IndividualListingPage from "./pages/IndividualListingsPage";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<HomeLayout></HomeLayout>}>
-      <Route element={<ReccomendationsPage></ReccomendationsPage>}></Route>
       <Route
         index
+        element={<ReccomendationsPage></ReccomendationsPage>}
+      ></Route>
+      <Route
         path='listing/:listingID'
         element={<IndividualListingPage></IndividualListingPage>}
       ></Route>

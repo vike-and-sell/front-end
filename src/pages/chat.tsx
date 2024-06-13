@@ -1,37 +1,47 @@
 import { useState } from "react"
 import ChatPane from "../components/ChatPane"
-import { ChatPaneItem } from "../components/ChatPane"
-import { Box, IconButton, Input } from "@chakra-ui/react"
+import { MessageType, User } from "../utils/interfaces";
+import { mockChatPaneItems } from "../utils/mockChatPaneItems";
+import { mockMessages } from "../utils/mockMessages";
+import { Box, IconButton, InputGroup, InputRightElement, Textarea } from "@chakra-ui/react"
 import { ArrowBackIcon, ArrowUpIcon } from "@chakra-ui/icons"
-
+import Messages from "../components/Messages"
 
 export default function Chat() {
+    
 
-    const mockdata:ChatPaneItem[] = [
-        {
-            username: "joby",
-            current: false
-        },
-        {
-            username: "joby2",
-            current: false
-        },
-        {
-            username: "joby3",
-            current: false
-        }
-    ]
+    const mockCurrentUser:User = {
+        userID: "1",
+        username: "jobyprime",
+        email: "jobs@uvic.ca",
+        current:false
+    }
 
-    const [header, setHeader] = useState("Header");
+    const [currentChat, setCurrentChat] = useState<User>(mockChatPaneItems[0]);
 
     const [ChatPaneHidden, setChatPaneHidden] = useState<boolean|null>(false)
 
-    const PfromChatPane = (clickedChat:string) =>{
-        setHeader(clickedChat)
+    const [input, setInput] = useState<string>("")
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const filterMessagesBySenderOrReceiver = (messages: MessageType[], id: string): MessageType[] => {
+        return messages.filter(message => message.senderID === id || message.receiverID === id);
+    };
+
+    const [currentMessages, setCurrentMessages] = useState<MessageType[]>(filterMessagesBySenderOrReceiver(mockMessages, currentChat.userID))
+
+    const PfromChatPane = (clickedChat:User) => {
+        setCurrentChat(clickedChat)
+        setCurrentMessages(filterMessagesBySenderOrReceiver(mockMessages, clickedChat.userID))
+        console.log(currentMessages)
     }
 
-    const ChatPaneDisplayToggle = (status: boolean) =>{
+    const ChatPaneDisplayToggle = (status: boolean) => {
         setChatPaneHidden(status)
+    }
+
+    const sendMessage = (text:string) => {
     }
 
     return(
@@ -39,34 +49,59 @@ export default function Chat() {
         <div className="flex flex-row h-screen">
             
             <div className={`${ChatPaneHidden === true? 'max-sm:hidden' : ''} w-full sm:max-w-max sm:basis-1/5 h-screen `}>
-                <ChatPane ChatPaneItems={mockdata} fromChatPane = {PfromChatPane} ChatPaneDisplayToggle={ChatPaneDisplayToggle}></ChatPane>
+                <ChatPane 
+                    ChatPaneDisplayToggle={ChatPaneDisplayToggle}
+                    ChatPaneItems={mockChatPaneItems} 
+                    fromChatPane = {PfromChatPane}>
+
+                </ChatPane>
             </div> 
 
             <div className={`${ChatPaneHidden === false? 'max-sm:hidden' : ''} flex flex-col flex-grow h-screen p-3 `}> 
                 <Box className=" bg-acc-gray rounded-md p-3">
                     <IconButton
-                        aria-label='Search database' 
+                        aria-label='Search database'
+                        className="mr-4"
                         icon={<ArrowBackIcon/>}  
+                        isRound={true}
                         onClick={() => ChatPaneDisplayToggle(false)} 
                         variant='ghost' />
 
-                    
-                    <span className="">{header}</span>
+                    <span className="">{currentChat.username + " ID-" + currentChat.userID}</span>
                 </Box>
 
-                <div className="bg-teal-500 grow my-5">
-                    Chat Area
+                <div className="bg-teal-500 flex-grow my-5 overflow-y-auto flex-wrap container mx-auto">
+                    <Messages allMessages={currentMessages} user={mockCurrentUser}/>
                 </div>
 
-                <div className="flex">
-                    <Input colorScheme='teal'></Input>
-                    <IconButton isRound ={true} aria-label='Search database' icon={<ArrowUpIcon />} />
+                <div className="flex flex-wrap">
+                    <InputGroup>
+                        <Textarea 
+                            colorScheme='teal' 
+                            onChange={(e) => setInput(e.target.value)} 
+                            placeholder={`Message ${currentChat.username}`}
+                            resize="horizontal"
+                            size="md"
+            
+                        />
+                        <InputRightElement width='4rem'>
+                            <IconButton 
+                                aria-label='Search database'
+                                bg="#166aac"
+                                _hover={{ bg: '#1e40af' }}
+                                icon={<ArrowUpIcon color='white' />}
+                                isRound ={true} 
+                                onClick ={() => sendMessage(input)} 
+                                size="sm"  
+                            />
+                        </InputRightElement>
+
+                    </InputGroup>
+                    
                 </div>
             </div> 
-
            
         </div>
             
-        
     )
 }

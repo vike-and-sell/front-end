@@ -4,11 +4,15 @@ import { ListingCard } from "../components/ListingCard";
 import { getListingIDs } from "../utils/FakeListingsMock";
 import { useState } from "react";
 
+// TODO : There currently exists an issue with the reccomendations page being the main page as it makes pagination a little bit harder
+// TODO : We might have to add a random how screen with some filler information as like a home page? Other companies defeat this by just using
+// TODO : Infinite scrolling which we can try doing then?
+
 export default function ReccomendationsPage() {
   const defaultListings = getListingIDs();
   const [listingIDs, setListingsIDs] = useState(defaultListings);
   const [currentPage, setCurrentPage] = useState(0);
-  console.log(listingIDs);
+
   return (
     <>
       <main className='px-4'>

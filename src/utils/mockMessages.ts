@@ -69,6 +69,34 @@ export const mockMessages: MessageType[] = [
         messageContent: "Me too! It's very insightful.",
         senderID: "3",
         receiverID: "1",
-        timestamp: 1623645540000
+        timestamp: 1718311140
+    },
+    {
+        messageID: "11",
+        messageContent: "Me too! It's very insightful.",
+        senderID: "3",
+        receiverID: "1",
+        timestamp: 1718311140
+    },
+    {
+        messageID: "12",
+        messageContent: "Me too! It's very insightful.",
+        senderID: "3",
+        receiverID: "1",
+        timestamp: 1718311140
+    },
+    {
+        messageID: "13",
+        messageContent: "Me too! It's very insightful.",
+        senderID: "3",
+        receiverID: "1",
+        timestamp: 1718311140
+    },
+    {
+        messageID: "9",
+        messageContent: "That's a great book! I'm a big fan.",
+        senderID: "1",
+        receiverID: "3",
+        timestamp: 1718311140
     }
 ];

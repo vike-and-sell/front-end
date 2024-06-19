@@ -11,12 +11,11 @@ import { useState } from "react";
 export default function ReccomendationsPage() {
   const defaultListings = getListingIDs();
   const [listingIDs, setListingsIDs] = useState(defaultListings);
-  const [currentPage, setCurrentPage] = useState(0);
 
   return (
     <>
-      <main className='px-4'>
-        <PageHeading title='Your Reccomendations'></PageHeading>
+      <main className="px-4">
+        <PageHeading title="Your Reccomendations"></PageHeading>
         <ListingsGrid>
           {listingIDs.map((listingID) => (
             <ListingCard listingID={listingID}></ListingCard>

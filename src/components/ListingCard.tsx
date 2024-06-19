@@ -1,22 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import { getListingInfoFromID } from "../utils/FakeListingsMock"; // MOCK IMPORT
 
+// need to import listing object here
 interface ListingIDProps {
-  listingID: string;
+  listingInfo: object;
 }
-export function ListingCard({ listingID }: ListingIDProps) {
-  const listingInfo = getListingInfoFromID(listingID);
+export function ListingCard({ listingInfo }: ListingIDProps) {
   const postedDate = getMonthAndDate(listingInfo.listedAt);
   const navigate = useNavigate();
   return (
     <div
       onClick={() => navigate(`/listing/${listingInfo.listingId}`)}
-      className='flex flex-col shadow border-solid border-2 border-slate-300 aspect-square rounded-3xl p-4 justify-between overflow-y-auto hover:scale-105 transition-all '
+      className="flex flex-col shadow border-solid border-2 border-slate-300 aspect-square rounded-3xl p-4 justify-between overflow-y-auto hover:scale-105 transition-all "
     >
-      <div className='font-semibold text-lg'>{listingInfo.title}</div>
-      <div className='flex justify-between'>
+      <div className="font-semibold text-lg">{listingInfo.title}</div>
+      <div className="flex justify-between">
         <span>{postedDate}</span>
-        <span className='text-green-700 font-bold'>${listingInfo.price}</span>
+        <span className="text-green-700 font-bold">${listingInfo.price}</span>
       </div>
     </div>
   );

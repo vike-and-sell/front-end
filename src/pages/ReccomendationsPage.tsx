@@ -4,13 +4,13 @@ import { ListingCard } from "../components/ListingCard";
 import { getListingIDs } from "../utils/FakeListingsMock";
 import { arrayPagination } from "../utils/PaginationUtil";
 import { Listing } from "../utils/interfaces";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 
 export default function ReccomendationsPage() {
   const MAX_LISTINGS_PAGE = 30;
-
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { page } = useParams();
   const navigate = useNavigate();
   const defaultListings: Listing[] = getListingIDs(); // MOCKING
@@ -35,11 +35,19 @@ export default function ReccomendationsPage() {
   function handleNext() {
     setCurrentPage(currentPage + 1);
     navigate(`/reccomendations/${currentPage + 1}`);
+    scrollTop();
   }
 
   function handlePrev() {
     setCurrentPage(currentPage - 1);
     navigate(`/reccomendations/${currentPage - 1}`);
+    scrollTop();
+  }
+
+  function scrollTop() {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0; // Using scrollTop property
+    }
   }
 
   return (
@@ -52,7 +60,7 @@ export default function ReccomendationsPage() {
           handleNext={handleNext}
           handlePrev={handlePrev}
         ></PaginationBar>
-        <ListingsGrid>
+        <ListingsGrid ref={scrollRef}>
           {activePageListing.map((listing) => {
             return (
               <ListingCard

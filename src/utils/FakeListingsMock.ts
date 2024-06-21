@@ -526,7 +526,7 @@ export function getListingInfoFromID(listingID: string | undefined) {
 
 export function getReviews(listingID: string) {
   if (listingID in listingReviews) {
-    return listingReviews[listingID];
+    return [];
   } else {
     return [];
   }

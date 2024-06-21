@@ -16,23 +16,23 @@ export default function PaginationBar({
 }: PaginationBarProps) {
   return (
     <>
-      <div className='flex text-black gap-2 items-center'>
+      <div className="flex text-black gap-2 items-center mb-2">
         <button
-          className=' p-1  disabled:invisible bg-pri-blue rounded-full'
+          className=" p-1  disabled:invisible bg-pri-blue rounded-full"
           disabled={currentPage == 1}
           onClick={handlePrev}
         >
-          <FaArrowLeft size={13} color='white' />
+          <FaArrowLeft size={13} color="white" />
         </button>
-        <span className='font-bold text-pri-blue'>
+        <span className="font-bold text-pri-blue">
           {currentPage} / {totalPages}
         </span>
         <button
-          className=' p-1 disabled:invisible bg-pri-blue rounded-full'
+          className=" p-1 disabled:invisible bg-pri-blue rounded-full"
           disabled={currentPage == totalPages}
           onClick={handleNext}
         >
-          <FaArrowRight size={13} color='white' />
+          <FaArrowRight size={13} color="white" />
         </button>
       </div>
     </>

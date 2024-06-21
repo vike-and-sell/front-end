@@ -2,15 +2,15 @@ import PageHeading from "../components/PageHeading";
 import ListingsGrid from "../components/ListingsGrid";
 import { ListingCard } from "../components/ListingCard";
 import { getListingIDs } from "../utils/FakeListingsMock";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 import { Listing } from "../utils/interfaces";
 import { arrayPagination } from "../utils/PaginationUtil";
 
 export default function BrowsePage() {
-  const MAX_LISTINGS_PAGE = 60;
-
+  const MAX_LISTINGS_PAGE = 30;
+  const scrollRef = useRef(null);
   const { page } = useParams();
   const navigate = useNavigate();
   const defaultListings: Listing[] = getListingIDs(); // MOCKING
@@ -35,24 +35,32 @@ export default function BrowsePage() {
   function handleNext() {
     setCurrentPage(currentPage + 1);
     navigate(`/browse/${currentPage + 1}`);
+    scrollTop();
   }
 
   function handlePrev() {
     setCurrentPage(currentPage - 1);
     navigate(`/browse/${currentPage - 1}`);
+    scrollTop();
+  }
+
+  function scrollTop() {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0; // Using scrollTop property
+    }
   }
 
   return (
     <>
-      <main className='px-4'>
-        <PageHeading title='Browse Around'></PageHeading>
+      <main className="px-4">
+        <PageHeading title="Browse Around"></PageHeading>
         <PaginationBar
           currentPage={currentPage}
           totalPages={totalPages}
           handleNext={handleNext}
           handlePrev={handlePrev}
         ></PaginationBar>
-        <ListingsGrid>
+        <ListingsGrid ref={scrollRef}>
           {activePageListing.map((listing) => (
             <ListingCard
               listingInfo={listing}

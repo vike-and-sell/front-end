@@ -5,13 +5,11 @@ export function arrayPagination(
   currentPage: number,
   maxListingsPerPage: number
 ) {
-  console.log(arr);
   const totalListings = arr.length - 1;
-  const start = currentPage * maxListingsPerPage; // WTF is this
+  const start = (currentPage - 1) * maxListingsPerPage;
   if (start + maxListingsPerPage > totalListings) {
     return arr.slice(start);
   } else {
-    console.log(`Start ${start} End : ${start + maxListingsPerPage}`);
     return arr.slice(start, start + maxListingsPerPage);
   }
 }

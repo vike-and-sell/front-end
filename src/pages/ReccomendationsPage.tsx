@@ -8,12 +8,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 
-// TODO : There currently exists an issue with the reccomendations page being the main page as it makes pagination a little bit harder
-// TODO : We might have to add a random how screen with some filler information as like a home page? Other companies defeat this by just using
-// TODO : Infinite scrolling which we can try doing then?
-
 export default function ReccomendationsPage() {
-  const MAX_LISTINGS_PAGE = 15;
+  const MAX_LISTINGS_PAGE = 30;
 
   const { page } = useParams();
   const navigate = useNavigate();
@@ -48,8 +44,8 @@ export default function ReccomendationsPage() {
 
   return (
     <>
-      <main className='px-4'>
-        <PageHeading title='Your Reccomendations'></PageHeading>
+      <main className="px-4">
+        <PageHeading title="Your Reccomendations"></PageHeading>
         <PaginationBar
           currentPage={currentPage}
           totalPages={totalPages}
@@ -58,8 +54,6 @@ export default function ReccomendationsPage() {
         ></PaginationBar>
         <ListingsGrid>
           {activePageListing.map((listing) => {
-            console.log("hello");
-            console.log(listing);
             return (
               <ListingCard
                 listingInfo={listing}

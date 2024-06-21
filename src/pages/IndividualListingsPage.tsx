@@ -3,17 +3,7 @@ import DefaultButton from "../components/Button";
 import RatingSection from "../components/Ratings/ReviewCommentArea";
 import { getListingInfoFromID, getReviews } from "../utils/FakeListingsMock";
 import { useParams } from "react-router-dom";
-
-interface Listing {
-  sellerId: string;
-  listingId: string;
-  title: string;
-  price: number;
-  location: string; // Assuming location can be either latlong or first 3 letters of zip code
-  status: string;
-  listedAt: string; // Should be in ISO 8601 format
-  lastUpdatedAt: string; // Should be in ISO 8601 format
-}
+import { Listing } from "../utils/interfaces";
 
 export default function IndividualListing() {
   const { listingID } = useParams();

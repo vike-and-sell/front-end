@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 import { Listing } from "../utils/interfaces";
+import { arrayPagination } from "../utils/PaginationUtil";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 60;
@@ -19,7 +20,6 @@ export default function BrowsePage() {
 
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
-    console.log("back pressed or page nav pressed");
   }, [page]);
 
   // For future reference, we can use React Query with no super unique query that returns the data
@@ -54,24 +54,13 @@ export default function BrowsePage() {
         ></PaginationBar>
         <ListingsGrid>
           {activePageListing.map((listing) => (
-            <ListingCard listingInfo={listing}></ListingCard>
+            <ListingCard
+              listingInfo={listing}
+              key={listing.listingId}
+            ></ListingCard>
           ))}
         </ListingsGrid>
       </main>
     </>
   );
-}
-
-function arrayPagination(
-  arr: Listing[],
-  currentPage: number,
-  maxListingsPerPage: number
-) {
-  const totalListings = arr.length - 1;
-  const start = currentPage * maxListingsPerPage;
-  if (start + maxListingsPerPage > totalListings) {
-    return arr.slice(start);
-  } else {
-    return arr.slice(start, start + maxListingsPerPage);
-  }
 }

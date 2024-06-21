@@ -8,10 +8,10 @@ import { MdSell } from "react-icons/md";
 function NavigationBar() {
   return (
     <nav className='flex flex-col p-4 gap-4'>
-      <CustomNavLink route='/' title='Create Listing'>
+      <CustomNavLink route='create' title='Create Listing'>
         <MdSell></MdSell>
       </CustomNavLink>
-      <CustomNavLink route='/' title='My Listings'>
+      <CustomNavLink route='my-listing' title='My Listings'>
         <FaListAlt></FaListAlt>
       </CustomNavLink>
       <CustomNavLink route='/' title='My Profile'>

@@ -2,7 +2,7 @@ import PageHeading from "../components/PageHeading";
 import ListingsGrid from "../components/ListingsGrid";
 import { ListingCard } from "../components/ListingCard";
 import { getListingIDs } from "../utils/FakeListingsMock";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 import { Listing } from "../utils/interfaces";
@@ -17,8 +17,14 @@ export default function BrowsePage() {
   const [listings, setListings] = useState<Listing[]>(defaultListings); // This will get replaced
   const totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
 
+  useEffect(() => {
+    setCurrentPage(page ? +page : 1);
+    console.log("back pressed or page nav pressed");
+  }, [page]);
+
   // For future reference, we can use React Query with no super unique query that returns the data
   // array, we don't really need to use state or effect for this stuff
+  // TODO : Need to add an effect or useQuery that changes when the page params change?
 
   const activePageListing = arrayPagination(
     listings,

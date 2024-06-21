@@ -19,7 +19,6 @@ export default function StarRatings({ setValue }: StarRatingsProps) {
     });
     setValue(newValue);
     setRating(newRating);
-    console.log(newValue);
   }
 
   return (

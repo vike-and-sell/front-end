@@ -1,6 +1,3 @@
-// This section takes props which it will then pass down to the UserReview component
-// using a mapping function
-
 import { Review, Reviews } from "./Reviews";
 import UserReview from "./UserReview";
 

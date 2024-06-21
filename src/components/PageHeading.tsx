@@ -1,5 +1,5 @@
 interface PageHeadingProp {
-  title: string | undefined;
+  title: string;
 }
 
 export default function PageHeading({ title }: PageHeadingProp) {

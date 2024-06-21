@@ -15,7 +15,6 @@ export default function UserReview() {
 
   function handleSubmit() {
     if (ratingValue !== 0 && textInput !== "") {
-      console.log("Submitting values...");
       setFormError(false);
     } else {
       setFormError(true);

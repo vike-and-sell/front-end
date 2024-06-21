@@ -10,6 +10,7 @@ import {
 import HomeLayout from "./layout/HomeLayout";
 import ReccomendationsPage from "./pages/ReccomendationsPage";
 import IndividualListingPage from "./pages/IndividualListingsPage";
+import Chat from './pages/chat';
 import BrowsePage from "./pages/BrowsePage";
 
 const router = createBrowserRouter(
@@ -22,14 +23,17 @@ const router = createBrowserRouter(
         path='listing/:listingID'
         element={<IndividualListingPage></IndividualListingPage>}
       ></Route>
+       <Route path='chat' element={<Chat></Chat> } />
     </Route>
+
   )
+
 );
 
 function App() {
   return (
     <ChakraProvider>
-      <RouterProvider router={router}></RouterProvider>
+      <RouterProvider router={router}></RouterProvider> 
     </ChakraProvider>
   );
 }

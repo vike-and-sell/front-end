@@ -4,10 +4,14 @@ import { FaListAlt } from "react-icons/fa";
 import { TbMessageCircle2Filled } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
 import { MdSell } from "react-icons/md";
+import { FaShop } from "react-icons/fa6";
 
 function NavigationBar() {
   return (
     <nav className='flex flex-col p-4 gap-4'>
+      <CustomNavLink route='/browse/1' title='Browse'>
+        <FaShop></FaShop>
+      </CustomNavLink>
       <CustomNavLink route='/' title='Create Listing'>
         <MdSell></MdSell>
       </CustomNavLink>

@@ -1,19 +1,21 @@
+import { useState } from "react"
 import { Avatar, Button, Input, Stack } from "@chakra-ui/react";
-
-
-export interface ChatPaneItem {
-    username: string,
-    current: boolean
-}
-
-export interface ChatPaneProps {
-    ChatPaneItems: ChatPaneItem[]
-    fromChatPane: (username: string) => void;
-    ChatPaneDisplayToggle: (status: boolean) => void;
-}
-
+import { ChatPaneProps, User} from "../utils/interfaces";
 
 export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayToggle}:ChatPaneProps) {
+
+
+
+    const [searchQuery, setSearchQuery] = useState<string>("")
+
+    function filterByUsername(users: User[], searchString: string): User[] {
+        return users.filter(user => 
+            user.username.toLowerCase().includes(searchString.toLowerCase())
+        );
+    }
+
+
+
     return(
         <div className="bg-rt-dark-blue h-screen ">
             <Stack direction='column' spacing={3} className="mx-3" >
@@ -21,7 +23,8 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                     className="mt-3"
                     background='white' 
                     borderRadius='full' 
-                    fontWeight='semibold' 
+                    fontWeight='semibold'
+                    onChange={(e) => setSearchQuery(e.target.value)}  
                     placeholder='Find a chat' 
                     
                     _placeholder={{ opacity: 1, color: 'gray.500', fontFamily:'Inter'}}>
@@ -29,7 +32,7 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                 </Input>
 
                 <>
-                {ChatPaneItems.map((chat:any, index:number) => {
+                {filterByUsername(ChatPaneItems, searchQuery).map((chat:User, index:number) => {
                     return(
                         <Button
                             _active={{ bg: '#166aac' }}
@@ -39,7 +42,7 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                             height='68px'
                             _hover={{ bg: '#166aac' }}
                             onClick={() => {
-                                fromChatPane(chat.username);
+                                fromChatPane(chat);
                                 ChatPaneDisplayToggle(true);
                                 }
                             }>

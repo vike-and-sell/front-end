@@ -67,10 +67,10 @@ export default function Chat() {
                         onClick={() => ChatPaneDisplayToggle(false)} 
                         variant='ghost' />
 
-                    <span className="">{currentChat.username + " ID-" + currentChat.userID}</span>
+                    <span className=" text-white font-bold">{currentChat.username + " ID-" + currentChat.userID}</span>
                 </Box>
 
-                <div className="bg-teal-500 flex-grow my-5 overflow-y-auto flex-wrap container mx-auto">
+                <div className="bg-whitw=e flex-grow my-5 overflow-y-auto flex-wrap container mx-auto">
                     <Messages allMessages={currentMessages} user={mockCurrentUser}/>
                 </div>
 
@@ -80,9 +80,9 @@ export default function Chat() {
                             colorScheme='teal' 
                             onChange={(e) => setInput(e.target.value)} 
                             placeholder={`Message ${currentChat.username}`}
-                            resize="horizontal"
+                            resize="none"
                             size="md"
-            
+                            
                         />
                         <InputRightElement width='4rem'>
                             <IconButton 

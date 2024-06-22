@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 
-export default function ReccomendationsPage() {
+export default function RecomendationsPage() {
   const MAX_LISTINGS_PAGE = 30;
   const scrollRef = useRef<HTMLDivElement>(null);
   const { page } = useParams();
@@ -34,13 +34,13 @@ export default function ReccomendationsPage() {
 
   function handleNext() {
     setCurrentPage(currentPage + 1);
-    navigate(`/reccomendations/${currentPage + 1}`);
+    navigate(`/recomendations/${currentPage + 1}`);
     scrollTop();
   }
 
   function handlePrev() {
     setCurrentPage(currentPage - 1);
-    navigate(`/reccomendations/${currentPage - 1}`);
+    navigate(`/recomendations/${currentPage - 1}`);
     scrollTop();
   }
 
@@ -52,8 +52,8 @@ export default function ReccomendationsPage() {
 
   return (
     <>
-      <main className="px-4">
-        <PageHeading title="Your Reccomendations"></PageHeading>
+      <main className='px-4'>
+        <PageHeading title='Your Recomendations'></PageHeading>
         <PaginationBar
           currentPage={currentPage}
           totalPages={totalPages}

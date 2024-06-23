@@ -67,16 +67,18 @@ export default function BrowsePage() {
     <>
       <main className="px-4">
         <PageHeading title="Browse Around"></PageHeading>
-        <FilterListing
-          filterOptions={filterOptions}
-          setFilterOptions={setFilterOptions}
-        ></FilterListing>
-        <PaginationBar
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handleNext={handleNext}
-          handlePrev={handlePrev}
-        ></PaginationBar>
+        <div className="flex justify-between">
+          <FilterListing
+            filterOptions={filterOptions}
+            setFilterOptions={setFilterOptions}
+          ></FilterListing>
+          <PaginationBar
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+          ></PaginationBar>
+        </div>
         <ListingsGrid ref={scrollRef}>
           {activePageListing.map((listing) => (
             <ListingCard

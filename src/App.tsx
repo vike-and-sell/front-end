@@ -21,7 +21,6 @@ import NewPasswordPage from "./pages/NewPasswordPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <>
       <Route path='/' element={<HomeLayout></HomeLayout>}>
         <Route index element={<Navigate to='/recomendations/1' replace />} />
         <Route path='recomendations/:page' element={<RecomendationsPage />} />
@@ -40,7 +39,6 @@ const router = createBrowserRouter(
           <Route path='reset' element={<NewPasswordPage></NewPasswordPage>}></Route>
         </Route>
       </Route>
-    </>
   )
 );
 

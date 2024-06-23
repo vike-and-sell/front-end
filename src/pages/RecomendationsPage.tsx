@@ -1,5 +1,5 @@
 import PageHeading from "../components/PageHeading";
-import { ListingsGrid, ListingsGridSkeleton } from "../components/ListingsGrid";
+import ListingsGrid from "../components/ListingsGrid";
 import { ListingCard } from "../components/ListingCard";
 import { getListingIDs } from "../utils/FakeListingsMock";
 import { arrayPagination } from "../utils/PaginationUtil";

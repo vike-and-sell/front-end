@@ -1,5 +1,5 @@
 import PageHeading from "../components/PageHeading";
-import { ListingsGrid, ListingsGridSkeleton } from "../components/ListingsGrid";
+import ListingsGrid from "../components/ListingsGrid";
 import { ListingCard } from "../components/ListingCard";
 import { getListingIDs } from "../utils/FakeListingsMock";
 import { useEffect, useState, useRef } from "react";
@@ -7,6 +7,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 import { Listing } from "../utils/interfaces";
 import { arrayPagination } from "../utils/PaginationUtil";
+import { ListingsGridSkeleton } from "../components/Skeletons/ListingGridSkeleton";
+import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;
@@ -54,12 +56,17 @@ export default function BrowsePage() {
     <>
       <main className="px-4">
         <PageHeading title="Browse Around"></PageHeading>
-        <PaginationBar
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handleNext={handleNext}
-          handlePrev={handlePrev}
-        ></PaginationBar>
+        {isLoading ? (
+          <PaginationBarSkeleton></PaginationBarSkeleton>
+        ) : (
+          <PaginationBar
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+          ></PaginationBar>
+        )}
+
         {isLoading ? (
           <ListingsGridSkeleton></ListingsGridSkeleton>
         ) : (

@@ -12,10 +12,12 @@ export default function Edit () {
     const [title, setTitle] = useState<string>("")
     const [price, setPrice] = useState<number>(0)
     const [status, setStatus] = useState<string>("AVAILABLE")
+    const [isTitleTouched, setIsTitleTouched] = useState<boolean>(false);
+    
+    const isInvalidTitle  = isTitleTouched && title === ''
+    
+    const isInvalidPrice = Number.isNaN(price)
 
-    const isInvalid = () =>{
-
-    }
 
     const handleCreate= () =>{
 
@@ -27,17 +29,20 @@ export default function Edit () {
             <main className='px-4'>
                 <PageHeading title={"Create Listing"}></PageHeading>
                 <div className="">
-                    <FormControl>
+                    <FormControl isInvalid={isInvalidTitle}>
                         <div className="my-4 md:mr-80">
                             <FormLabel>Title*</FormLabel>
                             <Input 
-                                onChange={(e) => setTitle(e.target.value)}
+                                onChange={(e) => {setTitle(e.target.value); setIsTitleTouched(true);}}
                                 type="text"
                                 value={title}
                             >
                             </Input>
+                            {isInvalidTitle ? (<FormErrorMessage className="font-semibold">Title is required.</FormErrorMessage>) : ('')}  
                         </div>
+                    </FormControl>
 
+                    <FormControl isInvalid={isInvalidPrice}>
                         <div className="my-4 md:mr-80">
                             <FormLabel>Price*</FormLabel>
                             <InputGroup>
@@ -50,13 +55,15 @@ export default function Edit () {
                                     value={price}  
                                 >
                                 </Input>
-                            
                             </InputGroup>
-                            
+                            {isInvalidPrice ? (<FormErrorMessage className="font-semibold">Price is required.</FormErrorMessage>) : ('')} 
                         </div>
+                    </FormControl>
 
+                    <FormControl>
                         <div className="my-5 flex">
                             <PriBlueButton 
+                                isDisabled={isInvalidPrice || (isInvalidTitle && isTitleTouched)}
                                 clickHandle={handleCreate}
                                 title="Create Listing">
 
@@ -70,8 +77,6 @@ export default function Edit () {
                             </InverseBlueButton>
                             
                         </div>
-
-                        
                     </FormControl>
 
                     

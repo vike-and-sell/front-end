@@ -4,6 +4,7 @@ interface DefaultButtonProps {
   title: string;
   clickHandle?: () => void;
   className?:string;
+  isDisabled?:boolean;
 }
 
 export default function DefaultButton({
@@ -20,7 +21,7 @@ export default function DefaultButton({
   );
 }
 
-export function PriBlueButton({title, clickHandle, className}: DefaultButtonProps) {
+export function PriBlueButton({title, clickHandle, className, isDisabled}: DefaultButtonProps) {
   return(
     <Button
       _active={{
@@ -35,6 +36,7 @@ export function PriBlueButton({title, clickHandle, className}: DefaultButtonProp
        _focus={{}}
       fontWeight='semibold'
       _hover={{ bg: '#0f4a79' }}
+      isDisabled={isDisabled}
       onClick={clickHandle}
       transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
     >
@@ -43,7 +45,7 @@ export function PriBlueButton({title, clickHandle, className}: DefaultButtonProp
   )
 }
 
-export function InverseBlueButton({title, clickHandle, className}: DefaultButtonProps) {
+export function InverseBlueButton({title, clickHandle, className, isDisabled}: DefaultButtonProps) {
   return(
     <Button
       _active={{
@@ -59,6 +61,7 @@ export function InverseBlueButton({title, clickHandle, className}: DefaultButton
       _focus={{}}
       fontWeight='semibold'
       _hover={{ bg: '#ccdde9' }}
+      isDisabled={isDisabled}
       onClick={clickHandle}
       transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
     >

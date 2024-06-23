@@ -17,17 +17,9 @@ export default function Edit () {
     const [price, setPrice] = useState<number>(listingInfo.price)
     const [status, setStatus] = useState<string>(listingInfo.status)
 
-    const isInvalid = () =>{
-
-        if (title === ''){
-            return false
-        }
-        if (price ){
-            return false
-        }
-
-        return true
-    }
+    const isInvalidTitle = title === ''
+    
+    const isInvalidPrice = Number.isNaN(price)
 
     const handleEdit= () =>{
 
@@ -37,9 +29,9 @@ export default function Edit () {
         
         <>
             <main className='px-4'>
-                <PageHeading title={"Edit Listing " + listingInfo.title +  listingInfo.status}></PageHeading>
+                <PageHeading title={"Edit Listing " + listingInfo.title}></PageHeading>
                 <div className="">
-                    <FormControl>
+                    <FormControl isInvalid={isInvalidTitle}>
                         <div className="my-4">
                             <FormLabel>Title*</FormLabel>
                             <Input 
@@ -48,8 +40,12 @@ export default function Edit () {
                                 value={title}
                             >
                             </Input>
+                            {isInvalidTitle ? (<FormErrorMessage className="font-semibold">Title is required.</FormErrorMessage>) : ('')}
                         </div>
+                    </FormControl>
 
+
+                    <FormControl isInvalid={isInvalidPrice}>
                         <div className="my-4">
                             <FormLabel>Price*</FormLabel>
                             <InputGroup>
@@ -60,14 +56,16 @@ export default function Edit () {
                                     onChange={(e) => setPrice(parseInt(e.target.value))}
                                     type="number"
                                     value={price}
-                                    
                                 >
                                 </Input>
-                            
+                                
                             </InputGroup>
+                            {isInvalidPrice ? (<FormErrorMessage className="font-semibold">Price is required.</FormErrorMessage>) : ('')}
                             
                         </div>
+                    </FormControl>
 
+                    <FormControl>
                         <div className="my-4">
                             <FormLabel>Status*</FormLabel>
                             <Select
@@ -80,14 +78,17 @@ export default function Edit () {
                                 <option className="text-invalid-red font-semibold"value='SOLD'>Sold</option>
                             </Select>
                         </div>
+                    </FormControl>
 
                         <div className="my-5">
 
                         </div>
-
+                    
+                     <FormControl>
                         <div className="my-5 flex">
                             <PriBlueButton 
                                 clickHandle={handleEdit}
+                                isDisabled={isInvalidPrice || isInvalidTitle}
                                 title="Save Changes">
 
                             </PriBlueButton>

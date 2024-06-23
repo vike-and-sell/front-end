@@ -7,6 +7,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 import { Listing } from "../utils/interfaces";
 import { arrayPagination } from "../utils/PaginationUtil";
+import FilterListing from "../components/FilterListings";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;
@@ -54,6 +55,7 @@ export default function BrowsePage() {
     <>
       <main className="px-4">
         <PageHeading title="Browse Around"></PageHeading>
+        <FilterListing></FilterListing>
         <PaginationBar
           currentPage={currentPage}
           totalPages={totalPages}

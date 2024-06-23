@@ -19,7 +19,7 @@ export default function BrowsePage() {
   const [currentPage, setCurrentPage] = useState(page ? +page : 1);
   const [listings, setListings] = useState<Listing[]>(defaultListings); // This will get replaced
   const totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
-  const isLoading = true;
+  const isLoading = false;
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
   }, [page]);

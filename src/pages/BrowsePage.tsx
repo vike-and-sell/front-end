@@ -9,6 +9,8 @@ import { Listing } from "../utils/interfaces";
 import { arrayPagination } from "../utils/PaginationUtil";
 import FilterListing from "../components/FilterListings";
 import { FilterOptions } from "../utils/interfaces";
+import { ListingsGridSkeleton } from "../components/Skeletons/ListingGridSkeleton";
+import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;
@@ -30,7 +32,8 @@ export default function BrowsePage() {
     status: "",
   });
 
-  console.log(filterOptions);
+  const isLoading = false;
+
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
   }, [page]);
@@ -65,28 +68,37 @@ export default function BrowsePage() {
 
   return (
     <>
-      <main className="px-4">
-        <PageHeading title="Browse Around"></PageHeading>
-        <div className="flex justify-between">
+      <main className='px-4'>
+        <PageHeading title='Browse Around'></PageHeading>
+        <div className='flex justify-between'>
           <FilterListing
             filterOptions={filterOptions}
             setFilterOptions={setFilterOptions}
           ></FilterListing>
-          <PaginationBar
-            currentPage={currentPage}
-            totalPages={totalPages}
-            handleNext={handleNext}
-            handlePrev={handlePrev}
-          ></PaginationBar>
+
+          {isLoading ? (
+            <PaginationBarSkeleton></PaginationBarSkeleton>
+          ) : (
+            <PaginationBar
+              currentPage={currentPage}
+              totalPages={totalPages}
+              handleNext={handleNext}
+              handlePrev={handlePrev}
+            ></PaginationBar>
+          )}
         </div>
-        <ListingsGrid ref={scrollRef}>
-          {activePageListing.map((listing) => (
-            <ListingCard
-              listingInfo={listing}
-              key={listing.listingId}
-            ></ListingCard>
-          ))}
-        </ListingsGrid>
+        {isLoading ? (
+          <ListingsGridSkeleton></ListingsGridSkeleton>
+        ) : (
+          <ListingsGrid ref={scrollRef}>
+            {activePageListing.map((listing) => (
+              <ListingCard
+                listingInfo={listing}
+                key={listing.listingId}
+              ></ListingCard>
+            ))}
+          </ListingsGrid>
+        )}
       </main>
     </>
   );

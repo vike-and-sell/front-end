@@ -8,10 +8,11 @@ import PaginationBar from "../components/Pagination";
 import { Listing } from "../utils/interfaces";
 import { arrayPagination } from "../utils/PaginationUtil";
 import FilterListing from "../components/FilterListings";
+import { FilterOptions } from "../utils/interfaces";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { page } = useParams();
   const navigate = useNavigate();
   const defaultListings: Listing[] = getListingIDs(); // MOCKING
@@ -19,6 +20,17 @@ export default function BrowsePage() {
   const [listings, setListings] = useState<Listing[]>(defaultListings); // This will get replaced
   const totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
 
+  // Ideally, filterOptions is part of a queryKey given to useQuery that will update the page
+  // when changed
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+    sortBy: "",
+    isDescending: true,
+    maxPrice: "",
+    minPrice: "",
+    status: "",
+  });
+
+  console.log(filterOptions);
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
   }, [page]);
@@ -55,7 +67,10 @@ export default function BrowsePage() {
     <>
       <main className="px-4">
         <PageHeading title="Browse Around"></PageHeading>
-        <FilterListing></FilterListing>
+        <FilterListing
+          filterOptions={filterOptions}
+          setFilterOptions={setFilterOptions}
+        ></FilterListing>
         <PaginationBar
           currentPage={currentPage}
           totalPages={totalPages}

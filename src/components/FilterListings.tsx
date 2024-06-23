@@ -13,24 +13,24 @@ import { FilterOptions } from "../utils/interfaces";
 import DefaultButton from "./Button";
 import { useState, useEffect, useRef } from "react";
 
-export default function FilterListing() {
+interface FilterListingProps {
+  filterOptions: FilterOptions;
+  setFilterOptions: (updatedFilterOptions: FilterOptions) => void;
+}
+
+export default function FilterListing({
+  filterOptions,
+  setFilterOptions,
+}: FilterListingProps) {
   const [active, setActive] = useState(false);
   const filterMenuRef = useRef<HTMLDivElement>(null);
   const toggleButtonRef = useRef<HTMLDivElement>(null);
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    sortBy: "",
-    isDescending: true,
-    maxPrice: "",
-    minPrice: "",
-    status: "",
-  });
 
   function toggleFilter() {
     setActive((prevActive) => !prevActive);
     console.log(active);
   }
 
-  console.log(filterOptions);
   // Sets up event listener to toggle on / off the filter menu
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -96,7 +96,8 @@ function FilterMenu({
   const [status, setStatus] = useState(filterOptions.status);
 
   function handleSortBy(nextValue: string) {
-    setSortBy(nextValue);
+    type SortBy = "price" | "date" | "distance" | "";
+    setSortBy(nextValue as SortBy);
   }
 
   function handleOrderBy(nextValue: string) {

@@ -1,5 +1,5 @@
 import PageHeading from "../components/PageHeading";
-import ListingsGrid from "../components/ListingsGrid";
+import { ListingsGrid, ListingsGridSkeleton } from "../components/ListingsGrid";
 import { ListingCard } from "../components/ListingCard";
 import { getListingIDs } from "../utils/FakeListingsMock";
 import { arrayPagination } from "../utils/PaginationUtil";
@@ -52,8 +52,8 @@ export default function RecomendationsPage() {
 
   return (
     <>
-      <main className='px-4'>
-        <PageHeading title='Your Recomendations'></PageHeading>
+      <main className="px-4">
+        <PageHeading title="Your Recomendations"></PageHeading>
         <PaginationBar
           currentPage={currentPage}
           totalPages={totalPages}

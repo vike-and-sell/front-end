@@ -1,5 +1,5 @@
 import PageHeading from "../components/PageHeading";
-import ListingsGrid from "../components/ListingsGrid";
+import { ListingsGrid, ListingsGridSkeleton } from "../components/ListingsGrid";
 import { ListingCard } from "../components/ListingCard";
 import { getListingIDs } from "../utils/FakeListingsMock";
 import { useEffect, useState, useRef } from "react";
@@ -17,7 +17,7 @@ export default function BrowsePage() {
   const [currentPage, setCurrentPage] = useState(page ? +page : 1);
   const [listings, setListings] = useState<Listing[]>(defaultListings); // This will get replaced
   const totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
-
+  const isLoading = true;
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
   }, [page]);
@@ -60,14 +60,18 @@ export default function BrowsePage() {
           handleNext={handleNext}
           handlePrev={handlePrev}
         ></PaginationBar>
-        <ListingsGrid ref={scrollRef}>
-          {activePageListing.map((listing) => (
-            <ListingCard
-              listingInfo={listing}
-              key={listing.listingId}
-            ></ListingCard>
-          ))}
-        </ListingsGrid>
+        {isLoading ? (
+          <ListingsGridSkeleton></ListingsGridSkeleton>
+        ) : (
+          <ListingsGrid ref={scrollRef}>
+            {activePageListing.map((listing) => (
+              <ListingCard
+                listingInfo={listing}
+                key={listing.listingId}
+              ></ListingCard>
+            ))}
+          </ListingsGrid>
+        )}
       </main>
     </>
   );

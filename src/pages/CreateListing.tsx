@@ -1,24 +1,23 @@
 import PageHeading from "../components/PageHeading";
-import { useParams } from "react-router-dom";
-import { getListingInfoFromID } from "../utils/FakeListingsMock";
+import { useNavigate, useParams } from "react-router-dom";
 import { Listing } from "../utils/interfaces";
-import { Button, FormControl,  FormErrorMessage, FormHelperText, FormLabel, Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react'
+import { FormControl,  FormErrorMessage, FormHelperText, FormLabel, Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react'
 import { useState } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
 
 export default function Edit () {
 
-    const { listingID } = useParams();
+    const navigate = useNavigate();
 
     const [title, setTitle] = useState<string>("")
     const [price, setPrice] = useState<number>(0)
-    const [status, setStatus] = useState<string>("")
+    const [status, setStatus] = useState<string>("AVAILABLE")
 
     const isInvalid = () =>{
 
     }
 
-    const handleEdit= () =>{
+    const handleCreate= () =>{
 
     }
 
@@ -58,13 +57,13 @@ export default function Edit () {
 
                         <div className="my-5 flex">
                             <PriBlueButton 
-                                clickHandle={handleEdit}
-                                title="Create">
+                                clickHandle={handleCreate}
+                                title="Create Listing">
 
                             </PriBlueButton>
 
                             <InverseBlueButton
-                                clickHandle={handleEdit}
+                                clickHandle={() => navigate(-1)}
                                 className="ml-4"
                                 title="Cancel">
 

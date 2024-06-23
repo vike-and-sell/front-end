@@ -4,6 +4,7 @@ import RatingSection from "../components/Ratings/ReviewCommentArea";
 import { getListingInfoFromID, getReviews } from "../utils/FakeListingsMock";
 import { useParams } from "react-router-dom";
 import { Listing } from "../utils/interfaces";
+import { FaEllipsisH } from "react-icons/fa";
 
 export default function IndividualListing() {
   const { listingID } = useParams();

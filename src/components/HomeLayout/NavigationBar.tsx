@@ -12,7 +12,7 @@ function NavigationBar() {
       <CustomNavLink route='/browse/1' title='Browse'>
         <FaShop></FaShop>
       </CustomNavLink>
-      <CustomNavLink route='/' title='Create Listing'>
+      <CustomNavLink route='/create' title='Create Listing'>
         <MdSell></MdSell>
       </CustomNavLink>
       <CustomNavLink route='my-listing' title='My Listings'>

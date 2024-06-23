@@ -1,5 +1,5 @@
 import PageHeading from "../components/PageHeading";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getListingInfoFromID } from "../utils/FakeListingsMock";
 import { Listing } from "../utils/interfaces";
 import { Button, FormControl,  FormErrorMessage, FormLabel, Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react'
@@ -9,6 +9,7 @@ import { InverseBlueButton, PriBlueButton } from "../components/Button";
 
 export default function Edit () {
 
+    const navigate = useNavigate();
     const { listingID } = useParams();
     const listingInfo: Listing = getListingInfoFromID(listingID); // MOCKING FUNCTION
 
@@ -26,7 +27,6 @@ export default function Edit () {
         }
 
         return true
-
     }
 
     const handleEdit= () =>{
@@ -93,15 +93,13 @@ export default function Edit () {
                             </PriBlueButton>
 
                             <InverseBlueButton
-                                clickHandle={handleEdit}
+                                clickHandle={() => navigate(-1)}
                                 className="ml-4"
                                 title="Cancel">
 
                             </InverseBlueButton>
                             
                         </div>
-
-                        
                     </FormControl>
 
                 </div>

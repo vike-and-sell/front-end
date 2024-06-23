@@ -1,10 +1,15 @@
 import { useState } from "react"
 import { Avatar, Button, Input, Stack } from "@chakra-ui/react";
-import { ChatPaneProps, User} from "../utils/interfaces";
+import { User } from "../utils/interfaces";
+
+
+export interface ChatPaneProps {
+    ChatPaneItems: User[]
+    fromChatPane: (chat:User) => void;
+    ChatPaneDisplayToggle: (status: boolean) => void;
+}
 
 export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayToggle}:ChatPaneProps) {
-
-
 
     const [searchQuery, setSearchQuery] = useState<string>("")
 

@@ -1,8 +1,11 @@
-import { useRef, useState } from "react"
-import { MessageProps, MessageType} from "../utils/interfaces";
+import { useRef } from "react"
+import { MessageType, User} from "../utils/interfaces";
 import { format, isEqual } from "date-fns";
 
-
+export interface MessageProps {
+    allMessages: MessageType[]
+    user:User
+}
 
 export default function Messages({allMessages, user}:MessageProps){
     const scrollRef = useRef<HTMLDivElement|null>(null)

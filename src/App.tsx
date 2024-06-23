@@ -12,18 +12,24 @@ import RecomendationsPage from "./pages/RecomendationsPage";
 import IndividualListingPage from "./pages/IndividualListingsPage";
 import Chat from "./pages/chat";
 import BrowsePage from "./pages/BrowsePage";
+import Create from "./pages/CreateListing";
+import Edit from "./pages/EditListing";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <>
-      <Route path='/' element={<HomeLayout></HomeLayout>}>
-        <Route
-          index
-          element={<ReccomendationsPage></ReccomendationsPage>}
-        ></Route>
-      </Route>
-      <Route path='chat' element={<Chat></Chat> } />
-    </>
+    <Route path='/' element={<HomeLayout></HomeLayout>}>
+      <Route index element={<Navigate to='/recomendations/1' replace />} />
+      <Route path='recomendations/:page' element={<RecomendationsPage />} />
+      <Route path='browse/:page' element={<BrowsePage></BrowsePage>}></Route>
+      <Route
+        path='listing/:listingID'
+        element={<IndividualListingPage></IndividualListingPage>}
+      ></Route>
+      <Route path='chat' element={<Chat></Chat>} />
+      <Route path='create' element={<Create></Create>}></Route>
+      <Route path='edit/:listingID' element={<Edit></Edit>}></Route>
+    </Route>
   )
 );
 

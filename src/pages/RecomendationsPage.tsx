@@ -52,8 +52,8 @@ export default function RecomendationsPage() {
 
   return (
     <>
-      <main className='px-4'>
-        <PageHeading title='Your Recomendations'></PageHeading>
+      <main className="px-4">
+        <PageHeading title="Your Recomendations"></PageHeading>
         <PaginationBar
           currentPage={currentPage}
           totalPages={totalPages}

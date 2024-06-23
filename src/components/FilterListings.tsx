@@ -22,6 +22,7 @@ export default function FilterListing() {
     isDescending: true,
     maxPrice: "",
     minPrice: "",
+    status: "",
   });
 
   function toggleFilter() {
@@ -29,6 +30,7 @@ export default function FilterListing() {
     console.log(active);
   }
 
+  console.log(filterOptions);
   // Sets up event listener to toggle on / off the filter menu
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -65,6 +67,7 @@ export default function FilterListing() {
             <FilterMenu
               filterOptions={filterOptions}
               setFilterOptions={setFilterOptions}
+              setActive={setActive}
             ></FilterMenu>
           </div>
         ) : (
@@ -78,13 +81,19 @@ export default function FilterListing() {
 interface FilterMenuProps {
   filterOptions: FilterOptions;
   setFilterOptions: (updatedFilterOptions: FilterOptions) => void;
+  setActive: (isActive: boolean) => void;
 }
 
-function FilterMenu({ filterOptions, setFilterOptions }: FilterMenuProps) {
+function FilterMenu({
+  filterOptions,
+  setFilterOptions,
+  setActive,
+}: FilterMenuProps) {
   const [sortBy, setSortBy] = useState(filterOptions.sortBy);
   const [isDescending, setIsDescending] = useState(filterOptions.isDescending);
   const [maxPrice, setMaxPrice] = useState(filterOptions.maxPrice);
   const [minPrice, setMinPrice] = useState(filterOptions.minPrice);
+  const [status, setStatus] = useState(filterOptions.status);
 
   function handleSortBy(nextValue: string) {
     setSortBy(nextValue);
@@ -92,6 +101,11 @@ function FilterMenu({ filterOptions, setFilterOptions }: FilterMenuProps) {
 
   function handleOrderBy(nextValue: string) {
     setIsDescending(nextValue === "desc" ? true : false);
+  }
+
+  function handleStatus(nextValue: string) {
+    type ItemStatus = "" | "SOLD" | "AVAILABLE" | undefined;
+    setStatus(nextValue as ItemStatus);
   }
 
   function handleMinPrice(e: React.ChangeEvent<HTMLInputElement>) {
@@ -103,7 +117,8 @@ function FilterMenu({ filterOptions, setFilterOptions }: FilterMenuProps) {
   }
 
   function submitFilterOptions() {
-    setFilterOptions({ sortBy, isDescending, maxPrice, minPrice });
+    setFilterOptions({ sortBy, isDescending, maxPrice, minPrice, status });
+    setActive(false);
   }
 
   return (
@@ -112,7 +127,11 @@ function FilterMenu({ filterOptions, setFilterOptions }: FilterMenuProps) {
         <div className="flex flex-col gap-2">
           <FormLabel>Sort by</FormLabel>
           <div>
-            <RadioGroup name="sort-by" onChange={handleSortBy}>
+            <RadioGroup
+              name="sort-by"
+              onChange={handleSortBy}
+              defaultValue={filterOptions.sortBy}
+            >
               <HStack spacing="24px">
                 <Radio value="date">Date</Radio>
                 <Radio value="distance">Distance</Radio>
@@ -126,24 +145,45 @@ function FilterMenu({ filterOptions, setFilterOptions }: FilterMenuProps) {
               <FormLabel>Min Price:</FormLabel>
               <InputGroup onChange={handleMinPrice}>
                 <InputLeftAddon>$</InputLeftAddon>
-                <Input type="number" placeholder="0" />
+                <Input
+                  type="number"
+                  placeholder="0"
+                  defaultValue={filterOptions.minPrice}
+                />
               </InputGroup>
             </div>
             <div>
               <FormLabel>Max Price:</FormLabel>
               <InputGroup onChange={handleMaxPrice}>
                 <InputLeftAddon>$</InputLeftAddon>
-                <Input type="number" placeholder="0" />
+                <Input
+                  type="number"
+                  placeholder="0"
+                  defaultValue={filterOptions.maxPrice}
+                />
               </InputGroup>
             </div>
           </div>
           <Divider></Divider>
           <div>
             <FormLabel>Order By</FormLabel>
-            <RadioGroup defaultValue="desc" onChange={handleOrderBy}>
+            <RadioGroup
+              defaultValue={filterOptions.isDescending ? "desc" : "asc"}
+              onChange={handleOrderBy}
+            >
               <HStack spacing="24px">
                 <Radio value="asc">Ascending</Radio>
                 <Radio value="desc">Descending</Radio>
+              </HStack>
+            </RadioGroup>
+          </div>
+          <Divider></Divider>
+          <div>
+            <FormLabel>Listing Status</FormLabel>
+            <RadioGroup defaultValue="AVAILABLE" onChange={handleStatus}>
+              <HStack spacing="24px">
+                <Radio value="AVAILABLE">Available</Radio>
+                <Radio value="SOLD">Sold</Radio>
               </HStack>
             </RadioGroup>
           </div>

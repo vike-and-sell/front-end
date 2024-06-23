@@ -70,3 +70,27 @@ export function InverseBlueButton({title, clickHandle, className, isDisabled}: D
   )
 
 }
+
+export function InvalidRedButton({title, clickHandle, className, isDisabled}: DefaultButtonProps) {
+  return(
+    <Button
+      _active={{
+        bg: '#dddfe2',
+        transform: 'scale(0.98)',
+        borderColor: '#bec3c9',
+      }}
+      bg='#be0f0f'
+      borderColor='#ccd0d5'
+      className={className}
+      color='#ffffff'
+       _focus={{}}
+      fontWeight='semibold'
+      _hover={{ bg: '#8b0a0a' }}
+      isDisabled={isDisabled}
+      onClick={clickHandle}
+      transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
+    >
+      {title}
+    </Button>
+  )
+}

@@ -3,7 +3,7 @@ import ChatPane from "../components/ChatPane"
 import { MessageType, User } from "../utils/interfaces";
 import { mockChatPaneItems } from "../utils/mockChatPaneItems";
 import { mockMessages } from "../utils/mockMessages";
-import { Box, IconButton, InputGroup, InputRightElement, Textarea } from "@chakra-ui/react"
+import { Box, IconButton, InputGroup, InputRightElement, Show, Textarea } from "@chakra-ui/react"
 import { ArrowBackIcon, ArrowUpIcon } from "@chakra-ui/icons"
 import Messages from "../components/Messages"
 
@@ -58,10 +58,13 @@ export default function Chat() {
             </div> 
 
             <div className={`${ChatPaneHidden === false? 'max-sm:hidden' : ''} flex flex-col flex-grow h-screen p-3 `}> 
-                <Box className=" bg-acc-gray rounded-md p-3">
+                <Box className=" bg-rt-dark-blue rounded-md p-3">
+                    <Show above='sm' ></Show>
                     <IconButton
                         aria-label='Search database'
                         className="mr-4"
+                        bg="#ffffff"
+                        color='#072438'
                         icon={<ArrowBackIcon/>}  
                         isRound={true}
                         onClick={() => ChatPaneDisplayToggle(false)} 
@@ -88,7 +91,7 @@ export default function Chat() {
                             <IconButton 
                                 aria-label='Search database'
                                 bg="#166aac"
-                                _hover={{ bg: '#1e40af' }}
+                                _hover={{ bg: '#0f4a79' }}
                                 icon={<ArrowUpIcon color='white' />}
                                 isRound ={true} 
                                 onClick ={() => sendMessage(input)} 

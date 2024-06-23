@@ -22,7 +22,7 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
 
 
     return(
-        <div className="bg-rt-dark-blue h-screen ">
+        <div className="bg-pri-blue h-screen rounded-lg ">
             <Stack direction='column' spacing={3} className="mx-3" >
                 <Input
                     className="mt-3"
@@ -40,15 +40,16 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                 {filterByUsername(ChatPaneItems, searchQuery).map((chat:User, index:number) => {
                     return(
                         <Button
-                            _active={{ bg: '#166aac' }}
+                            _active={{ bg: '#0f4a79' }}
                             bg='rt-dark-blue'
                             className=""
                             color='#ffffff'
                             height='68px'
-                            _hover={{ bg: '#166aac' }}
+                            _hover={{ bg: '#0f4a79' }}
                             onClick={() => {
                                 fromChatPane(chat);
                                 ChatPaneDisplayToggle(true);
+                                
                                 }
                             }>
                                 <div className="">

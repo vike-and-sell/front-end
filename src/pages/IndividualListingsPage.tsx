@@ -12,7 +12,7 @@ export default function IndividualListing() {
   // This information will have to be fetched using React Query or UseEffect
   const listingInfo: Listing = getListingInfoFromID(listingID); // MOCKING FUNCTION
   const reviews = getReviews(listingInfo.listingId); // MOCKING FUNCTION
-  const isLoading = true;
+  const isLoading = false;
 
   return isLoading ? (
     <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>

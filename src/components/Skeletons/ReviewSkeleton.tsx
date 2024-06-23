@@ -6,6 +6,7 @@ export default function RatingSection() {
       <Skeleton height="30px" width="40%"></Skeleton>
       <Skeleton height="80px" width="100%"></Skeleton>
       <Skeleton height="30px" width="80px" className="self-end"></Skeleton>
+      <Skeleton height="30px" width="40%"></Skeleton>
       <Skeleton height="50px" width="100%"></Skeleton>
       <Skeleton height="50px" width="100%"></Skeleton>
     </div>

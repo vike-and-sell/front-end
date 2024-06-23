@@ -13,6 +13,7 @@ import RecomendationsPage from "./pages/RecomendationsPage";
 import IndividualListingPage from "./pages/IndividualListingsPage";
 import Chat from "./pages/chat";
 import BrowsePage from "./pages/BrowsePage";
+import ErrorPage from "./pages/ErrorPage";
 import LoginPage from './pages/LoginPage';
 import RecoverPasswordPage from "./pages/RecoverPasswordPage";
 import RegistrationPhaseOnePage from "./pages/RegistrationPhaseOnePage";
@@ -22,6 +23,7 @@ import NewPasswordPage from "./pages/NewPasswordPage";
 const router = createBrowserRouter(
   createRoutesFromElements(
       <Route path='/' element={<HomeLayout></HomeLayout>}>
+        <Route path="*" element={<ErrorPage />} />
         <Route index element={<Navigate to='/recomendations/1' replace />} />
         <Route path='recomendations/:page' element={<RecomendationsPage />} />
         <Route path='browse/:page' element={<BrowsePage></BrowsePage>}></Route>
@@ -41,13 +43,3 @@ const router = createBrowserRouter(
       </Route>
   )
 );
-
-function App() {
-  return (
-    <ChakraProvider>
-      <RouterProvider router={router}></RouterProvider>
-    </ChakraProvider>
-  );
-}
-
-export default App;

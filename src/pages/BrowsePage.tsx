@@ -7,6 +7,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 import { Listing } from "../utils/interfaces";
 import { arrayPagination } from "../utils/PaginationUtil";
+import { ListingsGridSkeleton } from "../components/Skeletons/ListingGridSkeleton";
+import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;
@@ -17,7 +19,7 @@ export default function BrowsePage() {
   const [currentPage, setCurrentPage] = useState(page ? +page : 1);
   const [listings, setListings] = useState<Listing[]>(defaultListings); // This will get replaced
   const totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
-
+  const isLoading = false;
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
   }, [page]);
@@ -54,20 +56,29 @@ export default function BrowsePage() {
     <>
       <main className="px-4">
         <PageHeading title="Browse Around"></PageHeading>
-        <PaginationBar
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handleNext={handleNext}
-          handlePrev={handlePrev}
-        ></PaginationBar>
-        <ListingsGrid ref={scrollRef}>
-          {activePageListing.map((listing) => (
-            <ListingCard
-              listingInfo={listing}
-              key={listing.listingId}
-            ></ListingCard>
-          ))}
-        </ListingsGrid>
+        {isLoading ? (
+          <PaginationBarSkeleton></PaginationBarSkeleton>
+        ) : (
+          <PaginationBar
+            currentPage={currentPage}
+            totalPages={totalPages}
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+          ></PaginationBar>
+        )}
+
+        {isLoading ? (
+          <ListingsGridSkeleton></ListingsGridSkeleton>
+        ) : (
+          <ListingsGrid ref={scrollRef}>
+            {activePageListing.map((listing) => (
+              <ListingCard
+                listingInfo={listing}
+                key={listing.listingId}
+              ></ListingCard>
+            ))}
+          </ListingsGrid>
+        )}
       </main>
     </>
   );

@@ -23,6 +23,12 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useRef } from "react";
+import DefaultButton from "../components/Button";
+import RatingSection from "../components/Ratings/RatingSection";
+import { getListingInfoFromID, getReviews } from "../utils/FakeListingsMock";
+import { useParams } from "react-router-dom";
+import { Listing } from "../utils/interfaces";
+import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
@@ -48,10 +54,14 @@ export default function IndividualListing() {
   const handleDoNotRecommend = () => {
 
   }
+          
+  const isLoading = false;
 
-  return (
-    <main className='p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
-      <div className="flex">
+  return isLoading ? (
+    <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>
+  ) : (
+    <main className="p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
+       <div className="flex">
         <PageHeading title={listingInfo.title}></PageHeading>
         <div className="ml-4">
           <Menu>
@@ -101,18 +111,17 @@ export default function IndividualListing() {
         </div>
         
       </div>
-      
-      <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
-        <div className='text-green-700 font-bold text-2xl'>
+      <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
+        <div className="text-green-700 font-bold text-2xl">
           ${listingInfo.price}
         </div>
-        <div className='text-sm'>
+        <div className="text-sm">
           {timeSincePost(listingInfo.listedAt)}
-          <span className='font-bold'> {listingInfo.sellerId}</span>
+          <span className="font-bold"> {listingInfo.sellerId}</span>
         </div>
-        <div className='flex gap-4'>
-          <DefaultButton title='Message Seller'></DefaultButton>
-          <DefaultButton title='View Seller'></DefaultButton>
+        <div className="flex gap-4">
+          <DefaultButton title="Message Seller"></DefaultButton>
+          <DefaultButton title="View Seller"></DefaultButton>
         </div>
       </div>
       <RatingSection reviews={reviews}></RatingSection>

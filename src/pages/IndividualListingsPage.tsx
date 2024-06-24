@@ -1,6 +1,5 @@
 import PageHeading from "../components/PageHeading";
 import DefaultButton, { InvalidRedButton, InverseBlueButton } from "../components/Button";
-import RatingSection from "../components/Ratings/ReviewCommentArea";
 import { getListingInfoFromID, getReviews } from "../utils/FakeListingsMock";
 import { useNavigate, useParams } from "react-router-dom";
 import { Listing, User } from "../utils/interfaces";
@@ -23,11 +22,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useRef } from "react";
-import DefaultButton from "../components/Button";
 import RatingSection from "../components/Ratings/RatingSection";
-import { getListingInfoFromID, getReviews } from "../utils/FakeListingsMock";
-import { useParams } from "react-router-dom";
-import { Listing } from "../utils/interfaces";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
 
 export default function IndividualListing() {

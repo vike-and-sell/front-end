@@ -5,23 +5,12 @@ export interface User {
   current?: boolean;
 }
 
-export interface ChatPaneProps {
-  ChatPaneItems: User[];
-  fromChatPane: (chat: User) => void;
-  ChatPaneDisplayToggle: (status: boolean) => void;
-}
-
 export interface MessageType {
   messageID: string;
   messageContent: string;
   senderID: string;
   receiverID: string;
   timestamp: number;
-}
-
-export interface MessageProps {
-  allMessages: MessageType[];
-  user: User;
 }
 
 export interface Listing {

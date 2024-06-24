@@ -1,4 +1,28 @@
 import PageHeading from "../components/PageHeading";
+import DefaultButton, { InvalidRedButton, InverseBlueButton } from "../components/Button";
+import RatingSection from "../components/Ratings/ReviewCommentArea";
+import { getListingInfoFromID, getReviews } from "../utils/FakeListingsMock";
+import { useNavigate, useParams } from "react-router-dom";
+import { Listing, User } from "../utils/interfaces";
+import { FaEllipsisH, FaRegEdit} from "react-icons/fa";
+import { MdDoNotDisturb } from "react-icons/md";
+import { AiOutlineDelete } from "react-icons/ai";
+import {
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from '@chakra-ui/react'
+import { useRef } from "react";
 import DefaultButton from "../components/Button";
 import RatingSection from "../components/Ratings/RatingSection";
 import { getListingInfoFromID, getReviews } from "../utils/FakeListingsMock";
@@ -8,17 +32,85 @@ import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualLi
 
 export default function IndividualListing() {
   const { listingID } = useParams();
+  const navigate = useNavigate();
 
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const finalRef = useRef(null)
+  const mockCurrentUser:User = {
+      userID: "1",
+      username: "jobyprime",
+      email: "jobs@uvic.ca",
+      current:false
+  }
   // This information will have to be fetched using React Query or UseEffect
   const listingInfo: Listing = getListingInfoFromID(listingID); // MOCKING FUNCTION
   const reviews = getReviews(listingInfo.listingId); // MOCKING FUNCTION
+  const isUser = listingInfo.sellerId === mockCurrentUser.userID
+
+  const handleDelete = () => {
+
+  }
+
+  const handleDoNotRecommend = () => {
+
+  }
+          
   const isLoading = false;
 
   return isLoading ? (
     <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>
   ) : (
     <main className="p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
-      <PageHeading title={listingInfo.title}></PageHeading>
+       <div className="flex">
+        <PageHeading title={listingInfo.title}></PageHeading>
+        <div className="ml-4">
+          <Menu>
+            <MenuButton as={Button} width ='47px'>
+              <FaEllipsisH></FaEllipsisH>
+            </MenuButton>
+
+            <MenuList>
+              {isUser? (
+                <>
+                  <MenuItem 
+                    icon={<FaRegEdit/>}
+                    onClick={() => navigate(`/edit/${listingID}`)}>
+                      Edit Listing
+                  </MenuItem>
+                  <MenuItem 
+                    icon={<AiOutlineDelete/>}
+                    onClick={onOpen}>
+                      Delete Listing
+                  </MenuItem>
+                </>):(
+                <>
+                <MenuItem 
+                  icon={<MdDoNotDisturb/>}
+                  onClick={handleDoNotRecommend}>
+                    Do Not Recommend
+                </MenuItem>
+                </>)}
+            </MenuList>
+          </Menu>
+
+          <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} isCentered>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Delete Listing</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                Are you sure you want to delete this listing?
+              </ModalBody>
+
+              <ModalFooter>
+                <InvalidRedButton clickHandle={handleDelete} title="Yes" className="mr-3"></InvalidRedButton>
+                <InverseBlueButton clickHandle={onClose} title="No"></InverseBlueButton>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </div>
+        
+      </div>
       <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
         <div className="text-green-700 font-bold text-2xl">
           ${listingInfo.price}

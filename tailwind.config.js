@@ -14,8 +14,8 @@ export default {
         'pri-blue': '#166aac',
         'sec-yellow': '#ffc427',
         'acc-gray': '#8795a5',
-        'rt-dark-blue': '#072438' 
-        
+        'rt-dark-blue': '#072438',
+        'red': '#be0f0f' 
       },
     },
   },

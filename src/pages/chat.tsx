@@ -58,19 +58,20 @@ export default function Chat() {
             </div> 
 
             <div className={`${ChatPaneHidden === false? 'max-sm:hidden' : ''} flex flex-col flex-grow h-screen p-3 `}> 
-                <Box className=" bg-rt-dark-blue rounded-md p-3">
-                    <Show above='sm' ></Show>
+                <Box className=" bg-rt-dark-blue rounded-md p-3 flex">
                     <IconButton
                         aria-label='Search database'
                         className="mr-4"
                         bg="#ffffff"
                         color='#072438'
+                        display={{ base: "block", md: "none" }}
                         icon={<ArrowBackIcon/>}  
                         isRound={true}
                         onClick={() => ChatPaneDisplayToggle(false)} 
+                        size='sm'
                         variant='ghost' />
 
-                    <span className=" text-white font-bold">{currentChat.username + " ID-" + currentChat.userID}</span>
+                    <span className=" text-white font-bold justify-center">{currentChat.username}</span>
                 </Box>
 
                 <div className="bg-whitw=e flex-grow my-5 overflow-y-auto flex-wrap container mx-auto">

@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { MessageType, User} from "../utils/interfaces";
 import { format, isEqual } from "date-fns";
 
@@ -18,9 +18,16 @@ export default function Messages({allMessages, user}:MessageProps){
         return format(unixNum, "eeee',' MMMM d yyyy")
     }
 
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [allMessages]);
+    
+
     return(
         <div id = "messages" className="flex h-full flex-1 flex-col gap-4 p-3 overflowy-auto">
-            <div ref ={scrollRef}/>
+            
             {allMessages.map((message:MessageType, index) =>{
                 const isUser = message.senderID === user.userID
                 
@@ -37,7 +44,7 @@ export default function Messages({allMessages, user}:MessageProps){
                             {isSameMessageDate === true? '' : formatDate(message.timestamp)}
                         </div>
                         <div className={`flex items-end ${isUser === true? 'justify-end' : ''}`} >
-                            <div className={`flex flex-col-space-y-2 text-base max-w-sm -mx-2 ${isUser === true? 'order-1 items-end' : 'order-2 items-start'}`}>
+                            <div className={`flex flex-col-space-y-2 text-base max-w-xs -mx-2 ${isUser === true? 'order-1 items-end' : 'order-2 items-start'}`}>
                                 <span className={`px-4 py-2 rounded-lg inline-block ${isUser === true? 'bg-pri-blue text-white' : ' bg-stone-200 text-gray-700'}`}>
                                     {message.messageContent}{' '}
                                     <span className={`ml-2 text-xs text-gray-400`}>
@@ -52,7 +59,7 @@ export default function Messages({allMessages, user}:MessageProps){
                 )
                 }
             )}
-
+            <div ref ={scrollRef}/>
         </div>
     )
 

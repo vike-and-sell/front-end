@@ -31,7 +31,6 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                     fontWeight='semibold'
                     onChange={(e) => setSearchQuery(e.target.value)}  
                     placeholder='Find a chat' 
-                    
                     _placeholder={{ opacity: 1, color: 'gray.500', fontFamily:'Inter'}}>
                         
                 </Input>

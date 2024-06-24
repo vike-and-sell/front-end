@@ -22,21 +22,21 @@ export default function UserReview() {
   }
 
   function handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    let inputValue = e.target.value;
+    const inputValue = e.target.value;
     setTextInput(inputValue);
   }
 
   return (
     <FormControl isInvalid={formError}>
-      <FormLabel className='text-pri-blue font-semibold m-0'>
+      <FormLabel className="text-pri-blue font-semibold m-0">
         Leave a rating!
       </FormLabel>
       <Textarea
-        placeholder='Leave your comment here!'
-        resize='none'
+        placeholder="Leave your comment here!"
+        resize="none"
         value={textInput}
         onChange={(e) => handleTextChange(e)}
-        aria-label='Text Review Area'
+        aria-label="Text Review Area"
         required
       ></Textarea>
       {formError && textInput === "" ? (
@@ -44,10 +44,10 @@ export default function UserReview() {
       ) : (
         ""
       )}
-      <div className='flex items-center justify-between mt-4'>
+      <div className="flex items-center justify-between mt-4">
         <StarRatings setValue={setRatingValue}></StarRatings>
         <DefaultButton
-          title='Submit'
+          title="Submit"
           clickHandle={handleSubmit}
         ></DefaultButton>
       </div>

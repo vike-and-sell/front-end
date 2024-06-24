@@ -5,6 +5,8 @@ interface RatingSectionProps {
   reviews: string[];
 }
 
+type ItemStatus = "" | "SOLD" | "AVAILABLE" | undefined;
+
 export default function RatingSection({ reviews }: RatingSectionProps) {
   const reviewCount = reviews.length;
   return (

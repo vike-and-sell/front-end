@@ -7,19 +7,33 @@ import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 import { Listing } from "../utils/interfaces";
 import { arrayPagination } from "../utils/PaginationUtil";
+import FilterListing from "../components/FilterListings";
+import { FilterOptions } from "../utils/interfaces";
 import { ListingsGridSkeleton } from "../components/Skeletons/ListingGridSkeleton";
 import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { page } = useParams();
   const navigate = useNavigate();
   const defaultListings: Listing[] = getListingIDs(); // MOCKING
   const [currentPage, setCurrentPage] = useState(page ? +page : 1);
   const [listings, setListings] = useState<Listing[]>(defaultListings); // This will get replaced
   const totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
+
+  // Ideally, filterOptions is part of a queryKey given to useQuery that will update the page
+  // when changed
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+    sortBy: "",
+    isDescending: true,
+    maxPrice: "",
+    minPrice: "",
+    status: "",
+  });
+
   const isLoading = false;
+
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
   }, [page]);
@@ -54,19 +68,25 @@ export default function BrowsePage() {
 
   return (
     <>
-      <main className="px-4">
-        <PageHeading title="Browse Around"></PageHeading>
-        {isLoading ? (
-          <PaginationBarSkeleton></PaginationBarSkeleton>
-        ) : (
-          <PaginationBar
-            currentPage={currentPage}
-            totalPages={totalPages}
-            handleNext={handleNext}
-            handlePrev={handlePrev}
-          ></PaginationBar>
-        )}
+      <main className='px-4'>
+        <PageHeading title='Browse Around'></PageHeading>
+        <div className='flex justify-between'>
+          <FilterListing
+            filterOptions={filterOptions}
+            setFilterOptions={setFilterOptions}
+          ></FilterListing>
 
+          {isLoading ? (
+            <PaginationBarSkeleton></PaginationBarSkeleton>
+          ) : (
+            <PaginationBar
+              currentPage={currentPage}
+              totalPages={totalPages}
+              handleNext={handleNext}
+              handlePrev={handlePrev}
+            ></PaginationBar>
+          )}
+        </div>
         {isLoading ? (
           <ListingsGridSkeleton></ListingsGridSkeleton>
         ) : (

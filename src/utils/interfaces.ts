@@ -1,16 +1,16 @@
 export interface User {
-    userID: string
-    username: string
-    email: string,
-    current?: boolean
+  userID: string;
+  username: string;
+  email: string;
+  current?: boolean;
 }
 
 export interface MessageType {
-    messageID: string,
-    messageContent: string,
-    senderID: string,
-    receiverID:string,
-    timestamp:number
+  messageID: string;
+  messageContent: string;
+  senderID: string;
+  receiverID: string;
+  timestamp: number;
 }
 
 export interface Listing {
@@ -22,4 +22,12 @@ export interface Listing {
   status: string; // assuming there could be other statuses
   listedAt: string; // ISO 8601 date string
   lastUpdatedAt: string; // ISO 8601 date string
+}
+
+export interface FilterOptions {
+  maxPrice?: string;
+  minPrice?: string;
+  isDescending?: boolean;
+  status?: "SOLD" | "AVAILABLE" | "";
+  sortBy?: "price" | "date" | "distance" | "";
 }

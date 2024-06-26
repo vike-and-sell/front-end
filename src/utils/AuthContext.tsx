@@ -43,10 +43,13 @@ export const AuthProvider = ({ children }: any) => {
           navigate("/");
         });
     } catch (error) {
+
       console.log(error);
+
       setUser(null);
     }
   };
+
 
   const requestAccount = async (email: string, callback: string) => {
     try {
@@ -160,6 +163,7 @@ export const AuthProvider = ({ children }: any) => {
     verifyReset,
     checkUserStatus,
   };
+
 
   return (
     <AuthContext.Provider value={authData}>

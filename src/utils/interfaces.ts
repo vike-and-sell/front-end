@@ -29,5 +29,10 @@ export interface FilterOptions {
   minPrice?: string;
   isDescending?: boolean;
   status?: "SOLD" | "AVAILABLE" | "";
-  sortBy?: "price" | "date" | "distance" | "";
+  sortBy?: "price" | "created_on" | "location" | "";
+}
+
+export interface LoginCredentials {
+  username:string,
+  password:string
 }

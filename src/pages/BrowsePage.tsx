@@ -32,25 +32,6 @@ export default function BrowsePage() {
   });
 
   useEffect(() => {
-    // REMOVE THIS AXIOS REQUEST LATER, USER SHOULD BE LOGGED IN AT THIS POINT
-    axios
-      .post(
-        "http://127.0.0.1:8080/login",
-        {
-          username: "john_doe",
-          password: "Password123!",
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
     setCurrentPage(page ? +page : 1);
   }, [page]);
 

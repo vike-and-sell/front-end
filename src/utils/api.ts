@@ -4,7 +4,7 @@ import { FilterOptions, LoginCredentials } from "./interfaces";
 const login = async (credentials: LoginCredentials) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8080/login",
+      "http://localhost:8080/login",
       credentials,
       { withCredentials: true }
     );
@@ -21,7 +21,7 @@ const login = async (credentials: LoginCredentials) => {
 
 const fetchUser = async () => {
   try {
-    const response = await axios.get("http://127.0.0.1:8080/users/me", {
+    const response = await axios.get("http://localhost:8080/users/me", {
       withCredentials: true,
     });
     
@@ -46,7 +46,7 @@ const fetchBrowseListings = async (filterOptions:FilterOptions) => {
 console.log(paramsString)
 
   try {
-    const response = await axios.get(`http://127.0.0.1:8080/listings/?${paramsString}`, 
+    const response = await axios.get(`http://localhost:8080/listings/?${paramsString}`, 
       {
       withCredentials: true,
     });
@@ -64,7 +64,7 @@ console.log(paramsString)
 const fetchSingleListing = async (listingID: string | undefined) => {
   
   try {
-    const response = await axios.get(`http://127.0.0.1:8080/listings/${listingID}`, {
+    const response = await axios.get(`http://localhost:8080/listings/${listingID}`, {
       withCredentials: true,
     });
     

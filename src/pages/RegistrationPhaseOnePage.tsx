@@ -6,10 +6,10 @@ export default function RegistrationPhaseOnePage() {
 
     const [email, setEmail] =  useState<string>("")
 
-    const { user, registerUser } = useAuth()
+    const { user, requestAccount } = useAuth()
 
     const handleCreate= async() =>{
-        registerUser(email, "http://localhost:5173/unverified/signup-token/jwt?=")
+        requestAccount(email, "http://localhost:5173/unverified/signup-token/jwt?=")
     }
     
     return (

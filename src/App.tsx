@@ -25,7 +25,7 @@ import NewPasswordPage from "./pages/NewPasswordPage";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<HomeLayout></HomeLayout>}>
+      <Route path='/' element={<HomeLayout></HomeLayout>}>
         <Route path="*" element={<ErrorPage />} />
         <Route index element={<Navigate to="/recomendations/1" replace />} />
         <Route path="recomendations/:page" element={<RecomendationsPage />} />
@@ -37,7 +37,6 @@ const router = createBrowserRouter(
         <Route path='chat' element={<Chat></Chat>} />
         <Route path='create' element={<Create></Create>}></Route>
         <Route path='edit/:listingID' element={<Edit></Edit>}></Route>
-        <Route path="chat" element={<Chat></Chat>} />
       </Route>
       
       <Route path='login' element = {<LoginPage></LoginPage>}></Route>

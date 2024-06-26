@@ -17,7 +17,11 @@ export default function RecoverPasswordPage() {
 
                         <span className="text-white text-xl font-bold pt-4">Email Address</span>
                         <InputGroup>
-                            <Input variant='filled' type='email' placeholder=''/>
+                            <Input 
+                                bg='#ffffff'
+                                type='email' 
+                                placeholder=''
+                            />
                             <InputRightAddon className='text-pri-blue font-semibold'>@uvic.ca</InputRightAddon>
                         </InputGroup>
                     </div>

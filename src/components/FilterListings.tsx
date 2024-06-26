@@ -96,7 +96,7 @@ function FilterMenu({
   const [status, setStatus] = useState(filterOptions.status);
 
   function handleSortBy(nextValue: string) {
-    type SortBy = "price" | "date" | "distance" | "";
+    type SortBy = "price" | "created_on" | "location" | "";
     setSortBy(nextValue as SortBy);
   }
 
@@ -145,8 +145,8 @@ function FilterMenu({
               defaultValue={filterOptions.sortBy}
             >
               <HStack spacing='24px'>
-                <Radio value='date'>Date</Radio>
-                <Radio value='distance'>Distance</Radio>
+                <Radio value='created_on'>Date</Radio>
+                <Radio value='location'>Distance</Radio>
                 <Radio value='price'>Price</Radio>
               </HStack>
             </RadioGroup>

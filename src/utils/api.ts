@@ -36,9 +36,18 @@ const fetchUser = async () => {
 };
 
 const fetchBrowseListings = async (filterOptions:FilterOptions) => {
-  console.log(filterOptions)
+  let paramsString = "";
+  console.log(filterOptions);
+  Object.keys(filterOptions).forEach((key)=> {
+    if (filterOptions[key] != '') {
+      paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(filterOptions[key])}&`
+    }
+  })
+console.log(paramsString)
+
   try {
-    const response = await axios.get("http://127.0.0.1:8080/listings/", {
+    const response = await axios.get(`http://127.0.0.1:8080/listings/?${paramsString}`, 
+      {
       withCredentials: true,
     });
     
@@ -53,6 +62,7 @@ const fetchBrowseListings = async (filterOptions:FilterOptions) => {
 };
 
 const fetchSingleListing = async (listingID: string | undefined) => {
+  
   try {
     const response = await axios.get(`http://127.0.0.1:8080/listings/${listingID}`, {
       withCredentials: true,

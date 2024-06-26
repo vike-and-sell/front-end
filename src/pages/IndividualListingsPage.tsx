@@ -68,6 +68,7 @@ export default function IndividualListing() {
   const handleDoNotRecommend = () => {};
 
   if (userData && listingInfo) {
+    console.log(userData);
     if (userData.userId == listingInfo.sellerId) {
       isUser = true;
     }
@@ -161,7 +162,7 @@ function timeSincePost(postedTime: string) {
   const postDate = new Date(postedTime);
   const now = new Date();
   const diffMs = now.getTime() - postDate.getTime();
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
   if (diffDays === 0) {
     return "Posted today by";
   } else {

@@ -58,12 +58,22 @@ export default function Edit() {
   // Handle edit actually makes the changes
   const handleEdit = async () => {
     axios
-      .patch(`http://localhost:8080/listings/${listingID}`, {
-        title,
-        price,
-        status,
+      .patch(
+        `http://localhost:8080/listings/${listingID}`,
+        {
+          title,
+          price,
+          status,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        if (response.status == 200) {
+          navigate(`/listing/${listingID}`);
+        }
       })
-      .then((response) => console.log(response.data))
       .catch((error) => console.error(error));
   };
 

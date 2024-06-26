@@ -3,7 +3,7 @@ import vikeLogo from "../assets/vikelogo.svg";
 export default function LoginHeading() {
     return (
         <>
-            <div className="bg-white flex-col my-8 mx-2 lg:gap-y-[50px] sm:order-2 sm:flex-1 sm:h-screen h-1/3 flex gap-5 justify-center xl:justify-start xl:pt-32 items-center">
+            <div className="bg-white flex-col mx-2 lg:gap-y-[50px] sm:order-2 sm:flex-1 sm:h-screen h-1/3 flex gap-5 justify-center xl:justify-start xl:pt-32 items-center">
                 <div className="sm:basis-1/6">
                     <img src={vikeLogo} alt='Vike Logo' className="object-contain lg:h-full max-w-md"/>  
                  </div>

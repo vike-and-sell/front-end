@@ -12,6 +12,8 @@ import { ListingsGridSkeleton } from "../components/Skeletons/ListingGridSkeleto
 import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBrowseListings } from "../utils/api";
+import ErrorPage from "./ErrorPage";
+import axios from "axios";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;
@@ -29,12 +31,36 @@ export default function BrowsePage() {
     status: "",
   });
 
-  const { data: listings, isPending: isListingPending } = useQuery({
+  const {
+    data: listings,
+    isPending: isListingPending,
+    isError,
+    error,
+  } = useQuery({
     queryKey: [currentPage],
     queryFn: fetchBrowseListings,
   });
 
   useEffect(() => {
+    // REMOVE THIS AXIOS REQUEST LATER, USER SHOULD BE LOGGED IN AT THIS POINT
+    axios
+      .post(
+        "http://127.0.0.1:8080/login",
+        {
+          username: "john_doe",
+          password: "Password123!",
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     setCurrentPage(page ? +page : 1);
   }, [page]);
 
@@ -65,11 +91,14 @@ export default function BrowsePage() {
     );
   }
 
+  if (isError) {
+    return <ErrorPage>{error.response.data.message}</ErrorPage>;
+  }
   return (
     <>
-      <main className="px-4">
-        <PageHeading title="Browse Around"></PageHeading>
-        <div className="flex justify-between">
+      <main className='px-4'>
+        <PageHeading title='Browse Around'></PageHeading>
+        <div className='flex justify-between'>
           <FilterListing
             filterOptions={filterOptions}
             setFilterOptions={setFilterOptions}

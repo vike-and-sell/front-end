@@ -31,3 +31,8 @@ export interface FilterOptions {
   status?: "SOLD" | "AVAILABLE" | "";
   sortBy?: "price" | "date" | "distance" | "";
 }
+
+export interface LoginCredentials {
+  username:string,
+  password:string
+}

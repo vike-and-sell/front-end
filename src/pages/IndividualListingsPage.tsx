@@ -1,9 +1,11 @@
 import PageHeading from "../components/PageHeading";
-import DefaultButton, { InvalidRedButton, InverseBlueButton } from "../components/Button";
-import { getListingInfoFromID, getReviews } from "../utils/FakeListingsMock";
+import DefaultButton, {
+  InvalidRedButton,
+  InverseBlueButton,
+} from "../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import { Listing, User } from "../utils/interfaces";
-import { FaEllipsisH, FaRegEdit} from "react-icons/fa";
+import { User } from "../utils/interfaces";
+import { FaEllipsisH, FaRegEdit } from "react-icons/fa";
 import { MdDoNotDisturb } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
@@ -20,75 +22,99 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 import { useRef } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSingleListing } from "../utils/api";
+import ErrorPage from "./ErrorPage";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const finalRef = useRef(null);
+  const reviews: [] = [];
+  let isUser;
+  const mockCurrentUser: User = {
+    userID: "1",
+    username: "jobyprime",
+    email: "jobs@uvic.ca",
+    current: false,
+  };
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const finalRef = useRef(null)
-  const mockCurrentUser:User = {
-      userID: "1",
-      username: "jobyprime",
-      email: "jobs@uvic.ca",
-      current:false
+  const {
+    data: listingInfo,
+    isPending: isListingPending,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: [listingID],
+    queryFn: () => fetchSingleListing(listingID),
+  });
+
+  if (isError) {
+    return (
+      <ErrorPage>
+        <div>{error.message}</div>
+        <div>{error.response?.data.message}</div>
+      </ErrorPage>
+    );
   }
-  // This information will have to be fetched using React Query or UseEffect
-  const listingInfo: Listing = getListingInfoFromID(listingID); // MOCKING FUNCTION
-  const reviews = getReviews(listingInfo.listingId); // MOCKING FUNCTION
-  const isUser = listingInfo.sellerId === mockCurrentUser.userID
 
-  const handleDelete = () => {
+  const handleDelete = () => {};
 
+  const handleDoNotRecommend = () => {};
+
+  if (listingInfo) {
+    isUser = listingInfo.sellerId === mockCurrentUser.userID;
   }
 
-  const handleDoNotRecommend = () => {
-
-  }
-          
-  const isLoading = false;
-
-  return isLoading ? (
+  return isListingPending ? (
     <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>
   ) : (
-    <main className="p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
-       <div className="flex">
+    <main className='p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
+      <div className='flex'>
         <PageHeading title={listingInfo.title}></PageHeading>
-        <div className="ml-4">
+        <div className='ml-4'>
           <Menu>
-            <MenuButton as={Button} width ='47px'>
+            <MenuButton as={Button} width='47px'>
               <FaEllipsisH></FaEllipsisH>
             </MenuButton>
 
             <MenuList>
-              {isUser? (
+              {isUser ? (
                 <>
-                  <MenuItem 
-                    icon={<FaRegEdit/>}
-                    onClick={() => navigate(`/edit/${listingID}`)}>
-                      Edit Listing
+                  <MenuItem
+                    icon={<FaRegEdit />}
+                    onClick={() => navigate(`/edit/${listingID}`)}
+                  >
+                    Edit Listing
                   </MenuItem>
-                  <MenuItem 
-                    icon={<AiOutlineDelete/>}
-                    onClick={onOpen}>
-                      Delete Listing
+                  <MenuItem icon={<AiOutlineDelete />} onClick={onOpen}>
+                    Delete Listing
                   </MenuItem>
-                </>):(
+                </>
+              ) : (
                 <>
-                <MenuItem 
-                  icon={<MdDoNotDisturb/>}
-                  onClick={handleDoNotRecommend}>
+                  <MenuItem
+                    icon={<MdDoNotDisturb />}
+                    onClick={handleDoNotRecommend}
+                  >
                     Do Not Recommend
-                </MenuItem>
-                </>)}
+                  </MenuItem>
+                </>
+              )}
             </MenuList>
           </Menu>
 
-          <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} isCentered>
+          <Modal
+            finalFocusRef={finalRef}
+            isOpen={isOpen}
+            onClose={onClose}
+            isCentered
+          >
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Delete Listing</ModalHeader>
@@ -98,25 +124,31 @@ export default function IndividualListing() {
               </ModalBody>
 
               <ModalFooter>
-                <InvalidRedButton clickHandle={handleDelete} title="Yes" className="mr-3"></InvalidRedButton>
-                <InverseBlueButton clickHandle={onClose} title="No"></InverseBlueButton>
+                <InvalidRedButton
+                  clickHandle={handleDelete}
+                  title='Yes'
+                  className='mr-3'
+                ></InvalidRedButton>
+                <InverseBlueButton
+                  clickHandle={onClose}
+                  title='No'
+                ></InverseBlueButton>
               </ModalFooter>
             </ModalContent>
           </Modal>
         </div>
-        
       </div>
-      <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
-        <div className="text-green-700 font-bold text-2xl">
+      <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
+        <div className='text-green-700 font-bold text-2xl'>
           ${listingInfo.price}
         </div>
-        <div className="text-sm">
+        <div className='text-sm'>
           {timeSincePost(listingInfo.listedAt)}
-          <span className="font-bold"> {listingInfo.sellerId}</span>
+          <span className='font-bold'> {listingInfo.sellerId}</span>
         </div>
-        <div className="flex gap-4">
-          <DefaultButton title="Message Seller"></DefaultButton>
-          <DefaultButton title="View Seller"></DefaultButton>
+        <div className='flex gap-4'>
+          <DefaultButton title='Message Seller'></DefaultButton>
+          <DefaultButton title='View Seller'></DefaultButton>
         </div>
       </div>
       <RatingSection reviews={reviews}></RatingSection>

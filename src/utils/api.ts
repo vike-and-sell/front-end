@@ -78,4 +78,21 @@ const fetchSingleListing = async (listingID: string | undefined) => {
   }
 };
 
-export { login, fetchUser, fetchBrowseListings, fetchSingleListing };
+const fetchMyListings = async () => {
+  console.log("hello");
+  try {
+    const response = await axios.get(`http://localhost:8080/listings/me`, {
+      withCredentials: true,
+    });
+    console.log("hello")
+    if (response.status !== 200) {
+      throw new Error(response.data?.message || "Fetching single listing data failed...");
+    }
+    
+    return response.data;
+  } catch (error) {   
+      throw error;
+  }
+};
+
+export { login, fetchUser, fetchBrowseListings, fetchSingleListing ,fetchMyListings};

@@ -25,6 +25,7 @@ const queryClient = new QueryClient();
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./utils/AuthContext";
+import MyListings from "./pages/MyListings";
 
 function App() {
   return (
@@ -53,29 +54,49 @@ function App() {
                     element={<IndividualListingPage></IndividualListingPage>}
                   ></Route>
                   <Route path='chat' element={<Chat></Chat>} />
+                  <Route
+                    path='mylistings/:page'
+                    element={<MyListings></MyListings>}
+                  />
                   <Route path='create' element={<Create></Create>}></Route>
                   <Route path='edit/:listingID' element={<Edit></Edit>}></Route>
                   <Route path='chat' element={<Chat></Chat>} />
                 </Route>
-            </Route>
-            
-            <Route path='login' element = {<LoginPage></LoginPage>}></Route>
-            <Route path='unverified/recover' element = {<RecoverPasswordPage></RecoverPasswordPage>}></Route> 
-            
-            <Route path='unverified' element={<RegistrationLayout></RegistrationLayout>}>
-              <Route path='signup'
-                index element = {<RegistrationPhaseOnePage></RegistrationPhaseOnePage>}></Route>
-              <Route path='signup-token/:jwt' element = {<RegistrationPhaseTwoPage></RegistrationPhaseTwoPage>}></Route>
-              <Route path='reset/:jwt' element={<NewPasswordPage></NewPasswordPage>}></Route>
-            </Route>
-          </Routes>
-        </ChakraProvider>
-      </AuthProvider>
-    </Router>
-     </QueryClientProvider>
-   
-    
+              </Route>
 
+              <Route path='login' element={<LoginPage></LoginPage>}></Route>
+              <Route
+                path='unverified/recover'
+                element={<RecoverPasswordPage></RecoverPasswordPage>}
+              ></Route>
+
+              <Route
+                path='unverified'
+                element={<RegistrationLayout></RegistrationLayout>}
+              >
+                <Route
+                  path='signup'
+                  index
+                  element={
+                    <RegistrationPhaseOnePage></RegistrationPhaseOnePage>
+                  }
+                ></Route>
+                <Route
+                  path='signup-token/:jwt'
+                  element={
+                    <RegistrationPhaseTwoPage></RegistrationPhaseTwoPage>
+                  }
+                ></Route>
+                <Route
+                  path='reset/:jwt'
+                  element={<NewPasswordPage></NewPasswordPage>}
+                ></Route>
+              </Route>
+            </Routes>
+          </ChakraProvider>
+        </AuthProvider>
+      </Router>
+    </QueryClientProvider>
   );
 }
 

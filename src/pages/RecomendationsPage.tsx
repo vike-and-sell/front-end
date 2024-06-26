@@ -22,10 +22,6 @@ export default function RecomendationsPage() {
     setCurrentPage(page ? +page : 1);
   }, [page]);
 
-  // For future reference, we can use React Query with no super unique query that returns the data
-  // array, we don't really need to use state or effect for this stuff
-  // TODO : Need to add an effect or useQuery that changes when the page params change?
-
   const activePageListing = arrayPagination(
     listings,
     currentPage,
@@ -52,8 +48,8 @@ export default function RecomendationsPage() {
 
   return (
     <>
-      <main className="px-4">
-        <PageHeading title="Your Recomendations"></PageHeading>
+      <main className='px-4'>
+        <PageHeading title='Your Recomendations'></PageHeading>
         <PaginationBar
           currentPage={currentPage}
           totalPages={totalPages}

@@ -14,15 +14,14 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 import { useRef } from "react";
 import Chat from "../../pages/chat";
 
 function NavigationBar() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const finalRef = useRef(null);
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const finalRef = useRef(null)
-  
   return (
     <>
       <nav className='flex flex-col p-4 gap-4'>
@@ -32,32 +31,35 @@ function NavigationBar() {
         <CustomNavLink route='/create' title='Create Listing'>
           <MdSell></MdSell>
         </CustomNavLink>
-        <CustomNavLink route='my-listing' title='My Listings'>
+        <CustomNavLink route='/mylistings/1' title='My Listings'>
           <FaListAlt></FaListAlt>
         </CustomNavLink>
         <CustomNavLink route='/' title='My Profile'>
           <CgProfile></CgProfile>
         </CustomNavLink>
-        <CustomNavLink route='' title='My Messages' clickHandle={onOpen} >
+        <CustomNavLink route='' title='My Messages' clickHandle={onOpen}>
           <TbMessageCircle2Filled></TbMessageCircle2Filled>
         </CustomNavLink>
         <CustomNavLink route='/' title='Settings'>
           <IoSettingsSharp></IoSettingsSharp>
         </CustomNavLink>
       </nav>
-      
-      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} size='full'>
-      <ModalOverlay />
+
+      <Modal
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+        size='full'
+      >
+        <ModalOverlay />
         <ModalContent m={10}>
-        
-          <ModalCloseButton ml={5}/>
-          <ModalBody my={3}mr={4}>
+          <ModalCloseButton ml={5} />
+          <ModalBody my={3} mr={4}>
             <Chat></Chat>
           </ModalBody>
         </ModalContent>
       </Modal>
     </>
-
   );
 }
 
@@ -68,7 +70,12 @@ interface CustomNavLinkProps {
   clickHandle?: () => void;
 }
 
-function CustomNavLink({ route, title, children, clickHandle}: CustomNavLinkProps) {
+function CustomNavLink({
+  route,
+  title,
+  children,
+  clickHandle,
+}: CustomNavLinkProps) {
   return (
     <NavLink
       to={route}

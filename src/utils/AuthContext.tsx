@@ -97,6 +97,10 @@ export const AuthProvider = ({ children }: any) => {
           }
         )
         .then(function (response) {
+          console.log(response.status);
+          if (response.status == 201) {
+            navigate("/login");
+          }
           console.log(
             "response " +
               response.status +

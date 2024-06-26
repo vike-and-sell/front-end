@@ -1,12 +1,21 @@
 import { Input } from '@chakra-ui/react';
+import { useParams, useSearchParams } from 'react-router-dom';
 
-export default function RegistrationPhaseOnePage() {
+
+export default function RegistrationPhaseTwoPage() {
+
+    const { jwt } = useParams();
+    const [search, setSearch] = useSearchParams();
+
+    const tr = search.get('jwt')
+    console.log(jwt)
     return (
         <>
             <div className="flex flex-col justify-evenly h-full"> 
                 <div className="flex flex-col">
                     <span className="text-rt-dark-blue px-3 text-center text-xl md:text-2xl lg:text-xl xl:text-2xl font-bold mb-auto">
-                        Join the Green Movement on the UVic campus today!
+                        Join the Green Movement on the UVic campus today! {tr}
+
                     </span> 
                 </div>
 

@@ -35,13 +35,27 @@ export const AuthProvider = ({children}:any) => {
 
                 })
         } catch (error) {
-            console.log()
+            console.log(error)
             setUser(null)
         }
 
     }
 
-    const registerUser = (username:string, password:string) =>{
+    const registerUser = async (email:string, callback:string) =>{
+        try{
+            const res = await axios.post('http://localhost:8080/request_account', 
+                {
+                    email:email,
+                    callback:callback
+                },{
+                    withCredentials:false
+                }
+            ).then( function (response) {
+                console.log("response " + response.status + " " + response.data + " " + response.statusText)
+            })
+        } catch (error) {
+            console.log(error)
+        }
 
     }
 

@@ -51,7 +51,7 @@ function App() {
             <Route path='unverified' element={<RegistrationLayout></RegistrationLayout>}>
               <Route path='signup'
                 index element = {<RegistrationPhaseOnePage></RegistrationPhaseOnePage>}></Route>
-              <Route path='signup-token' element = {<RegistrationPhaseTwoPage></RegistrationPhaseTwoPage>}></Route>
+              <Route path='signup-token/:jwt' element = {<RegistrationPhaseTwoPage></RegistrationPhaseTwoPage>}></Route>
               <Route path='reset' element={<NewPasswordPage></NewPasswordPage>}></Route>
             </Route>
           </Routes>

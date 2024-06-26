@@ -1,6 +1,17 @@
 import { Input } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useAuth } from '../utils/AuthContext';
 
 export default function RegistrationPhaseOnePage() {
+
+    const [email, setEmail] =  useState<string>("")
+
+    const { user, registerUser } = useAuth()
+
+    const handleCreate= async() =>{
+        registerUser(email, "http://localhost:5173/unverified/signup-token/jwt?=")
+    }
+    
     return (
         <>
             <div className="flex flex-col justify-evenly h-full">
@@ -10,7 +21,11 @@ export default function RegistrationPhaseOnePage() {
 
                 <div className="flex flex-col px-6 lg:px-10 xl:px-14">
                     <span className="text-rt-dark-blue text-lg md:text-xl font-bold pt-4">Email Address*</span>
-                    <Input variant='outline' type='text' placeholder=''/>   
+                    <Input 
+                        variant='outline' 
+                        type='text' 
+                        placeholder='' 
+                        onChange={(e) =>{setEmail(e.target.value)}}/>   
                 </div> 
 
                 <div className="flex flex-col justify-center items-center">
@@ -20,7 +35,7 @@ export default function RegistrationPhaseOnePage() {
                     </div>
 
                     <div className="p-5 self-center">
-                        <button className="bg-pri-blue relative px-4 rounded-md text-white text-lg sm:text-xl font-semibold p-3">
+                        <button className="bg-pri-blue relative px-4 rounded-md text-white text-lg sm:text-xl font-semibold p-3" onClick={handleCreate}>
                             Sign Up
                         </button>
                     </div>

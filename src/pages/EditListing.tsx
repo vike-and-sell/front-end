@@ -11,17 +11,45 @@ import {
   InputLeftElement,
   Select,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
+import ErrorPage from "./ErrorPage";
+import { fetchSingleListing } from "../utils/api";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Edit() {
   const navigate = useNavigate();
   const { listingID } = useParams();
-  const listingInfo: Listing = getListingInfoFromID(listingID); // MOCKING FUNCTION
+  const [title, setTitle] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
+  const [status, setStatus] = useState<string>("");
 
-  const [title, setTitle] = useState<string>(listingInfo.title);
-  const [price, setPrice] = useState<number>(listingInfo.price);
-  const [status, setStatus] = useState<string>(listingInfo.status);
+  const {
+    data: listingInfo,
+    isPending: isListingPending,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: [listingID],
+    queryFn: () => fetchSingleListing(listingID),
+  });
+
+  useEffect(() => {
+    if (listingInfo) {
+      setTitle(listingInfo.title);
+      setPrice(listingInfo.price);
+      setStatus(listingInfo.status);
+    }
+  }, [listingInfo]);
+
+  if (isError) {
+    return (
+      <ErrorPage>
+        <div>{error.message}</div>
+        <div>{error.response?.data.message}</div>
+      </ErrorPage>
+    );
+  }
 
   const isInvalidTitle = title === "";
 

@@ -16,7 +16,7 @@ import ErrorPage from "./ErrorPage";
 import axios from "axios";
 
 export default function BrowsePage() {
-  const MAX_LISTINGS_PAGE = 15;
+  const MAX_LISTINGS_PAGE = 30;
   const scrollRef = useRef<HTMLDivElement>(null);
   const { page } = useParams();
   const navigate = useNavigate();
@@ -29,16 +29,6 @@ export default function BrowsePage() {
     maxPrice: "",
     minPrice: "",
     status: "",
-  });
-
-  const {
-    data: listings,
-    isPending: isListingPending,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: [currentPage],
-    queryFn: fetchBrowseListings,
   });
 
   useEffect(() => {
@@ -63,6 +53,16 @@ export default function BrowsePage() {
 
     setCurrentPage(page ? +page : 1);
   }, [page]);
+
+  const {
+    data: listings,
+    isPending: isListingPending,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: [currentPage, filterOptions],
+    queryFn: () => fetchBrowseListings(filterOptions),
+  });
 
   function handleNext() {
     setCurrentPage(currentPage + 1);

@@ -10,7 +10,7 @@ import {
   InputLeftAddon,
 } from "@chakra-ui/react";
 import { FilterOptions } from "../utils/interfaces";
-import DefaultButton from "./Button";
+import DefaultButton, { DefaultFillButton } from "./Button";
 import { useState, useEffect, useRef } from "react";
 
 interface FilterListingProps {
@@ -55,10 +55,10 @@ export default function FilterListing({
 
   return (
     <>
-      <div className="relative z-20">
+      <div className='relative z-20'>
         <div ref={toggleButtonRef}>
           <DefaultButton
-            title="Filter"
+            title='Filter'
             clickHandle={toggleFilter}
           ></DefaultButton>
         </div>
@@ -122,33 +122,44 @@ function FilterMenu({
     setActive(false);
   }
 
+  function clearFilterOptions() {
+    setFilterOptions({
+      sortBy: "",
+      isDescending: true,
+      maxPrice: "",
+      minPrice: "",
+      status: "",
+    });
+    setActive(false);
+  }
+
   return (
-    <div className="absolute bg-white shadow rounded-xl p-4 top-[110%]">
+    <div className='absolute bg-white shadow rounded-xl p-4 top-[110%]'>
       <FormControl>
-        <div className="flex flex-col gap-2">
+        <div className='flex flex-col gap-2'>
           <FormLabel>Sort by</FormLabel>
           <div>
             <RadioGroup
-              name="sort-by"
+              name='sort-by'
               onChange={handleSortBy}
               defaultValue={filterOptions.sortBy}
             >
-              <HStack spacing="24px">
-                <Radio value="date">Date</Radio>
-                <Radio value="distance">Distance</Radio>
-                <Radio value="price">Price</Radio>
+              <HStack spacing='24px'>
+                <Radio value='date'>Date</Radio>
+                <Radio value='distance'>Distance</Radio>
+                <Radio value='price'>Price</Radio>
               </HStack>
             </RadioGroup>
           </div>
           <Divider></Divider>
-          <div className="flex gap-4">
+          <div className='flex gap-4'>
             <div>
               <FormLabel>Min Price:</FormLabel>
               <InputGroup onChange={handleMinPrice}>
                 <InputLeftAddon>$</InputLeftAddon>
                 <Input
-                  type="number"
-                  placeholder="0"
+                  type='number'
+                  placeholder='0'
                   defaultValue={filterOptions.minPrice}
                 />
               </InputGroup>
@@ -158,8 +169,8 @@ function FilterMenu({
               <InputGroup onChange={handleMaxPrice}>
                 <InputLeftAddon>$</InputLeftAddon>
                 <Input
-                  type="number"
-                  placeholder="0"
+                  type='number'
+                  placeholder='0'
                   defaultValue={filterOptions.maxPrice}
                 />
               </InputGroup>
@@ -172,26 +183,32 @@ function FilterMenu({
               defaultValue={filterOptions.isDescending ? "desc" : "asc"}
               onChange={handleOrderBy}
             >
-              <HStack spacing="24px">
-                <Radio value="asc">Ascending</Radio>
-                <Radio value="desc">Descending</Radio>
+              <HStack spacing='24px'>
+                <Radio value='asc'>Ascending</Radio>
+                <Radio value='desc'>Descending</Radio>
               </HStack>
             </RadioGroup>
           </div>
           <Divider></Divider>
           <div>
             <FormLabel>Listing Status</FormLabel>
-            <RadioGroup defaultValue="AVAILABLE" onChange={handleStatus}>
-              <HStack spacing="24px">
-                <Radio value="AVAILABLE">Available</Radio>
-                <Radio value="SOLD">Sold</Radio>
+            <RadioGroup defaultValue='AVAILABLE' onChange={handleStatus}>
+              <HStack spacing='24px'>
+                <Radio value='AVAILABLE'>Available</Radio>
+                <Radio value='SOLD'>Sold</Radio>
               </HStack>
             </RadioGroup>
           </div>
-          <DefaultButton
-            title="Submit"
-            clickHandle={submitFilterOptions}
-          ></DefaultButton>
+          <div className='flex gap-4'>
+            <DefaultFillButton
+              title='Clear'
+              clickHandle={clearFilterOptions}
+            ></DefaultFillButton>
+            <DefaultFillButton
+              title='Submit'
+              clickHandle={submitFilterOptions}
+            ></DefaultFillButton>
+          </div>
         </div>
       </FormControl>
     </div>

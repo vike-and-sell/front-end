@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginCredentials } from "./interfaces";
+import { FilterOptions, LoginCredentials } from "./interfaces";
 
 const login = async (credentials: LoginCredentials) => {
   try {
@@ -35,7 +35,8 @@ const fetchUser = async () => {
   }
 };
 
-const fetchBrowseListings = async () => {
+const fetchBrowseListings = async (filterOptions:FilterOptions) => {
+  console.log(filterOptions)
   try {
     const response = await axios.get("http://127.0.0.1:8080/listings/", {
       withCredentials: true,

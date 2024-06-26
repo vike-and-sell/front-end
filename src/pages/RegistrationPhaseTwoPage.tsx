@@ -3,61 +3,47 @@ import { Input } from '@chakra-ui/react';
 export default function RegistrationPhaseOnePage() {
     return (
         <>
-            <div className="flex text-rt-dark-blue flex-col justify-evenly h-full"> 
+            <div className="flex flex-col justify-evenly h-full"> 
                 <div className="flex flex-col">
-                    <span className="text-center text-base md:text-2xl font-bold mb-auto">
+                    <span className="text-rt-dark-blue px-3 text-center text-xl md:text-2xl lg:text-xl xl:text-2xl font-bold mb-auto">
                         Join the Green Movement on the UVic campus today!
                     </span> 
                 </div>
 
-                <div className="flex flex-col px-6">
-                    <span className="text-sm sm:text-base font-semibold px-2 xl:px-11">
+                <div className="flex flex-col px-6 lg:px-14">
+                    <span className="text-rt-dark-blue text-md sm:text-lg md:text-xl lg:text-lg font-bold px-2 xl:px-0 xl:pt-4">
                         Username *
                     </span>
-                    <Input 
-                        size='sm'
-                        type='text' 
-                        placeholder=''
-                        variant='outline'    
-                    />
+                    <Input variant='outline' type='text' placeholder='' size='small'/>
 
-                    <span className="text-sm sm:text-base font-semibold pt-3 px-2 xl:px-11">
+                    <span className="text-rt-dark-blue text-md sm:text-lg md:text-xl lg:text-lg font-bold pt-4 px-2 xl:px-0 xl:pt-6">
                         Password *
                     </span>
-                    <Input
-                        placeholder=''
-                        size='sm'
-                        type='password'
-                        variant='outline' 
-                    />
+                    <Input variant='outline' type='text' placeholder='' size='small'/>
 
-                    <span className="text-sm sm:text-base font-semibold pt-3 px-2 xl:px-11">
+                    <span className="text-rt-dark-blue text-md sm:text-lg md:text-xl lg:text-lg font-bold pt-4 px-2 xl:px-0 xl:pt-6">
                         Confirm Password *
                     </span>
-                    <Input 
-                        variant='outline' 
-                        type='text' 
-                        placeholder='' 
-                        size='sm'/>
+                    <Input variant='outline' type='text' placeholder='' size='small'/>
 
-                    <span className="text-sm sm:text-base font-semibold pt-3 px-2 xl:px-11">
+                    <span className="text-rt-dark-blue text-md sm:text-lg md:text-xl lg:text-lg font-bold pt-4 px-2 xl:px-0 xl:pt-6">
                         Postal Code *
                     </span>
-                    <Input variant='outline' type='text' placeholder='' size='sm'/>              
+                    <Input variant='outline' type='text' placeholder='' size='small'/>              
                 </div>    
 
                 <div className="flex flex-col justify-center items-center pt-4">
                     <div>
-                        <span className="font-semibold text-md sm:text-lg">
+                        <span className="text-rt-dark-blue font-semibold md:font-bold text-sm md:text-lg lg:text-[16px]">
                             Already have an account?{' '}
                         </span>
-                        <button className="underline text-md sm:text-lg">
+                        <button className="text-rt-dark-blue underline font-semibold md:font-bold text-sm md:text-lg lg:text-[16px]">
                             Sign In
                         </button> 
                     </div>
 
-                    <div className="py-2 px-8 pb-5 sm:p-5 lg:p-2 xl:p-8 self-center">
-                        <button className="bg-pri-blue relative py-1 px-4 rounded-md text-white text-lg font-semibold">
+                    <div className="py-2 pb-5 sm:p-5 lg:p-2 xl:p-4 self-center">
+                        <button className="bg-pri-blue relative px-4 rounded-md text-white text-lg font-semibold p-3">
                             Sign Up
                         </button>
                     </div>

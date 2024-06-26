@@ -1,20 +1,18 @@
-import PageHeading from "../components/PageHeading";
-import ListingsGrid from "../components/ListingsGrid";
-import { ListingCard } from "../components/ListingCard";
-import { useEffect, useState, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useRef, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import PaginationBar from "../components/Pagination";
-import { Listing } from "../utils/interfaces";
 import { arrayPagination } from "../utils/PaginationUtil";
-import FilterListing from "../components/FilterListings";
-import { FilterOptions } from "../utils/interfaces";
+import { fetchMyListings } from "../utils/api";
+import { Listing } from "../utils/interfaces";
+import ErrorPage from "./ErrorPage";
+import PageHeading from "../components/PageHeading";
+import { ListingCard } from "../components/ListingCard";
+import ListingsGrid from "../components/ListingsGrid";
+import PaginationBar from "../components/Pagination";
 import { ListingsGridSkeleton } from "../components/Skeletons/ListingGridSkeleton";
 import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
-import { useQuery } from "@tanstack/react-query";
-import { fetchBrowseListings } from "../utils/api";
-import ErrorPage from "./ErrorPage";
 
-export default function BrowsePage() {
+export default function MyListings() {
   const MAX_LISTINGS_PAGE = 30;
   const scrollRef = useRef<HTMLDivElement>(null);
   const { page } = useParams();
@@ -22,13 +20,6 @@ export default function BrowsePage() {
   let totalPages = 0;
   let activePageListing: Listing[] = [];
   const [currentPage, setCurrentPage] = useState(page ? +page : 1);
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    sortBy: "",
-    isDescending: true,
-    maxPrice: "",
-    minPrice: "",
-    status: "",
-  });
 
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
@@ -40,8 +31,8 @@ export default function BrowsePage() {
     isError,
     error,
   } = useQuery({
-    queryKey: [currentPage, filterOptions],
-    queryFn: () => fetchBrowseListings(filterOptions),
+    queryKey: [currentPage],
+    queryFn: fetchMyListings,
   });
 
   function handleNext() {
@@ -74,15 +65,12 @@ export default function BrowsePage() {
   if (isError) {
     return <ErrorPage>{error.response.data.message}</ErrorPage>;
   }
+
   return (
     <>
       <main className='px-4'>
-        <PageHeading title='Browse Around'></PageHeading>
-        <div className='flex justify-between'>
-          <FilterListing
-            filterOptions={filterOptions}
-            setFilterOptions={setFilterOptions}
-          ></FilterListing>
+        <PageHeading title='My Listings'></PageHeading>
+        <div className='flex justify-end'>
           {isListingPending ? (
             <PaginationBarSkeleton></PaginationBarSkeleton>
           ) : (

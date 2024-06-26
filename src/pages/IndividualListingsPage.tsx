@@ -23,11 +23,11 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
 import { useQuery } from "@tanstack/react-query";
-import { fetchSingleListing } from "../utils/api";
+import { fetchSingleListing, fetchUser } from "../utils/api";
 import ErrorPage from "./ErrorPage";
 
 export default function IndividualListing() {
@@ -35,14 +35,8 @@ export default function IndividualListing() {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
+  let isUser = false;
   const reviews: [] = [];
-  let isUser;
-  const mockCurrentUser: User = {
-    userID: "1",
-    username: "jobyprime",
-    email: "jobs@uvic.ca",
-    current: false,
-  };
 
   const {
     data: listingInfo,
@@ -52,6 +46,12 @@ export default function IndividualListing() {
   } = useQuery({
     queryKey: [listingID],
     queryFn: () => fetchSingleListing(listingID),
+  });
+
+  const { data: userData } = useQuery({
+    queryKey: ["userinfo"],
+    queryFn: fetchUser,
+    enabled: !listingInfo,
   });
 
   if (isError) {
@@ -67,8 +67,11 @@ export default function IndividualListing() {
 
   const handleDoNotRecommend = () => {};
 
-  if (listingInfo) {
-    isUser = listingInfo.sellerId === mockCurrentUser.userID;
+  if (userData && listingInfo) {
+    console.log(userData);
+    if (userData.userId == listingInfo.sellerId) {
+      isUser = true;
+    }
   }
 
   return isListingPending ? (
@@ -159,7 +162,7 @@ function timeSincePost(postedTime: string) {
   const postDate = new Date(postedTime);
   const now = new Date();
   const diffMs = now.getTime() - postDate.getTime();
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
   if (diffDays === 0) {
     return "Posted today by";
   } else {

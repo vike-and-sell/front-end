@@ -16,6 +16,7 @@ import { InverseBlueButton, PriBlueButton } from "../components/Button";
 import ErrorPage from "./ErrorPage";
 import { fetchSingleListing } from "../utils/api";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function Edit() {
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ export default function Edit() {
 
   const {
     data: listingInfo,
-    isPending: isListingPending,
     isError,
     error,
   } = useQuery({
@@ -55,7 +55,17 @@ export default function Edit() {
 
   const isInvalidPrice = Number.isNaN(price);
 
-  const handleEdit = () => {};
+  // Handle edit actually makes the changes
+  const handleEdit = async () => {
+    axios
+      .patch(`http://localhost:8080/listings/${listingID}`, {
+        title,
+        price,
+        status,
+      })
+      .then((response) => console.log(response.data))
+      .catch((error) => console.error(error));
+  };
 
   return (
     <>

@@ -13,7 +13,6 @@ import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBrowseListings } from "../utils/api";
 import ErrorPage from "./ErrorPage";
-import axios from "axios";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;

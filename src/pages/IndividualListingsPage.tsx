@@ -38,13 +38,6 @@ export default function IndividualListing() {
   let isUser = false;
   const reviews: [] = [];
 
-  const mockCurrentUser: User = {
-    userID: "1",
-    username: "jobyprime",
-    email: "jobs@uvic.ca",
-    current: false,
-  };
-
   const {
     data: listingInfo,
     isPending: isListingPending,

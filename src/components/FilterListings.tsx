@@ -55,7 +55,7 @@ export default function FilterListing({
 
   return (
     <>
-      <div className="relative z-10">
+      <div className="relative z-20">
         <div ref={toggleButtonRef}>
           <DefaultButton
             title="Filter"

@@ -1,7 +1,6 @@
 import PageHeading from "../components/PageHeading";
 import ListingsGrid from "../components/ListingsGrid";
 import { ListingCard } from "../components/ListingCard";
-import { getListingIDs } from "../utils/FakeListingsMock";
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";

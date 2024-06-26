@@ -1,0 +1,69 @@
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700  1) import {FormControl,  FormErrorMessage, FormLabel, Input, InputGroup, InputRightAddon } from '@chakra-ui/react';
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700  2) import LoginHeading from "../components/LoginHeading";
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700  3) import { useState } from 'react';
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700  4) 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700  5) 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700  6) 
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700  7) 
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700  8) export default function LoginPage() {
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700  9)     const [email, setEmail] =  useState<string>("")
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 10)     const [password, setPassword] = useState<string>("")
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 11) 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 12)     const onSignIn = () =>{
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 13) 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 14)     }
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 15) 
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700 16)     return (
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700 17)         <>
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 18)             <main className="flex flex-col sm:flex-row h-screen">
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 19)                 {/* white logo box  */}
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 20)                 <LoginHeading></LoginHeading>
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700 21)                 
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700 22)                 {/* blue inputs box */}
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 23)                 <div className="bg-pri-blue flex flex-col justify-center items-center sm:gap-3 sm:flex-1 sm:order-1 sm:h-full h-2/3 overflow-clip">
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 24)                     <div className="flex flex-col px-14 gap-2">
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 25)                         
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 26)                         <span className="text-white text-4xl font-bold flex self-start py-2">Sign In</span>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 27)                         <span className="text-white text-xl font-bold">Sign In and Lead Green with other UVic Students</span>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 28) 
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 29)                         <span className="text-white text-xl font-bold pt-4">Email Address</span>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 30)                         <InputGroup>
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 31)                             <Input 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 32)                                 bg='#ffffff'
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 33)                                 type='email' 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 34)                                 placeholder=''
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 35)                             />
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 36)                             <InputRightAddon className='text-pri-blue font-semibold'>@uvic.ca</InputRightAddon>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 37)                         </InputGroup>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 38)                 
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 39)                         <span className="text-white text-xl font-bold pt-4">Password</span>
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 40)                         <Input
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 41)                             bg='#ffffff' 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 42)                             type='password' 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 43)                             placeholder='' 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 44)                         />
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 45)                     </div>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 46) 
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 47)                     <div className="p-5">
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 48)                         <button 
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 49)                             className="bg-white relative px-4 rounded-md text-pri-blue font-semibold p-3"
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 50)                             onClick={onSignIn}
+00000000 (Not Committed Yet 2024-06-25 18:11:18 -0700 51)                             >
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 52)                             Sign In
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 53)                         </button>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 54)                     </div>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 55)                     
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 56)                     <div className="pb-1">
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 57)                        <span className="text-white font-bold">Don't have an account? </span>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 58)                         <button className="text-white underline">Create One</button> 
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 59)                     </div>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 60)                     <div className="">
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 61)                         <span className="text-white font-bold">Forget password? </span>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 62)                         <button className="text-white underline">Recover it</button>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 63)                     </div>
+8f4540cd (Kali Erickson     2024-06-14 14:37:03 -0700 64)                     
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700 65)                 </div>
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700 66)             </main>
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700 67)         </>
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700 68)     );
+ae10be44 (Andrew Hu         2024-06-12 15:42:16 -0700 69) }

@@ -1,10 +1,32 @@
-import { Input, InputGroup, InputRightAddon } from '@chakra-ui/react';
+import {FormControl,  FormErrorMessage, FormLabel, Input, InputGroup, InputRightAddon } from '@chakra-ui/react';
 import LoginHeading from "../components/LoginHeading";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAuth } from '../utils/AuthContext';
 
 export default function LoginPage() {
+    const [username, setUsername] =  useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const [statusBool, setStatusBool] = useState<boolean | null>()
+
+    const navigate = useNavigate()
+
+    const { user, loginUser } = useAuth()
+
+    useEffect(()=> {
+        if(user){
+            navigate('/')
+        }
+    }, [])
+
+    const onSignIn = async() =>{
+        loginUser(username, password)
+    }
+
     return (
         <>
-            <main className="flex flex-col sm:flex-row h-screen overflow-scroll">
+            <main className="flex flex-col sm:flex-row h-screen">
                 {/* white logo box  */}
                 <LoginHeading></LoginHeading>
                 
@@ -14,19 +36,32 @@ export default function LoginPage() {
                         
                         <span className="text-white text-4xl font-bold flex self-start py-2">Sign In</span>
                         <span className="text-white text-xl font-bold">Sign In and Lead Green with other UVic Students</span>
-
-                        <span className="text-white text-xl font-bold pt-4">Email Address</span>
+                        {statusBool? ("The credentials you entered do not match our records.") : ("") }
+                        <span className="text-white text-xl font-bold pt-4">Username</span>
                         <InputGroup>
-                            <Input variant='filled' type='email' placeholder=''/>
+                            <Input 
+                                bg='#ffffff'
+                                onChange={(e) =>{setUsername(e.target.value)}}
+                                placeholder=''
+                                type='email' 
+                            />
                             <InputRightAddon className='text-pri-blue font-semibold'>@uvic.ca</InputRightAddon>
                         </InputGroup>
                 
                         <span className="text-white text-xl font-bold pt-4">Password</span>
-                        <Input variant='filled' type='text' placeholder=''/>
+                        <Input
+                            bg='#ffffff' 
+                            onChange={(e) =>{setPassword(e.target.value)}}
+                            placeholder=''
+                            type='password' 
+                        />
                     </div>
 
                     <div className="p-5">
-                        <button className="bg-white relative px-4 rounded-md text-pri-blue font-semibold p-3">
+                        <button 
+                            className="bg-white relative px-4 rounded-md text-pri-blue font-semibold p-3"
+                            onClick={onSignIn}
+                            >
                             Sign In
                         </button>
                     </div>

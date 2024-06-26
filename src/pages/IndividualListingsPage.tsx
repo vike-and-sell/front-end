@@ -82,7 +82,6 @@ export default function IndividualListing() {
             <MenuButton as={Button} width='47px'>
               <FaEllipsisH></FaEllipsisH>
             </MenuButton>
-
             <MenuList>
               {isUser ? (
                 <>

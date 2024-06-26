@@ -16,7 +16,7 @@ import ErrorPage from "./ErrorPage";
 import axios from "axios";
 
 export default function BrowsePage() {
-  const MAX_LISTINGS_PAGE = 30;
+  const MAX_LISTINGS_PAGE = 15;
   const scrollRef = useRef<HTMLDivElement>(null);
   const { page } = useParams();
   const navigate = useNavigate();

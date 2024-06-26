@@ -57,41 +57,25 @@ function App() {
                   <Route path='edit/:listingID' element={<Edit></Edit>}></Route>
                   <Route path='chat' element={<Chat></Chat>} />
                 </Route>
-              </Route>
+            </Route>
+            
+            <Route path='login' element = {<LoginPage></LoginPage>}></Route>
+            <Route path='unverified/recover' element = {<RecoverPasswordPage></RecoverPasswordPage>}></Route> 
+            
+            <Route path='unverified' element={<RegistrationLayout></RegistrationLayout>}>
+              <Route path='signup'
+                index element = {<RegistrationPhaseOnePage></RegistrationPhaseOnePage>}></Route>
+              <Route path='signup-token/:jwt' element = {<RegistrationPhaseTwoPage></RegistrationPhaseTwoPage>}></Route>
+              <Route path='reset/:jwt' element={<NewPasswordPage></NewPasswordPage>}></Route>
+            </Route>
+          </Routes>
+        </ChakraProvider>
+      </AuthProvider>
+    </Router>
+     </QueryClientProvider>
+   
+    
 
-              <Route path='login' element={<LoginPage></LoginPage>}></Route>
-              <Route
-                path='unverified/recover'
-                element={<RecoverPasswordPage></RecoverPasswordPage>}
-              ></Route>
-
-              <Route
-                path='unverified'
-                element={<RegistrationLayout></RegistrationLayout>}
-              >
-                <Route
-                  path='signup'
-                  index
-                  element={
-                    <RegistrationPhaseOnePage></RegistrationPhaseOnePage>
-                  }
-                ></Route>
-                <Route
-                  path='signup-token'
-                  element={
-                    <RegistrationPhaseTwoPage></RegistrationPhaseTwoPage>
-                  }
-                ></Route>
-                <Route
-                  path='reset'
-                  element={<NewPasswordPage></NewPasswordPage>}
-                ></Route>
-              </Route>
-            </Routes>
-          </ChakraProvider>
-        </AuthProvider>
-      </Router>
-    </QueryClientProvider>
   );
 }
 

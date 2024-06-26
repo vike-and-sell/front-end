@@ -43,16 +43,127 @@ export const AuthProvider = ({ children }: any) => {
           navigate("/");
         });
     } catch (error) {
-      console.log();
+
+      console.log(error);
+
       setUser(null);
     }
   };
 
-  const registerUser = (username: string, password: string) => {};
+
+  const requestAccount = async (email: string, callback: string) => {
+    try {
+      const res = await axios
+        .post(
+          "http://localhost:8080/request_account",
+          {
+            email: email,
+            callback: callback,
+          },
+          {
+            withCredentials: false,
+          }
+        )
+        .then(function (response) {
+          console.log(
+            "response " +
+              response.status +
+              " " +
+              response.data +
+              " " +
+              response.statusText
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const verifyAccount = async (
+    jwt: string,
+    username: string,
+    password: string,
+    location: string
+  ) => {
+    try {
+      const res = await axios
+        .post(
+          "http://localhost:8080/verify_account",
+          {
+            jwt: jwt,
+            username: username,
+            password: password,
+            location: location,
+          },
+          {
+            withCredentials: false,
+          }
+        )
+        .then(function (response) {
+          console.log(response.status);
+          if (response.status == 201) {
+            navigate("/login");
+          }
+          console.log(
+            "response " +
+              response.status +
+              " " +
+              response.data +
+              " " +
+              response.statusText
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const requestReset = async (email: string, callback: string) => {
+    // try{
+    //     const res = await axios.post('http://localhost:8080/request_reset',
+    //         {
+    //             email:email,
+    //             callback:callback
+    //         },{
+    //             withCredentials:false
+    //         }
+    //     ).then( function (response) {
+    //         console.log("response " + response.status + " " + response.data + " " + response.statusText)
+    //     })
+    // } catch (error) {
+    //     console.log(error)
+    // }
+  };
+
+  const verifyReset = async (jwt: string, password: string) => {
+    // try{
+    //     const res = await axios.post('http://localhost:8080/verify_reset',
+    //         {
+    //             jwt:jwt,
+    //             password:password,
+    //         },{
+    //             withCredentials:false
+    //         }
+    //     ).then( function (response) {
+    //         console.log("response " + response.status + " " + response.data + " " + response.statusText)
+    //     })
+    // } catch (error) {
+    //     console.log(error)
+    // }
+  };
 
   const checkUserStatus = async () => {};
 
-  const authData = { user, loginUser, registerUser, checkUserStatus };
+  const authData = {
+    user,
+    loginUser,
+    requestAccount,
+    verifyAccount,
+    requestReset,
+    verifyReset,
+    checkUserStatus,
+  };
+
 
   return (
     <AuthContext.Provider value={authData}>

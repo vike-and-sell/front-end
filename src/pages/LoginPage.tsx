@@ -45,7 +45,7 @@ export default function LoginPage() {
                                 placeholder=''
                                 type='email' 
                             />
-                            <InputRightAddon className='text-pri-blue font-semibold'>@uvic.ca</InputRightAddon>
+                        
                         </InputGroup>
                 
                         <span className="text-white text-xl font-bold pt-4">Password</span>
@@ -68,11 +68,11 @@ export default function LoginPage() {
                     
                     <div className="pb-1">
                        <span className="text-white font-bold">Don't have an account? </span>
-                        <button className="text-white underline">Create One</button> 
+                        <button className="text-white underline" onClick={()=>{navigate("/unverified/signup")}}>Create One</button> 
                     </div>
                     <div className="">
                         <span className="text-white font-bold">Forget password? </span>
-                        <button className="text-white underline">Recover it</button>
+                        <button className="text-white underline" onClick={()=>{navigate("/unverified/recover")}}>Recover it</button>
                     </div>
                     
                 </div>

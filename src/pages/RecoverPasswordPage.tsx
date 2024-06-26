@@ -1,7 +1,17 @@
 import { Input, InputGroup, InputRightAddon } from '@chakra-ui/react';
 import LoginHeading from "../components/LoginHeading";
+import { useState } from 'react';
+import { useAuth } from '../utils/AuthContext';
 
 export default function RecoverPasswordPage() {
+
+    const [email, setEmail] =  useState<string>("")
+
+    const { requestReset } = useAuth()
+
+    const handleReset = ()=> {
+        requestReset(email, "http://localhost:5173/unverified/reset/jwt?=")
+    }
     return (
         <>
             <main className="flex flex-col sm:flex-row h-screen">
@@ -19,15 +29,19 @@ export default function RecoverPasswordPage() {
                         <InputGroup>
                             <Input 
                                 bg='#ffffff'
-                                type='email' 
                                 placeholder=''
+                                onChange={(e) =>{setEmail(e.target.value)}}
+                                type='email' 
+                                
                             />
                             <InputRightAddon className='text-pri-blue font-semibold'>@uvic.ca</InputRightAddon>
                         </InputGroup>
                     </div>
 
                     <div className="p-5 flex gap-16">
-                        <button className="bg-white relative px-4 rounded-md text-pri-blue font-semibold p-3">
+                        <button 
+                            className="bg-white relative px-4 rounded-md text-pri-blue font-semibold p-3"
+                            onClick={handleReset}>
                             Send Email
                         </button>
                         <button className="bg-white relative px-4 rounded-md text-pri-blue font-semibold p-3">

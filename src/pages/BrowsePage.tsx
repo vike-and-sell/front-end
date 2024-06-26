@@ -11,19 +11,17 @@ import FilterListing from "../components/FilterListings";
 import { FilterOptions } from "../utils/interfaces";
 import { ListingsGridSkeleton } from "../components/Skeletons/ListingGridSkeleton";
 import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
+import { useQuery } from "@tanstack/react-query";
+import { fetchBrowseListings } from "../utils/api";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;
   const scrollRef = useRef<HTMLDivElement>(null);
   const { page } = useParams();
   const navigate = useNavigate();
-  const defaultListings: Listing[] = getListingIDs(); // MOCKING
+  let totalPages = 0;
+  let activePageListing: Listing[] = [];
   const [currentPage, setCurrentPage] = useState(page ? +page : 1);
-  const [listings, setListings] = useState<Listing[]>(defaultListings); // This will get replaced
-  const totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
-
-  // Ideally, filterOptions is part of a queryKey given to useQuery that will update the page
-  // when changed
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     sortBy: "",
     isDescending: true,
@@ -32,21 +30,14 @@ export default function BrowsePage() {
     status: "",
   });
 
-  const isLoading = false;
+  const { data: listings, isPending: isListingPending } = useQuery({
+    queryKey: [currentPage],
+    queryFn: fetchBrowseListings,
+  });
 
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
   }, [page]);
-
-  // For future reference, we can use React Query with no super unique query that returns the data
-  // array, we don't really need to use state or effect for this stuff
-  // TODO : Need to add an effect or useQuery that changes when the page params change?
-
-  const activePageListing = arrayPagination(
-    listings,
-    currentPage,
-    MAX_LISTINGS_PAGE
-  );
 
   function handleNext() {
     setCurrentPage(currentPage + 1);
@@ -66,17 +57,25 @@ export default function BrowsePage() {
     }
   }
 
+  if (listings) {
+    totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
+    activePageListing = arrayPagination(
+      listings,
+      currentPage,
+      MAX_LISTINGS_PAGE
+    );
+  }
+
   return (
     <>
-      <main className='px-4'>
-        <PageHeading title='Browse Around'></PageHeading>
-        <div className='flex justify-between'>
+      <main className="px-4">
+        <PageHeading title="Browse Around"></PageHeading>
+        <div className="flex justify-between">
           <FilterListing
             filterOptions={filterOptions}
             setFilterOptions={setFilterOptions}
           ></FilterListing>
-
-          {isLoading ? (
+          {isListingPending ? (
             <PaginationBarSkeleton></PaginationBarSkeleton>
           ) : (
             <PaginationBar
@@ -87,7 +86,7 @@ export default function BrowsePage() {
             ></PaginationBar>
           )}
         </div>
-        {isLoading ? (
+        {isListingPending ? (
           <ListingsGridSkeleton></ListingsGridSkeleton>
         ) : (
           <ListingsGrid ref={scrollRef}>

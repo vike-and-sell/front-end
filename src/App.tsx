@@ -16,11 +16,13 @@ import BrowsePage from "./pages/BrowsePage";
 import Create from "./pages/CreateListing";
 import Edit from "./pages/EditListing";
 import ErrorPage from "./pages/ErrorPage";
-import LoginPage from './pages/LoginPage';
+import LoginPage from "./pages/LoginPage";
 import RecoverPasswordPage from "./pages/RecoverPasswordPage";
 import RegistrationPhaseOnePage from "./pages/RegistrationPhaseOnePage";
 import RegistrationPhaseTwoPage from "./pages/RegistrationPhaseTwoPage";
 import NewPasswordPage from "./pages/NewPasswordPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,30 +36,47 @@ const router = createBrowserRouter(
           path="listing/:listingID"
           element={<IndividualListingPage></IndividualListingPage>}
         ></Route>
-        <Route path='chat' element={<Chat></Chat>} />
-        <Route path='create' element={<Create></Create>}></Route>
-        <Route path='edit/:listingID' element={<Edit></Edit>}></Route>
+        <Route path="chat" element={<Chat></Chat>} />
+        <Route path="create" element={<Create></Create>}></Route>
+        <Route path="edit/:listingID" element={<Edit></Edit>}></Route>
         <Route path="chat" element={<Chat></Chat>} />
       </Route>
-      
-      <Route path='login' element = {<LoginPage></LoginPage>}></Route>
-      <Route path='unverified/recover' element = {<RecoverPasswordPage></RecoverPasswordPage>}></Route> 
-      
-      <Route path='unverified' element={<RegistrationLayout></RegistrationLayout>}>
-        <Route path='signup'
-          index element = {<RegistrationPhaseOnePage></RegistrationPhaseOnePage>}></Route>
-        <Route path='signup-token' element = {<RegistrationPhaseTwoPage></RegistrationPhaseTwoPage>}></Route>
-        <Route path='reset' element={<NewPasswordPage></NewPasswordPage>}></Route>
+
+      <Route path="login" element={<LoginPage></LoginPage>}></Route>
+      <Route
+        path="unverified/recover"
+        element={<RecoverPasswordPage></RecoverPasswordPage>}
+      ></Route>
+
+      <Route
+        path="unverified"
+        element={<RegistrationLayout></RegistrationLayout>}
+      >
+        <Route
+          path="signup"
+          index
+          element={<RegistrationPhaseOnePage></RegistrationPhaseOnePage>}
+        ></Route>
+        <Route
+          path="signup-token"
+          element={<RegistrationPhaseTwoPage></RegistrationPhaseTwoPage>}
+        ></Route>
+        <Route
+          path="reset"
+          element={<NewPasswordPage></NewPasswordPage>}
+        ></Route>
       </Route>
-    </>  
+    </>
   )
 );
 
 function App() {
   return (
-    <ChakraProvider>
-      <RouterProvider router={router}></RouterProvider>
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
+        <RouterProvider router={router}></RouterProvider>
+      </ChakraProvider>
+    </QueryClientProvider>
   );
 }
 

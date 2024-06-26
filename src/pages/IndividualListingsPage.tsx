@@ -23,11 +23,11 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
 import { useQuery } from "@tanstack/react-query";
-import { fetchSingleListing } from "../utils/api";
+import { fetchSingleListing, fetchUser } from "../utils/api";
 import ErrorPage from "./ErrorPage";
 
 export default function IndividualListing() {
@@ -35,8 +35,9 @@ export default function IndividualListing() {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
+  let isUser = false;
   const reviews: [] = [];
-  let isUser;
+
   const mockCurrentUser: User = {
     userID: "1",
     username: "jobyprime",
@@ -54,6 +55,12 @@ export default function IndividualListing() {
     queryFn: () => fetchSingleListing(listingID),
   });
 
+  const { data: userData } = useQuery({
+    queryKey: ["userinfo"],
+    queryFn: fetchUser,
+    enabled: !listingInfo,
+  });
+
   if (isError) {
     return (
       <ErrorPage>
@@ -67,8 +74,10 @@ export default function IndividualListing() {
 
   const handleDoNotRecommend = () => {};
 
-  if (listingInfo) {
-    isUser = listingInfo.sellerId === mockCurrentUser.userID;
+  if (userData && listingInfo) {
+    if (userData.userId == listingInfo.sellerId) {
+      isUser = true;
+    }
   }
 
   return isListingPending ? (

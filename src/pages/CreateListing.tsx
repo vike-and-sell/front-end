@@ -1,9 +1,12 @@
 import PageHeading from "../components/PageHeading";
 import { useNavigate, useParams } from "react-router-dom";
-import { Listing } from "../utils/interfaces";
+import { CreateListing, User } from "../utils/interfaces";
 import { FormControl,  FormErrorMessage, FormHelperText, FormLabel, Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
+import { createListing, fetchUser } from "../utils/api";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function Edit () {
 
@@ -11,16 +14,71 @@ export default function Edit () {
 
     const [title, setTitle] = useState<string>("")
     const [price, setPrice] = useState<number>(0)
-    const [status, setStatus] = useState<string>("AVAILABLE")
+    const [location, SetLocation] = useState<string>("")
     const [isTitleTouched, setIsTitleTouched] = useState<boolean>(false);
+    const [isCreated, setIsCreated] = useState<boolean>(false);
+    const [isError, setIsError] = useState<boolean>(false);
+    const [listingPayload, setListingPayload] = useState<CreateListing>({
+        title: title,
+        price: price,
+        location: location,
+        status: "AVAILABLE"
+      });
     
     const isInvalidTitle  = isTitleTouched && title === ''
     
     const isInvalidPrice = Number.isNaN(price)
 
+    const fetchUser = async ()=>{
+        try{
+            const res = await axios.get('http://localhost:8080/users/me', 
+                {
+                    withCredentials:true
+                }
+            ).then( function (response) {
+                SetLocation(response.data.location)
+                console.log("response " + response.status + " " + response.data + " " + response.statusText)
+            })
+        } catch (error) {
+            console.log(error)
+            setIsError(true);
+        }
+
+    }
+
+    useEffect( ()=>{
+        fetchUser();
+    }, []);
+
+    const createListing = async () =>{
+        try{
+            const res = await axios.post('http://localhost:8080/request_account', 
+                {
+                    listingPayload
+                },{
+                    withCredentials:false
+                }
+            ).then( function (response) {
+                setIsCreated(true);
+                console.log("response " + response.status + " " + response.data + " " + response.statusText)
+            })
+        } catch (error) {
+            setIsError(true)
+            console.log(error)
+        }
+
+    }
 
     const handleCreate= () =>{
-
+        setIsError(false);
+        setIsCreated(false);
+        setListingPayload({
+            title: title,
+            price: price,
+            location: location,
+            status: "AVAILABLE"
+        });
+        createListing();
     }
 
     return (
@@ -79,7 +137,15 @@ export default function Edit () {
                         </div>
                     </FormControl>
 
-                    
+                    {isCreated? (
+                        <div className="text-pri-blue text-center text-xs sm:text-sm">
+                            Listing created!
+                        </div>) : ("") }    
+
+                    {isError? (
+                        <div className="text-red text-center text-xs sm:text-sm">
+                            Could not create listing.
+                        </div>) : ("") }                  
                     
                 </div>
             </main>

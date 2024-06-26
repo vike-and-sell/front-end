@@ -27,6 +27,15 @@ export interface Listing {
   lastUpdatedAt: string; // ISO 8601 date string
 }
 
+export interface CreateListing
+{
+	title: string,
+  price: number,
+  location: string,
+  status: "AVAILABLE"
+}
+
+
 export interface FilterOptions {
   maxPrice?: string;
   minPrice?: string;

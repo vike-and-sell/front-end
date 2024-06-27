@@ -8,7 +8,7 @@ In order to run the frontend locally on your machine, you will have to prepare t
 
 <ol>
   <li>Clone front-end, gateway, and data-layer repositories</li>
-  <li>Follow the respective instructions in the gateway and data-layer repositories to get their Docker Containers running</li>
+  <li>Follow the respective instructions in the  <a href="https://github.com/vike-and-sell/gateway" target="_blank" rel="noopener">gateway</a> and <a href="https://github.com/vike-and-sell/data-layer" target="_blank" rel="noopener">data-layer</a>repositories to get their Docker Containers running</li>
   <li>In the cloned front-end, run <strong>npm install</strong> to install the node modules</li>
   <li>Run <strong>npm run dev</strong> to start up the front-end</li>
 </ol>

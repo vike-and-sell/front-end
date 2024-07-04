@@ -29,10 +29,11 @@ export interface Listing {
 
 export interface CreateListing
 {
+  sellerId: Number,
 	title: string,
-  price: number,
-  location: string,
-  status: "AVAILABLE"
+  price: Number,
+  address: string,
+  status: string
 }
 
 

@@ -37,13 +37,13 @@ const fetchUser = async () => {
 
 const fetchBrowseListings = async (filterOptions:FilterOptions) => {
   let paramsString = "";
-  console.log(filterOptions);
+  //console.log(filterOptions);
   Object.keys(filterOptions).forEach((key)=> {
     if (filterOptions[key] != '') {
       paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(filterOptions[key])}&`
     }
   })
-console.log(paramsString)
+  //console.log(paramsString)
 
   try {
     const response = await axios.get(`http://localhost:8080/listings/?${paramsString}`, 

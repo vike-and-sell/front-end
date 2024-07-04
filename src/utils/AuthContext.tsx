@@ -1,59 +1,58 @@
 import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AuthContextType, SessionType, User } from "./interfaces";
 
-const AuthContext = createContext();
+const AuthContext = createContext<AuthContextType | null>(null);
+
+
 
 export const AuthProvider = ({ children }: any) => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null >(null);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    //setLoading(false)
+    setLoading(false)
     checkUserStatus();
   }, []);
 
   const loginUser = async (username: string, password: string) => {
     try {
-      const res = await axios
-        .post(
-          "http://localhost:8080/login",
-          {
-            username: username,
-            password: password,
-          },
-          {
-            withCredentials: true,
-          }
-        )
-        .then(function (response) {
-          console.log(
-            "response " +
-              response.status +
-              " " +
-              response.data +
-              " " +
-              response.statusText
-          );
-
-          setUser(true);
-          navigate("/");
-        });
+      await axios
+      .post(
+        "http://localhost:8080/login",
+        {
+          username: username,
+          password: password,
+        },
+        {
+          withCredentials: true,
+        }
+      ).then((response) => {
+        if (response.status !== 200 ){
+          setUser(null);
+          throw new Error(`Unable to login. Please try again later ${response.status}`)
+        }
+        checkUserStatus()
+        
+        navigate("/");
+        
+      })
+        
+        
     } catch (error) {
-
-      console.log(error);
-
       setUser(null);
+      throw new Error("Unable to login. Please try again later")
     }
   };
 
 
   const requestAccount = async (email: string, callback: string) => {
     try {
-      const res = await axios
+      await axios
         .post(
           "http://localhost:8080/request_account",
           {
@@ -86,7 +85,7 @@ export const AuthProvider = ({ children }: any) => {
     location: string
   ) => {
     try {
-      const res = await axios
+      await axios
         .post(
           "http://localhost:8080/verify_account",
           {
@@ -119,40 +118,80 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   const requestReset = async (email: string, callback: string) => {
-    // try{
-    //     const res = await axios.post('http://localhost:8080/request_reset',
-    //         {
-    //             email:email,
-    //             callback:callback
-    //         },{
-    //             withCredentials:false
-    //         }
-    //     ).then( function (response) {
-    //         console.log("response " + response.status + " " + response.data + " " + response.statusText)
-    //     })
-    // } catch (error) {
-    //     console.log(error)
-    // }
+    try{
+      await axios.post('http://localhost:8080/request_reset',
+        {
+            email:email,
+            callback:callback
+        },{
+            withCredentials:false
+        }
+        ).then( function (response) {
+            console.log("response " + response.status + " " + response.data + " " + response.statusText)
+        })
+    } catch (error) {
+        console.log(error)
+    }
   };
 
   const verifyReset = async (jwt: string, password: string) => {
-    // try{
-    //     const res = await axios.post('http://localhost:8080/verify_reset',
-    //         {
-    //             jwt:jwt,
-    //             password:password,
-    //         },{
-    //             withCredentials:false
-    //         }
-    //     ).then( function (response) {
-    //         console.log("response " + response.status + " " + response.data + " " + response.statusText)
-    //     })
-    // } catch (error) {
-    //     console.log(error)
-    // }
+    try{
+      await axios.post('http://localhost:8080/verify_reset',
+        {
+            jwt:jwt,
+            password:password,
+        },{
+            withCredentials:false
+        }
+        ).then( function (response) {
+            console.log("response " + response.status + " " + response.data + " " + response.statusText)
+        })
+    } catch (error) {
+        console.log(error)
+    }
   };
 
-  const checkUserStatus = async () => {};
+  const checkUserStatus = async () => {
+    try{ 
+
+      if(localStorage.getItem('session')){
+        const sessionData:SessionType = JSON.parse(localStorage.getItem('session'));
+        if (sessionData && sessionData.expiration < new Date().getTime()) {
+          localStorage.removeItem('session');
+        }else{
+          setLoading(true)
+          const userData:User = sessionData.user
+          setUser(userData);
+          setLoading(false); // Set loading state to false after setting user
+          return;
+        }
+      }
+
+      const response  = await axios.get<User>('http://localhost:8080/users/me', {
+        withCredentials:true
+      })
+
+      console.log(response.data)
+
+      if (response.data) {
+        setUser(response.data);
+        
+        const storageData = {
+          user: response.data,
+          expiration: new Date().getTime() + 3 * 60 * 60 * 1000
+        }
+        localStorage.setItem('session', JSON.stringify(storageData)); // Store user data and expiration in local storage
+        
+      } else {
+        setUser(null);
+      }
+
+    } catch (error) {
+      setUser(null);
+      throw new Error("Unable to fetch user")
+      
+    }
+  };
 
   const authData = {
     user,

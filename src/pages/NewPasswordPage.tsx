@@ -74,7 +74,7 @@ export default function NewPasswordPage() {
                               </div>) : ("") 
                 }
 
-                <div className="flex flex-col px-8 gap-6">
+                <div className='flex flex-col px-8 gap-6'>
                     {/* <FormControl isRequired isInvalid={!isValidOldPassword}>
                         <FormLabel fontSize={[16,19,25,27]} textColor='rt-dark-blue'>Old Password</FormLabel>
                         <Input variant='outline' type='password' value={OldPassword} onChange={handleOldPasswordChange} />

@@ -9,16 +9,28 @@ import { Input,
     } from '@chakra-ui/react';
 
 export default function RegistrationPhaseTwoPage() {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState<string>("");
-    const [isValidUserSymbols, setIsValidUserSymbols] = useState<boolean>(false);
-    const [isValidUserLen, setIsValidUserLen] = useState<boolean>(false);
+    const usernameRegex = /^[a-zA-Z0-9_@]*$/;
+    const isValidUserSymbols = usernameRegex.test(username);
+    const isValidUserLen = username.length >= 6 && username.length <= 20;
+    const [isUserTouched, setIsUserTouched] = useState<boolean>(false);
+
     const [password, setPassword] = useState<string>("");
-    const [isValidPassSymbols, setIsValidPassSymbols] = useState<boolean>(true);
-    const [isValidPassLen, setIsValidPassLen] = useState<boolean>(false);
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{1,}$/;
+    const isValidPassSymbols = passwordRegex.test(password) || password.length === 0;
+    const isValidPassLen = password.length >= 8;
+    const [isPasswordTouched, setIsPasswordTouched] = useState<boolean>(false);
+
     const [confPassword, setConfPassword] = useState<string>("");
-    const [isValidConfPassword, setIsValidConfPassword] = useState<boolean>(false);
+    const isValidConfPassword = confPassword === password;
+    const [isConfPasswordTouched, setIsConfPasswordTouched] = useState<boolean>(false);
+
     const [userLocation, setUserLocation] = useState("");
-    const [isEmptyLocation, setIsEmptyLocation] = useState<boolean>(true);
+    const isEmptyLocation = userLocation === "";
+    const [isLocationTouched, setIsLocationTouched] = useState<boolean>(false);
+
     const [statusBool, setStatusBool] = useState<boolean | null>(null);
     const { verifyAccount } = useAuth();
     const location = useLocation();
@@ -37,44 +49,6 @@ export default function RegistrationPhaseTwoPage() {
         }
     }
 
-    function validateUsername(username: string){
-        setIsValidUserLen(username.length >= 6 && username.length <= 20);
-
-        const usernameRegex = /^[a-zA-Z0-9_@]*$/;
-        setIsValidUserSymbols(usernameRegex.test(username));
-    }
-
-    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newUsername = e.target.value;
-        setUsername(newUsername);
-        validateUsername(newUsername);
-    };
-
-    function validatePassword(password: string){
-        setIsValidPassLen(password.length >= 8);
-
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{1,}$/;
-        setIsValidPassSymbols(passwordRegex.test(password) || password.length === 0);
-    }
-
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newPassword = e.target.value;
-        setPassword(newPassword);
-        validatePassword(newPassword);
-    };
-
-    const handleConfPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newConfPassword = e.target.value;
-        setConfPassword(newConfPassword);
-        setIsValidConfPassword(newConfPassword === password);
-    };
-
-    const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const location = e.target.value;
-        setUserLocation(location);
-        setIsEmptyLocation(location === "");
-    }
-
     return (
         <>
             <div className='flex flex-col justify-evenly h-full'> 
@@ -89,70 +63,82 @@ export default function RegistrationPhaseTwoPage() {
                                       </div>) : ("") }
 
                 <div className='flex flex-col px-6 sm:gap-1 lg:gap-0 xl:gap-2'>
-                    <FormControl isRequired isInvalid={!isValidUserSymbols || !isValidUserLen}>
+                    <FormControl isRequired isInvalid={(!isValidUserSymbols || !isValidUserLen) && isUserTouched}>
                         <FormLabel fontSize={[16,19,25,18]} textColor='rt-dark-blue'>Username</FormLabel>
                         <Input 
                           size={['sm', 'md', 'md','small']}
                           variant='outline'
                           type='text'
                           value={username}
-                          onChange={handleUsernameChange}
+                          onChange={(e) => {
+                            setUsername(e.target.value);
+                            setIsUserTouched(true);
+                          }}
                         />
-                        {!isValidUserSymbols ? (
+                        {!isValidUserSymbols && isUserTouched ? (
                             <FormErrorMessage fontSize={['xs', 'sm']}>Only use alphanumeric or '_' or '@' characters</FormErrorMessage>
-                        ): !isValidUserLen ? (
+                        ): !isValidUserLen && isUserTouched ? (
                             <FormErrorMessage fontSize={['xs', 'sm']}>Must be 6-20 characters</FormErrorMessage>
                         ):(
                             <FormHelperText></FormHelperText>
                         )}
                     </FormControl> 
 
-                    <FormControl isRequired isInvalid={!isValidPassSymbols || !isValidPassLen}>
+                    <FormControl isRequired isInvalid={(!isValidPassSymbols || !isValidPassLen) && isPasswordTouched}>
                         <FormLabel fontSize={[16,19,25,18]} textColor='rt-dark-blue'>Password</FormLabel>
                         <Input
                           size={['sm', 'md', 'md','small']}
                           variant='outline'
                           type='text'
                           value={password}
-                          onChange={handlePasswordChange}
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                            setIsPasswordTouched(true);
+                          }}
                         />
-                        {!isValidPassSymbols ? (
+                        {!isValidPassSymbols && isPasswordTouched ? (
                             <FormErrorMessage fontSize={['xs', 'sm']}>
                               Must contain at least 1 of each character: uppercase, lowercase, number, special
                               </FormErrorMessage>
-                        ):!isValidPassLen ? (
+                        ):!isValidPassLen && isPasswordTouched ? (
                             <FormErrorMessage fontSize={['xs', 'sm']}>Must be at aleast 8 characters</FormErrorMessage>
                         ):(
                             <FormHelperText></FormHelperText>
                         )}
                     </FormControl> 
 
-                    <FormControl isRequired isInvalid={!isValidConfPassword}>
+                    <FormControl isRequired isInvalid={!isValidConfPassword && isConfPasswordTouched}>
                         <FormLabel fontSize={[16,19,25,18]} textColor='rt-dark-blue'>Confirm Password</FormLabel>
                         <Input
                           size={['sm', 'md', 'md','small']}
                           variant='outline'
                           type='text'
                           value={confPassword}
-                          onChange={handleConfPasswordChange}
+                          onChange={(e) => {
+                            setConfPassword(e.target.value);
+                            setIsConfPasswordTouched(true);
+                          }}
                         />
-                        {!isValidConfPassword ? (
+                        {!isValidConfPassword && isConfPasswordTouched ? (
                             <FormErrorMessage fontSize={['xs', 'sm']}>Must match password entered above</FormErrorMessage>
                         ):(
                             <FormHelperText fontSize={['xs', 'sm']}></FormHelperText>
                         )}
                     </FormControl> 
    
-                    <FormControl isRequired isInvalid={isEmptyLocation}>
+                    <FormControl isRequired isInvalid={isEmptyLocation && isLocationTouched}>
                         <FormLabel fontSize={[16,19,25,18]} textColor='rt-dark-blue'>Postal Code</FormLabel>
                         <Input
                           size={['sm', 'md', 'md','small']}
                           variant='outline'
                           type='text'
                           value={userLocation}
-                          onChange={handleLocationChange}
+                          onChange={(e) => {
+                            setUserLocation(e.target.value);
+                            setIsLocationTouched(true);
+                          }}
                         />
-                        {isEmptyLocation ? (
+                        {isEmptyLocation && isLocationTouched ? (
                             <FormErrorMessage fontSize={['xs', 'sm']}>Location Required</FormErrorMessage>
                         ):(
                             <FormHelperText fontSize={['xs', 'sm']}></FormHelperText>
@@ -165,7 +151,11 @@ export default function RegistrationPhaseTwoPage() {
                         <span className='text-rt-dark-blue font-semibold md:font-bold text-[13px] md:text-lg lg:text-[16px]'>
                             Already have an account?{' '}
                         </span>
-                        <button className='text-rt-dark-blue underline font-semibold md:font-bold text-[13px] md:text-lg lg:text-[16px]'>
+                        <button className='text-rt-dark-blue underline font-semibold md:font-bold text-[13px] md:text-lg lg:text-[16px]'
+                                onClick={() => {
+                                    navigate(`/login`);
+                                }}
+                        >
                             Sign In
                         </button> 
                     </div>

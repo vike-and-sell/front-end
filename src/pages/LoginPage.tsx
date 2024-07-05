@@ -15,9 +15,11 @@ export default function LoginPage() {
     const [username, setUsername] = useState<string>("")
     const [isValidUserSymbols, setIsValidUserSymbols] = useState<boolean>(false);
     const [isValidUserLen, setIsValidUserLen] = useState<boolean>(false);
+    const [isUserTouched, setIsUserTouched] = useState<boolean>(false);
     const [password, setPassword] = useState<string>("")
     const [isValidPassSymbols, setIsValidPassSymbols] = useState<boolean>(true);
     const [isValidPassLen, setIsValidPassLen] = useState<boolean>(false);
+    const [isPasswordTouched, setIsPasswordTouched] = useState<boolean>(false);
     const [statusBool, setStatusBool] = useState<boolean | null>()
 
     const navigate = useNavigate()
@@ -31,7 +33,9 @@ export default function LoginPage() {
     }, [])
 
     const onSignIn = async() =>{
-        if(isValidPassLen && isValidPassSymbols && isValidUserLen && isValidUserSymbols){
+        if(isValidPassLen && isValidPassSymbols && isPasswordTouched &&
+            isValidUserLen && isValidUserSymbols && isUserTouched 
+        ){
             loginUser(username, password)
             setStatusBool(null);
             console.log('Sign-in successful');
@@ -50,6 +54,7 @@ export default function LoginPage() {
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newUsername = e.target.value;
         setUsername(newUsername);
+        setIsUserTouched(true);
         validateUsername(newUsername);
     };
 
@@ -63,6 +68,7 @@ export default function LoginPage() {
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newPassword = e.target.value;
         setPassword(newPassword);
+        setIsPasswordTouched(true);
         validatePassword(newPassword);
     };
 
@@ -83,24 +89,24 @@ export default function LoginPage() {
                                         The credentials you entered do not match our records.
                                       </div>) : ("") }
 
-                        <FormControl isRequired isInvalid={!isValidUserSymbols || !isValidUserLen}>
+                        <FormControl isRequired isInvalid={(!isValidUserSymbols || !isValidUserLen) && isUserTouched}>
                             <FormLabel fontSize={[16,19,25,27]} textColor='white'>Username</FormLabel>
                             <Input size={['sm', 'md', 'md','md']} bg='white' type='text' value={username} onChange={handleUsernameChange} />
-                            {!isValidUserSymbols ? (
+                            {!isValidUserSymbols && isUserTouched ? (
                                 <FormErrorMessage fontSize={['xs', 'sm']} textColor='white'>Only use alphanumeric or '_' or '@' characters</FormErrorMessage>
-                            ): !isValidUserLen ? (
+                            ): !isValidUserLen && isUserTouched ? (
                                 <FormErrorMessage fontSize={['xs', 'sm']} textColor='white'>Must be 6-20 characters</FormErrorMessage>
                             ):(
                                 <FormHelperText></FormHelperText>
                             )}
                         </FormControl> 
 
-                        <FormControl isRequired isInvalid={!isValidPassSymbols || !isValidPassLen}>
+                        <FormControl isRequired isInvalid={(!isValidPassSymbols || !isValidPassLen) && isPasswordTouched}>
                             <FormLabel fontSize={[16,19,25,27]} textColor='white'>Password</FormLabel>
                             <Input size={['sm', 'md', 'md','md']} bg='white' type='password' value={password} onChange={handlePasswordChange} />
-                            {!isValidPassSymbols ? (
+                            {!isValidPassSymbols && isPasswordTouched ? (
                                 <FormErrorMessage fontSize={['xs', 'sm']} textColor='white'>Must contain at least 1 of each character: uppercase, lowercase, number, special</FormErrorMessage>
-                            ):!isValidPassLen ? (
+                            ):!isValidPassLen && isPasswordTouched ? (
                                 <FormErrorMessage fontSize={['xs', 'sm']} textColor='white'>Must be at aleast 8 characters</FormErrorMessage>
                             ):(
                                 <FormHelperText></FormHelperText>

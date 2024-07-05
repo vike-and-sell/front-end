@@ -12,6 +12,7 @@ export default function RegistrationPhaseOnePage() {
     const [email, setEmail] = useState<string>("");
     const [isValid, setIsValid] = useState<boolean>(true);
     const [isEmpty, setIsEmpty] = useState<boolean>(true);
+    const [isTouched, setIsTouched] = useState<boolean>(false);
     const [statusBool, setStatusBool] = useState<boolean | null>(null);
 
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function RegistrationPhaseOnePage() {
         const newEmail = e.target.value;
         setEmail(newEmail);
         setIsEmpty(newEmail === '');
+        setIsTouched(true);
         setIsValid(validateEmail(newEmail));
     };
 
@@ -52,16 +54,16 @@ export default function RegistrationPhaseOnePage() {
                                       </div>) : ("") }
 
                 <div className="flex flex-col px-6 pb-5 xl:px-14">
-                    <FormControl isRequired isInvalid={isEmpty || !isValid}>
+                    <FormControl isRequired isInvalid={(isEmpty || !isValid) && isTouched}>
                         <FormLabel fontSize={[19,19,25,27]} textColor='rt-dark-blue'>Email Address</FormLabel>
                         <Input 
                           variant='outline'
                           type='email'
                           value={email}
                           onChange={handleInputChange} />
-                        {isEmpty ? (
+                        {isEmpty && isTouched ? (
                             <FormErrorMessage>Email Address Required</FormErrorMessage>
-                        ): !isValid ?(
+                        ): !isValid && isTouched ?(
                             <FormErrorMessage>Must Be a Valid UVic Email Address</FormErrorMessage>
                         ):(
                             <FormHelperText></FormHelperText>

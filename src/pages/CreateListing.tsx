@@ -52,10 +52,8 @@ export default function Edit () {
 
     const createListing = async () =>{
         try{
-            const response = await axios.post('http://localhost:8080/listings',
-                {
-                    listingPayload
-                },{
+            const response = await axios.post('http://localhost:8080/listings/',
+                    listingPayload,{
                     withCredentials:true
                 }
             ).then( function (response) {

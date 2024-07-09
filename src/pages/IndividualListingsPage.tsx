@@ -106,7 +106,7 @@ export default function IndividualListing() {
         <PageHeading title={listingInfo.title}></PageHeading>
         <div className='ml-4'>
           <Menu>
-            <MenuButton as={Button} width='47px'>
+            <MenuButton as={Button} width='47px' background='white'>
               <FaEllipsisH color='#166aac'></FaEllipsisH>
             </MenuButton>
             <MenuList>
@@ -177,7 +177,7 @@ export default function IndividualListing() {
           <DefaultButton title='View Seller'></DefaultButton>
         </div>
       </div>
-      <RatingSection reviews={reviews}></RatingSection>
+      <RatingSection reviews={reviews} listingId={listingID}></RatingSection>
     </main>
   ) : (
     <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>

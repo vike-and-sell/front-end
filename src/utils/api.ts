@@ -111,6 +111,26 @@ const fetchListingReviews = async (listingID: string | undefined) => {
   }
 };
 
+const addReview = async (listingID: string | undefined, review: string) => {
+  console.log("adding review")
+  try {
+    const response = await axios.post(`http://localhost:8080/review/${listingID}`, 
+    {
+      review
+    },
+    {
+      withCredentials: true,
+    });
+    
+    if (response.status !== 200) {
+      throw new Error(response.data?.message || "Failed to add review...");
+    }
+    return response.data;
+  } catch (error) {   
+      throw error;
+  }
+};
 
 
-export { login, fetchUser, fetchBrowseListings, fetchSingleListing ,fetchMyListings,fetchListingReviews};
+
+export { login, fetchUser, fetchBrowseListings, fetchSingleListing ,fetchMyListings,fetchListingReviews,addReview};

@@ -4,16 +4,20 @@ import UserReview from "./UserReview";
 
 interface RatingSectionProps {
   reviews: [];
+  listingId: string | undefined;
 }
 
 type ItemStatus = "" | "SOLD" | "AVAILABLE" | undefined;
 
-export default function RatingSection({ reviews }: RatingSectionProps) {
+export default function RatingSection({
+  reviews,
+  listingId,
+}: RatingSectionProps) {
   let isReviews = reviews === undefined || reviews.length === 0 ? true : false;
   return (
     <div>
       <hr className='mb-7'></hr>
-      <UserReview></UserReview>
+      <UserReview listingId={listingId}></UserReview>
       <Reviews>
         {isReviews ? (
           <div className='text-slate-400'>Nothing here...</div>

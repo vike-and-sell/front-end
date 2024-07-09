@@ -1,21 +1,79 @@
 import { useState } from "react"
 import ChatPane from "../components/ChatPane"
-import { MessageType, User } from "../utils/interfaces";
+import { ChatType, MessageType, User } from "../utils/interfaces";
 import { mockChatPaneItems } from "../utils/mockChatPaneItems";
 import { mockMessages } from "../utils/mockMessages";
-import { Box, IconButton, InputGroup, InputRightElement, Show, Textarea } from "@chakra-ui/react"
+import { Box, IconButton, InputGroup, InputRightElement, Textarea } from "@chakra-ui/react"
 import { ArrowBackIcon, ArrowUpIcon } from "@chakra-ui/icons"
 import Messages from "../components/Messages"
+import { useAuth } from "../utils/AuthContext";
+import axios from "axios";
 
 export default function Chat() {
-    
+
+    //const {} = useAuth()
 
     const mockCurrentUser:User = {
-        userID: "1",
-        username: "jobyprime",
-        email: "jobs@uvic.ca",
-        current:false
+        userId: "1",
+        username: "joby",
+        location: "V9B",
+        joiningDate: "2024-05-24T02:19:32.816610", 
+        itemsSold: [],
+        itemsPurchased: [],
+        current: false
     }
+
+    const getMyChats = async () => {
+
+        try{
+            const ChatIDResponse = await axios.get('http://localhost:8080/chats', 
+            {
+                withCredentials:true
+            })
+            console.log('First API call response:', ChatIDResponse.data);
+
+            const chatIDs:number[] = ChatIDResponse.data.map(Number) // Parse ChatIDs as numbers
+
+            const chatInfoArray:ChatType[] = []
+
+            chatIDs.map(async (ChatId:number, index:number) => {
+
+                const chatInfoResponse = await axios.get(`http://localhost:8080/chats/${ChatId}`, 
+                    {
+                        withCredentials:true
+                    })
+
+                const chatUsers:string[] = chatInfoResponse.data['users']
+                const interlocutorId = chatUsers.filter((Id:string) => Id !== mockCurrentUser.userId).join("");
+        
+                const interlocutorResponse =  await axios.get(`http://localhost:8080/users/${interlocutorId}`, 
+                    {
+                        withCredentials:true
+                    })
+
+                
+
+                const chatInfoObj = {
+                    ChatId: String(ChatId),
+                    ...chatInfoResponse.data,
+                    interlocutor: interlocutorResponse.data
+                }
+                    
+                chatInfoArray[index] = chatInfoObj
+
+            })
+
+            console.log(chatInfoArray)
+        } catch (error) {
+
+        }
+
+        
+    }
+
+    getMyChats()
+
+    
 
     const [currentChat, setCurrentChat] = useState<User>(mockChatPaneItems[0]);
 
@@ -29,11 +87,11 @@ export default function Chat() {
         return messages.filter(message => message.senderID === id || message.receiverID === id);
     };
 
-    const [currentMessages, setCurrentMessages] = useState<MessageType[]>(filterMessagesBySenderOrReceiver(mockMessages, currentChat.userID))
+    const [currentMessages, setCurrentMessages] = useState<MessageType[]>(filterMessagesBySenderOrReceiver(mockMessages, currentChat.userId))
 
     const PfromChatPane = (clickedChat:User) => {
         setCurrentChat(clickedChat)
-        setCurrentMessages(filterMessagesBySenderOrReceiver(mockMessages, clickedChat.userID))
+        setCurrentMessages(filterMessagesBySenderOrReceiver(mockMessages, clickedChat.userId))
         console.log(currentMessages)
     }
 

@@ -40,12 +40,6 @@ export interface LoginCredentials {
   password:string
 }
 
-export interface ReviewInfo {
-  username: string,
-  created_on: string,
-  review: string,
-}
-
 export interface AuthContextType {
   user: User | null;
   loginUser:  (username: string, password: string) => Promise<any>;
@@ -59,4 +53,12 @@ export interface AuthContextType {
 export interface SessionType {
   user:User
   expiration: number
+}
+
+export interface ChatType {
+  chatId: string
+  users: string[]
+  listingId: string
+  lastMessageTime: string
+  interlocutor: User
 }

@@ -29,7 +29,7 @@ export default function Messages({allMessages, user}:MessageProps){
         <div id = "messages" className="flex h-full flex-1 flex-col gap-4 p-3 overflowy-auto">
             
             {allMessages.map((message:MessageType, index) =>{
-                const isUser = message.senderID === user.userID
+                const isUser = message.senderID === user.userId
                 
                 var isSameMessageDate = false
                 if(index > 0){

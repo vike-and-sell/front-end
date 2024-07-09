@@ -26,6 +26,7 @@ const queryClient = new QueryClient();
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./utils/AuthContext";
 import MyListings from "./pages/MyListings";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function App() {
   return (
@@ -96,6 +97,7 @@ function App() {
           </ChakraProvider>
         </AuthProvider>
       </Router>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

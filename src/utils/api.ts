@@ -37,13 +37,13 @@ const fetchUser = async () => {
 
 const fetchBrowseListings = async (filterOptions:FilterOptions) => {
   let paramsString = "";
-  console.log(filterOptions);
+ 
   Object.keys(filterOptions).forEach((key)=> {
     if (filterOptions[key] != '') {
       paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(filterOptions[key])}&`
     }
   })
-console.log(paramsString)
+
 
   try {
     const response = await axios.get(`http://localhost:8080/listings/?${paramsString}`, 
@@ -71,7 +71,7 @@ const fetchSingleListing = async (listingID: string | undefined) => {
     if (response.status !== 200) {
       throw new Error(response.data?.message || "Fetching single listing data failed...");
     }
-    
+ 
     return response.data;
   } catch (error) {   
       throw error;
@@ -79,12 +79,12 @@ const fetchSingleListing = async (listingID: string | undefined) => {
 };
 
 const fetchMyListings = async () => {
-  console.log("hello");
+
   try {
     const response = await axios.get(`http://localhost:8080/listings/me`, {
       withCredentials: true,
     });
-    console.log("hello")
+   
     if (response.status !== 200) {
       throw new Error(response.data?.message || "Fetching single listing data failed...");
     }
@@ -95,4 +95,22 @@ const fetchMyListings = async () => {
   }
 };
 
-export { login, fetchUser, fetchBrowseListings, fetchSingleListing ,fetchMyListings};
+const fetchListingReviews = async (listingID: string | undefined) => {
+  
+  try {
+    const response = await axios.get(`http://localhost:8080/review/${listingID}`, {
+      withCredentials: true,
+    });
+    
+    if (response.status !== 200) {
+      throw new Error(response.data?.message || "Fetching review listing data failed...");
+    }
+    return response.data;
+  } catch (error) {   
+      throw error;
+  }
+};
+
+
+
+export { login, fetchUser, fetchBrowseListings, fetchSingleListing ,fetchMyListings,fetchListingReviews};

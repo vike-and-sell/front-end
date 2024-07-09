@@ -36,3 +36,9 @@ export interface LoginCredentials {
   username:string,
   password:string
 }
+
+export interface Review {
+  username: string,
+  created_on: string,
+  review: string,
+}

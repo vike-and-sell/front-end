@@ -4,7 +4,6 @@ import DefaultButton, {
   InverseBlueButton,
 } from "../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import { User } from "../utils/interfaces";
 import { FaEllipsisH, FaRegEdit } from "react-icons/fa";
 import { MdDoNotDisturb } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -23,11 +22,15 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
 import { useQuery } from "@tanstack/react-query";
-import { fetchSingleListing, fetchUser } from "../utils/api";
+import {
+  fetchListingReviews,
+  fetchSingleListing,
+  fetchUser,
+} from "../utils/api";
 import ErrorPage from "./ErrorPage";
 
 export default function IndividualListing() {
@@ -36,24 +39,37 @@ export default function IndividualListing() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
   let isUser = false;
-  const reviews: [] = [];
 
+  // Fetch Listing Data
   const {
     data: listingInfo,
     isPending: isListingPending,
     isError,
     error,
   } = useQuery({
-    queryKey: [listingID],
+    queryKey: ["listings", listingID],
     queryFn: () => fetchSingleListing(listingID),
   });
 
+  // Fetch Listing Reviews
+  const {
+    data: reviews,
+    isError: isReviewError,
+    isPending: isReviewPending,
+    error: reviewError,
+  } = useQuery({
+    queryKey: ["reviews", listingID],
+    queryFn: () => fetchListingReviews(listingID),
+  });
+
+  // Fetch User Data
   const { data: userData } = useQuery({
     queryKey: ["userinfo"],
     queryFn: fetchUser,
     enabled: !listingInfo,
   });
 
+  // Error Screen for Listing Info
   if (isError) {
     return (
       <ErrorPage>
@@ -63,27 +79,35 @@ export default function IndividualListing() {
     );
   }
 
-  const handleDelete = () => {};
+  // Error Screen for Review
+  if (isReviewError) {
+    return (
+      <ErrorPage>
+        <div>{reviewError.message}</div>
+        <div>{reviewError.response?.data.message}</div>
+      </ErrorPage>
+    );
+  }
 
+  // Still need to be implemented
+  const handleDelete = () => {};
   const handleDoNotRecommend = () => {};
 
+  // Verifies User owns listing
   if (userData && listingInfo) {
-    console.log(userData);
     if (userData.userId == listingInfo.sellerId) {
       isUser = true;
     }
   }
 
-  return isListingPending ? (
-    <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>
-  ) : (
+  return !isListingPending && !isReviewPending ? (
     <main className='p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
       <div className='flex'>
         <PageHeading title={listingInfo.title}></PageHeading>
         <div className='ml-4'>
           <Menu>
             <MenuButton as={Button} width='47px'>
-              <FaEllipsisH></FaEllipsisH>
+              <FaEllipsisH color='#166aac'></FaEllipsisH>
             </MenuButton>
             <MenuList>
               {isUser ? (
@@ -155,6 +179,8 @@ export default function IndividualListing() {
       </div>
       <RatingSection reviews={reviews}></RatingSection>
     </main>
+  ) : (
+    <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>
   );
 }
 

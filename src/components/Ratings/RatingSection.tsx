@@ -1,25 +1,27 @@
+import { ReviewInfo } from "../../utils/interfaces";
 import { Review, Reviews } from "./Reviews";
 import UserReview from "./UserReview";
 
 interface RatingSectionProps {
-  reviews: string[];
+  reviews: [];
 }
 
 type ItemStatus = "" | "SOLD" | "AVAILABLE" | undefined;
 
 export default function RatingSection({ reviews }: RatingSectionProps) {
-  const reviewCount = reviews.length;
+  let isReviews = reviews === undefined || reviews.length === 0 ? true : false;
   return (
     <div>
-      <hr className="mb-7"></hr>
+      <hr className='mb-7'></hr>
       <UserReview></UserReview>
       <Reviews>
-        {reviewCount == 0 ? (
-          <div className="text-slate-400">Nothing here...</div>
+        {isReviews ? (
+          <div className='text-slate-400'>Nothing here...</div>
         ) : (
-          reviews.map((review, index) => (
-            <Review key={index} review={review}></Review>
-          ))
+          reviews.map((review: ReviewInfo, index) => {
+            let reviewString = review.review;
+            return <Review key={index} review={reviewString}></Review>;
+          })
         )}
       </Reviews>
     </div>

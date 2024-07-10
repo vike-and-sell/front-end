@@ -1,4 +1,5 @@
 import PageHeading from "../components/PageHeading";
+import { FaArrowLeft } from "react-icons/fa6";
 import DefaultButton, {
   InvalidRedButton,
   InverseBlueButton,
@@ -134,67 +135,72 @@ export default function IndividualListing() {
 
   return !isListingPending && !isReviewPending && !isRatingPending ? (
     <main className='p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
-      <div className='flex'>
-        <PageHeading title={listingInfo.title}></PageHeading>
-        <div className='ml-4'>
-          <Menu>
-            <MenuButton as={Button} width='47px' background='white'>
-              <FaEllipsisH color='#166aac'></FaEllipsisH>
-            </MenuButton>
-            <MenuList>
-              {isUser ? (
-                <>
-                  <MenuItem
-                    icon={<FaRegEdit />}
-                    onClick={() => navigate(`/edit/${listingID}`)}
-                  >
-                    Edit Listing
-                  </MenuItem>
-                  <MenuItem icon={<AiOutlineDelete />} onClick={onOpen}>
-                    Delete Listing
-                  </MenuItem>
-                </>
-              ) : (
-                <>
-                  <MenuItem
-                    icon={<MdDoNotDisturb />}
-                    onClick={handleDoNotRecommend}
-                  >
-                    Do Not Recommend
-                  </MenuItem>
-                </>
-              )}
-            </MenuList>
-          </Menu>
+      <div className='flex gap-2 items-center'>
+        <button
+          className=' p-1 rounded-lg bg-pri-blue'
+          title='Back Button'
+          onClick={() => navigate(-1)}
+        >
+          <FaArrowLeft size={15} color='white' />
+        </button>
+        <h1 className='font-semibold text-pri-blue text-3xl p-0'>
+          {listingInfo.title}
+        </h1>
+        <Menu>
+          <MenuButton as={Button} width='47px' background='white'>
+            <FaEllipsisH color='#166aac'></FaEllipsisH>
+          </MenuButton>
+          <MenuList>
+            {isUser ? (
+              <>
+                <MenuItem
+                  icon={<FaRegEdit />}
+                  onClick={() => navigate(`/edit/${listingID}`)}
+                >
+                  Edit Listing
+                </MenuItem>
+                <MenuItem icon={<AiOutlineDelete />} onClick={onOpen}>
+                  Delete Listing
+                </MenuItem>
+              </>
+            ) : (
+              <>
+                <MenuItem
+                  icon={<MdDoNotDisturb />}
+                  onClick={handleDoNotRecommend}
+                >
+                  Do Not Recommend
+                </MenuItem>
+              </>
+            )}
+          </MenuList>
+        </Menu>
 
-          <Modal
-            finalFocusRef={finalRef}
-            isOpen={isOpen}
-            onClose={onClose}
-            isCentered
-          >
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Delete Listing</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                Are you sure you want to delete this listing?
-              </ModalBody>
+        <Modal
+          finalFocusRef={finalRef}
+          isOpen={isOpen}
+          onClose={onClose}
+          isCentered
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Delete Listing</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>Are you sure you want to delete this listing?</ModalBody>
 
-              <ModalFooter>
-                <InvalidRedButton
-                  clickHandle={handleDelete}
-                  title='Yes'
-                  className='mr-3'
-                ></InvalidRedButton>
-                <InverseBlueButton
-                  clickHandle={onClose}
-                  title='No'
-                ></InverseBlueButton>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </div>
+            <ModalFooter>
+              <InvalidRedButton
+                clickHandle={handleDelete}
+                title='Yes'
+                className='mr-3'
+              ></InvalidRedButton>
+              <InverseBlueButton
+                clickHandle={onClose}
+                title='No'
+              ></InverseBlueButton>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </div>
       <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
         <div className='text-green-700 font-bold text-2xl'>

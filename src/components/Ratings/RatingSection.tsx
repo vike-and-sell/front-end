@@ -1,4 +1,3 @@
-import { calc } from "@chakra-ui/react";
 import { ReviewInfo } from "../../utils/interfaces";
 import { Review, Reviews } from "./Reviews";
 import UserReview from "./UserReview";
@@ -17,7 +16,6 @@ export default function RatingSection({
   ratings,
 }: RatingSectionProps) {
   let isReviews = reviews === undefined || reviews.length === 0 ? true : false;
-  console.log(ratings);
   const averageRating = calculateAverageRating(ratings);
   return (
     <div>

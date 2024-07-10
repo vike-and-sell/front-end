@@ -152,7 +152,7 @@ const addReview = async (listingID: string | undefined, review: string, rating:n
     }
 
     if (responseRating.status !== 200) {
-      throw new Error(responseRating.data?.message || "Failed to add review...");
+      throw new Error(responseRating.data?.message || "Failed to add rating...");
     }
    
   } catch (error) {   

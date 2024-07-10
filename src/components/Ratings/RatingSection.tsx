@@ -42,7 +42,6 @@ interface RatingInfo {
 }
 
 function calculateAverageRating(ratingList: []) {
-  console.log(ratingList);
   let ratings = ratingList.map((obj: RatingInfo) => obj.rating);
   if (ratings.length === 0) return "No Ratings";
   const sum = ratings.reduce((acc, num) => acc + num, 0);

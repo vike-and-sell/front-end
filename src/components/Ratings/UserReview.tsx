@@ -7,11 +7,7 @@ import StarRatings from "./StarRatings";
 import { useState } from "react";
 import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 import { addReview } from "../../utils/api";
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface UserReview {
   listingId: string | undefined;

@@ -153,34 +153,18 @@ export const AuthProvider = ({ children }: any) => {
 
   const checkUserStatus = async () => {
     try{ 
-
-      if(localStorage.getItem('session')){
-        const sessionData:SessionType = JSON.parse(localStorage.getItem('session'));
-        if (sessionData && sessionData.expiration < new Date().getTime()) {
-          localStorage.removeItem('session');
-        }else{
-          setLoading(true)
-          const userData:User = sessionData.user
-          setUser(userData);
-          setLoading(false); // Set loading state to false after setting user
-          return;
-        }
-      }
-
       const response  = await axios.get<User>('http://localhost:8080/users/me', {
         withCredentials:true
       })
 
-      console.log(response.data)
+      if(response.status == 401){
+        setUser(null)
+        navigate('/login')
+        return;
+      }
 
       if (response.data) {
         setUser(response.data);
-        
-        const storageData = {
-          user: response.data,
-          expiration: new Date().getTime() + 3 * 60 * 60 * 1000
-        }
-        localStorage.setItem('session', JSON.stringify(storageData)); // Store user data and expiration in local storage
         
       } else {
         setUser(null);

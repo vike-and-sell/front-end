@@ -12,13 +12,14 @@ export default function LoginPage() {
 
     const navigate = useNavigate()
 
-    const { user, loginUser } = useAuth()
+    const { user, loginUser, checkUserStatus} = useAuth()
 
     useEffect(()=> {
+        //checkUserStatus()
         if(user){
             navigate('/')
         }
-    }, [])
+    }, [user])
 
     const onSignIn = async() =>{
         loginUser(username, password)

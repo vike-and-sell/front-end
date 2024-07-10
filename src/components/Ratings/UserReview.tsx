@@ -23,17 +23,17 @@ export default function UserReview({ listingId }: UserReview) {
   const [formError, setFormError] = useState(false);
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: () => addReview(listingId, textInput),
+    mutationFn: () => addReview(listingId, textInput, ratingValue),
     onSuccess: () => {
       setTextInput("");
       setRatingValue(0);
       queryClient.invalidateQueries({ queryKey: ["reviews", listingId] });
+      queryClient.invalidateQueries({ queryKey: ["ratings", listingId] });
     },
   });
   function handleSubmit() {
     if (ratingValue !== 0 && textInput !== "") {
       setFormError(false);
-      console.log("test!");
       mutation.mutate();
     } else {
       setFormError(true);

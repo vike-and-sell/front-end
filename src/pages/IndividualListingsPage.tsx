@@ -27,6 +27,7 @@ import RatingSection from "../components/Ratings/RatingSection";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import {
+  fetchListingRating,
   fetchListingReviews,
   fetchSingleListing,
   fetchUser,
@@ -62,6 +63,17 @@ export default function IndividualListing() {
     queryFn: () => fetchListingReviews(listingID),
   });
 
+  // Fetch Listing Reviews
+  const {
+    data: ratings,
+    isError: isRatingError,
+    isPending: isRatingPending,
+    error: ratingError,
+  } = useQuery({
+    queryKey: ["ratings", listingID],
+    queryFn: () => fetchListingRating(listingID),
+  });
+
   // Fetch User Data
   const { data: userData } = useQuery({
     queryKey: ["userinfo"],
@@ -89,6 +101,26 @@ export default function IndividualListing() {
     );
   }
 
+  // Error Screen for Review
+  if (isReviewError) {
+    return (
+      <ErrorPage>
+        <div>{reviewError.message}</div>
+        <div>{reviewError.response?.data.message}</div>
+      </ErrorPage>
+    );
+  }
+
+  // Error Screen for Rating
+  if (isRatingError) {
+    return (
+      <ErrorPage>
+        <div>{ratingError.message}</div>
+        <div>{ratingError.response?.data.message}</div>
+      </ErrorPage>
+    );
+  }
+
   // Still need to be implemented
   const handleDelete = () => {};
   const handleDoNotRecommend = () => {};
@@ -100,7 +132,7 @@ export default function IndividualListing() {
     }
   }
 
-  return !isListingPending && !isReviewPending ? (
+  return !isListingPending && !isReviewPending && !isRatingPending ? (
     <main className='p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
       <div className='flex'>
         <PageHeading title={listingInfo.title}></PageHeading>
@@ -177,7 +209,11 @@ export default function IndividualListing() {
           <DefaultButton title='View Seller'></DefaultButton>
         </div>
       </div>
-      <RatingSection reviews={reviews} listingId={listingID}></RatingSection>
+      <RatingSection
+        reviews={reviews}
+        listingId={listingID}
+        ratings={ratings}
+      ></RatingSection>
     </main>
   ) : (
     <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>

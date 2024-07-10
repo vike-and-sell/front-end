@@ -111,19 +111,16 @@ const fetchListingReviews = async (listingID: string | undefined) => {
   }
 };
 
-const addReview = async (listingID: string | undefined, review: string) => {
-  console.log("adding review")
+const fetchListingRating = async (listingID: string | undefined) => {
+  
   try {
-    const response = await axios.post(`http://localhost:8080/review/${listingID}`, 
-    {
-      review
-    },
+    const response = await axios.get(`http://localhost:8080/rating/${listingID}`, 
     {
       withCredentials: true,
     });
     
     if (response.status !== 200) {
-      throw new Error(response.data?.message || "Failed to add review...");
+      throw new Error(response.data?.message || "Failed to retrieve rating...");
     }
     return response.data;
   } catch (error) {   
@@ -131,6 +128,38 @@ const addReview = async (listingID: string | undefined, review: string) => {
   }
 };
 
+const addReview = async (listingID: string | undefined, review: string, rating:number) => {
+  
+  try {
+    const responseReview = await axios.post(`http://localhost:8080/review/${listingID}`, 
+    {
+      review
+    },
+    {
+      withCredentials: true,
+    });
+
+    const responseRating = await axios.post(`http://localhost:8080/rating/${listingID}`, 
+      {
+        rating
+      },
+      {
+        withCredentials: true,
+      });
+    
+    if (responseReview.status !== 200) {
+      throw new Error(responseReview.data?.message || "Failed to add review...");
+    }
+
+    if (responseRating.status !== 200) {
+      throw new Error(responseRating.data?.message || "Failed to add review...");
+    }
+   
+  } catch (error) {   
+      throw error;
+  }
+};
 
 
-export { login, fetchUser, fetchBrowseListings, fetchSingleListing ,fetchMyListings,fetchListingReviews,addReview};
+
+export { login, fetchUser, fetchBrowseListings, fetchSingleListing ,fetchMyListings,fetchListingReviews,fetchListingRating,addReview};

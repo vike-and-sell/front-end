@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GoStarFill } from "react-icons/go";
 
 interface StarRatingsProps {
   setValue: (value: number) => void;
+  defaultValue: number;
 }
 
-export default function StarRatings({ setValue }: StarRatingsProps) {
+export default function StarRatings({
+  defaultValue,
+  setValue,
+}: StarRatingsProps) {
   const [rating, setRating] = useState([false, false, false, false, false]);
+
+  useEffect(() => {
+    const newRating = rating.map((_, i) => defaultValue > i);
+    setRating(newRating);
+  }, [defaultValue]);
 
   function handleChange(index: number) {
     let newValue = 0;

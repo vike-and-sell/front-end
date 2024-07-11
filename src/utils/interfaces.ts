@@ -40,6 +40,12 @@ export interface LoginCredentials {
   password:string
 }
 
+export interface ReviewInfo {
+  username: string,
+  created_on: string,
+  review: string,
+}
+
 export interface AuthContextType {
   user: User | null;
   loginUser:  (username: string, password: string) => Promise<any>;

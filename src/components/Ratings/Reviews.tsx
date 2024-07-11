@@ -1,11 +1,14 @@
 interface ReviewsProps {
   children: React.ReactNode;
+  averageRating: string;
 }
 
-export function Reviews({ children }: ReviewsProps) {
+export function Reviews({ children, averageRating }: ReviewsProps) {
   return (
     <>
-      <h2 className='text-pri-blue font-semibold mt-4 mb-2'>User Reviews</h2>
+      <h2 className='text-pri-blue font-semibold mt-4 mb-2'>
+        User Reviews (Average Rating : {averageRating})
+      </h2>
       <div className='flex flex-col gap-3'>{children}</div>
     </>
   );

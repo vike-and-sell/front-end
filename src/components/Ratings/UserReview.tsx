@@ -6,15 +6,31 @@ import { Textarea } from "@chakra-ui/react";
 import StarRatings from "./StarRatings";
 import { useState } from "react";
 import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
+import { addReview } from "../../utils/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function UserReview() {
+interface UserReview {
+  listingId: string | undefined;
+}
+
+export default function UserReview({ listingId }: UserReview) {
   const [ratingValue, setRatingValue] = useState(0);
   const [textInput, setTextInput] = useState("");
   const [formError, setFormError] = useState(false);
-
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: () => addReview(listingId, textInput, ratingValue),
+    onSuccess: () => {
+      setTextInput("");
+      setRatingValue(0);
+      queryClient.invalidateQueries({ queryKey: ["reviews", listingId] });
+      queryClient.invalidateQueries({ queryKey: ["ratings", listingId] });
+    },
+  });
   function handleSubmit() {
     if (ratingValue !== 0 && textInput !== "") {
       setFormError(false);
+      mutation.mutate();
     } else {
       setFormError(true);
     }
@@ -44,7 +60,10 @@ export default function UserReview() {
         ""
       )}
       <div className='flex items-center justify-between mt-4'>
-        <StarRatings setValue={setRatingValue}></StarRatings>
+        <StarRatings
+          setValue={setRatingValue}
+          defaultValue={ratingValue}
+        ></StarRatings>
         <DefaultButton
           title='Submit'
           clickHandle={handleSubmit}

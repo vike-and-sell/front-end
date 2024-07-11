@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: any) => {
     try {
       await axios
       .post(
-        "http://localhost:8080/login",
+        "${import.meta.env.VITE_REACT_APP_API_URL}/login",
         {
           username: username,
           password: password,
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: any) => {
     try {
       await axios
         .post(
-          "http://localhost:8080/request_account",
+          "${import.meta.env.VITE_REACT_APP_API_URL}/request_account",
           {
             email: email,
             callback: callback,
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }: any) => {
     try {
       await axios
         .post(
-          "http://localhost:8080/verify_account",
+          "${import.meta.env.VITE_REACT_APP_API_URL}/verify_account",
           {
             jwt: jwt,
             username: username,
@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const requestReset = async (email: string, callback: string) => {
     try{
-      await axios.post('http://localhost:8080/request_reset',
+      await axios.post('${import.meta.env.VITE_REACT_APP_API_URL}/request_reset',
         {
             email:email,
             callback:callback
@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const verifyReset = async (jwt: string, password: string) => {
     try{
-      await axios.post('http://localhost:8080/verify_reset',
+      await axios.post('${import.meta.env.VITE_REACT_APP_API_URL}/verify_reset',
         {
             jwt:jwt,
             password:password,
@@ -153,7 +153,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const checkUserStatus = async () => {
     try{ 
-      const response  = await axios.get<User>('http://localhost:8080/users/me', {
+      const response  = await axios.get<User>('${import.meta.env.VITE_REACT_APP_API_URL}/users/me', {
         withCredentials:true
       })
 

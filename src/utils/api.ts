@@ -4,7 +4,7 @@ import { FilterOptions, LoginCredentials } from "./interfaces";
 const login = async (credentials: LoginCredentials) => {
   try {
     const response = await axios.post(
-      "http://localhost:8080/login",
+      "${import.meta.env.VITE_REACT_APP_API_URL}/login",
       credentials,
       { withCredentials: true }
     );
@@ -21,7 +21,7 @@ const login = async (credentials: LoginCredentials) => {
 
 const fetchUser = async () => {
   try {
-    const response = await axios.get("http://localhost:8080/users/me", {
+    const response = await axios.get("${import.meta.env.VITE_REACT_APP_API_URL}/users/me", {
       withCredentials: true,
     });
     
@@ -45,7 +45,7 @@ const fetchBrowseListings = async (filterOptions:FilterOptions) => {
   })
 
   try {
-    const response = await axios.get(`http://localhost:8080/listings/?${paramsString}`, 
+    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/listings/?${paramsString}`, 
       {
       withCredentials: true,
     });
@@ -63,7 +63,7 @@ const fetchBrowseListings = async (filterOptions:FilterOptions) => {
 const fetchSingleListing = async (listingID: string | undefined) => {
   
   try {
-    const response = await axios.get(`http://localhost:8080/listings/${listingID}`, {
+    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/listings/${listingID}`, {
       withCredentials: true,
     });
     
@@ -80,7 +80,7 @@ const fetchSingleListing = async (listingID: string | undefined) => {
 const fetchMyListings = async () => {
 
   try {
-    const response = await axios.get(`http://localhost:8080/listings/me`, {
+    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/listings/me`, {
       withCredentials: true,
     });
    
@@ -97,7 +97,7 @@ const fetchMyListings = async () => {
 const fetchListingReviews = async (listingID: string | undefined) => {
   
   try {
-    const response = await axios.get(`http://localhost:8080/review/${listingID}`, {
+    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/review/${listingID}`, {
       withCredentials: true,
     });
     
@@ -113,7 +113,7 @@ const fetchListingReviews = async (listingID: string | undefined) => {
 const fetchListingRating = async (listingID: string | undefined) => {
   
   try {
-    const response = await axios.get(`http://localhost:8080/rating/${listingID}`, 
+    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/rating/${listingID}`, 
     {
       withCredentials: true,
     });
@@ -130,7 +130,7 @@ const fetchListingRating = async (listingID: string | undefined) => {
 const addReview = async (listingID: string | undefined, review: string, rating:number) => {
   
   try {
-    const responseReview = await axios.post(`http://localhost:8080/review/${listingID}`, 
+    const responseReview = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/review/${listingID}`, 
     {
       review
     },
@@ -138,7 +138,7 @@ const addReview = async (listingID: string | undefined, review: string, rating:n
       withCredentials: true,
     });
 
-    const responseRating = await axios.post(`http://localhost:8080/rating/${listingID}`, 
+    const responseRating = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/rating/${listingID}`, 
       {
         rating
       },

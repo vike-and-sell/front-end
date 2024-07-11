@@ -59,7 +59,7 @@ export default function Edit() {
   const handleEdit = async () => {
     axios
       .patch(
-        `http://localhost:8080/listings/${listingID}`,
+        `${import.meta.env.VITE_REACT_APP_API_URL}/listings/${listingID}`,
         {
           title,
           price,

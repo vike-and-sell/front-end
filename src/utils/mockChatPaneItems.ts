@@ -2,7 +2,7 @@ import { User} from "./interfaces";
 
 export const mockChatPaneItems:User[] = [
     {
-        userID: "2",
+        userId: "2",
         username: "joby",
         email: "joby@uvic.ca",
         current: false

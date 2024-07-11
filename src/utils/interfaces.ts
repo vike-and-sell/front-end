@@ -59,6 +59,7 @@ export interface ChatType {
   chatId: string
   users: string[]
   listingId: string
+  listingInfo: Listing
   lastMessageTime: string
   interlocutor: User
 }

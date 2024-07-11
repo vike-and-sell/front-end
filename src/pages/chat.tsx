@@ -1,17 +1,13 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ChatPane from "../components/ChatPane"
 import { ChatType, MessageType, User } from "../utils/interfaces";
-import { mockChatPaneItems } from "../utils/mockChatPaneItems";
 import { mockMessages } from "../utils/mockMessages";
 import { Box, IconButton, InputGroup, InputRightElement, Textarea } from "@chakra-ui/react"
 import { ArrowBackIcon, ArrowUpIcon } from "@chakra-ui/icons"
 import Messages from "../components/Messages"
-import { useAuth } from "../utils/AuthContext";
 import axios from "axios";
 
 export default function Chat() {
-
-    //const {} = useAuth()
 
     const mockCurrentUser:User = {
         userId: "1",
@@ -23,76 +19,80 @@ export default function Chat() {
         current: false
     }
 
-    const getMyChats = async () => {
+    const [chatsArray, setChatsArray] = useState<ChatType[]>([]);
+    const [currentChat, setCurrentChat] = useState<ChatType | null>(null);
+    const [ChatPaneHidden, setChatPaneHidden] = useState<boolean>(false);
+    const [input, setInput] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [currentMessages, setCurrentMessages] = useState<MessageType[]>([]);
 
-        try{
-            const ChatIDResponse = await axios.get('http://localhost:8080/chats', 
-            {
-                withCredentials:true
-            })
-            console.log('First API call response:', ChatIDResponse.data);
 
-            const chatIDs:number[] = ChatIDResponse.data.map(Number) // Parse ChatIDs as numbers
+    useEffect(()=>{
+        const fetchChats = async () => {
+        try {
+            const ChatIDResponse = await axios.get('http://localhost:8080/chats', {
+                withCredentials: true
+            });
+            //console.log('First API call response:', ChatIDResponse.data);
 
-            const chatInfoArray:ChatType[] = []
+            const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
 
-            chatIDs.map(async (ChatId:number, index:number) => {
+            const chatInfoArray: ChatType[] = await Promise.all(chatIDs.map(async (ChatId: number) => {
+                const chatInfoResponse = await axios.get(`http://localhost:8080/chats/${ChatId}`, {
+                    withCredentials: true
+                });
 
-                const chatInfoResponse = await axios.get(`http://localhost:8080/chats/${ChatId}`, 
-                    {
-                        withCredentials:true
-                    })
+                const chatUsers: string[] = chatInfoResponse.data['users'];
+                const interlocutorId = chatUsers.filter((Id: string) => Id !== mockCurrentUser.userId).join("");
+                const interlocutorResponse = await axios.get(`http://localhost:8080/users/${interlocutorId}`, {
+                    withCredentials: true
+                });
 
-                const chatUsers:string[] = chatInfoResponse.data['users']
-                const interlocutorId = chatUsers.filter((Id:string) => Id !== mockCurrentUser.userId).join("");
-        
-                const interlocutorResponse =  await axios.get(`http://localhost:8080/users/${interlocutorId}`, 
-                    {
-                        withCredentials:true
-                    })
+                const listingInfoResponse = await axios.get(`http://localhost:8080/listings/${chatInfoResponse.data.listingId}`, {
+                    withCredentials: true
+                });
 
-                
 
-                const chatInfoObj = {
+                return {
                     ChatId: String(ChatId),
                     ...chatInfoResponse.data,
+                    listingInfo: listingInfoResponse.data,
                     interlocutor: interlocutorResponse.data
-                }
-                    
-                chatInfoArray[index] = chatInfoObj
+                };
+            }));
 
-            })
-
-            console.log(chatInfoArray)
+            setChatsArray(chatInfoArray);
+            if (chatInfoArray.length > 0) {
+                setCurrentChat(chatInfoArray[0]);
+            }
         } catch (error) {
-
+            console.error("Unable to fetch chats:", error);
         }
-
-        
     }
 
-    getMyChats()
+    fetchChats();
+    }, [])
 
-    
+    useEffect(()=>{
+        if (currentChat) {
+            const filteredMessages = filterMessagesBySenderOrReceiver(mockMessages, currentChat.interlocutor.userId);
+            setCurrentMessages(filteredMessages);
+        }
+    }, [currentChat])
 
-    const [currentChat, setCurrentChat] = useState<User>(mockChatPaneItems[0]);
-
-    const [ChatPaneHidden, setChatPaneHidden] = useState<boolean|null>(false)
-
-    const [input, setInput] = useState<string>("")
-
-    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const filterMessagesBySenderOrReceiver = (messages: MessageType[], id: string): MessageType[] => {
         return messages.filter(message => message.senderID === id || message.receiverID === id);
     };
 
-    const [currentMessages, setCurrentMessages] = useState<MessageType[]>(filterMessagesBySenderOrReceiver(mockMessages, currentChat.userId))
-
-    const PfromChatPane = (clickedChat:User) => {
+    const PfromChatPane = (clickedChat:ChatType) => {
         setCurrentChat(clickedChat)
-        setCurrentMessages(filterMessagesBySenderOrReceiver(mockMessages, clickedChat.userId))
-        console.log(currentMessages)
+        try {
+
+        }catch (error){
+
+        }
+        setCurrentMessages(filterMessagesBySenderOrReceiver(mockMessages, clickedChat.interlocutor.userId))
     }
 
     const ChatPaneDisplayToggle = (status: boolean) => {
@@ -109,7 +109,7 @@ export default function Chat() {
             <div className={`${ChatPaneHidden === true? 'max-sm:hidden' : ''} w-full sm:max-w-max sm:basis-1/5 h-screen `}>
                 <ChatPane 
                     ChatPaneDisplayToggle={ChatPaneDisplayToggle}
-                    ChatPaneItems={mockChatPaneItems} 
+                    ChatPaneItems={chatsArray} 
                     fromChatPane = {PfromChatPane}>
 
                 </ChatPane>
@@ -129,7 +129,7 @@ export default function Chat() {
                         size='sm'
                         variant='ghost' />
 
-                    <span className=" text-white font-bold justify-center">{currentChat.username}</span>
+                    <span className=" text-white font-bold justify-center">{currentChat ? `${currentChat.interlocutor.username} - ${currentChat.listingInfo.title}` : ''}</span>
                 </Box>
 
                 <div className="bg-whitw=e flex-grow my-5 overflow-y-auto flex-wrap container mx-auto">
@@ -141,7 +141,7 @@ export default function Chat() {
                         <Textarea 
                             colorScheme='teal' 
                             onChange={(e) => setInput(e.target.value)} 
-                            placeholder={`Message ${currentChat.username}`}
+                            placeholder={currentChat ? `Message ${currentChat.interlocutor.username}` : 'Select a chat to start messaging'}
                             resize="none"
                             size="md"
                             

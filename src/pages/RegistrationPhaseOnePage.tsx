@@ -1,42 +1,75 @@
-import { Input } from "@chakra-ui/react";
-import { useState } from "react";
-import { useAuth } from "../utils/AuthContext";
+import { useState } from 'react';
+import { useAuth } from '../utils/AuthContext';
+import { Input,
+        FormControl,
+        FormLabel,
+        FormErrorMessage,
+        FormHelperText
+    } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
 
 export default function RegistrationPhaseOnePage() {
-  const [email, setEmail] = useState<string>("");
-  const navigate = useNavigate();
-  const { user, requestAccount } = useAuth();
+    const [email, setEmail] = useState<string>("");
+    const [isValid, setIsValid] = useState<boolean>(true);
+    const [isEmpty, setIsEmpty] = useState<boolean>(true);
+    const [isTouched, setIsTouched] = useState<boolean>(false);
+    const [statusBool, setStatusBool] = useState<boolean | null>(null);
 
-  const handleCreate = async () => {
-    requestAccount(
-      email,
-      "http://localhost:5173/unverified/signup-token/jwt?="
-    );
-  };
+    const navigate = useNavigate();
+    const { requestAccount } = useAuth();
 
-  return (
-    <>
-      <div className='flex flex-col justify-evenly h-full'>
-        <div className='flex flex-col px-3 pb-20'>
-          <span className='text-rt-dark-blue text-center text-xl md:text-2xl font-bold'>
-            Join the Green Movement on the UVic campus today!
-          </span>
-        </div>
+    function validateEmail(email: string): boolean {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email) && email.endsWith('@uvic.ca');
+    }
 
-        <div className='flex flex-col px-6 lg:px-10 xl:px-14'>
-          <span className='text-rt-dark-blue text-lg md:text-xl font-bold pt-4'>
-            Email Address*
-          </span>
-          <Input
-            variant='outline'
-            type='text'
-            placeholder=''
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </div>
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newEmail = e.target.value;
+        setEmail(newEmail);
+        setIsEmpty(newEmail === '');
+        setIsTouched(true);
+        setIsValid(validateEmail(newEmail));
+    };
+
+    const handleCreate = () =>{
+        if(isValid && !isEmpty){
+            setStatusBool(null);
+            requestAccount(email, "http://localhost:5173/unverified/signup-token/jwt?=");
+        } else {
+            setStatusBool(true);
+        } 
+    }
+
+    return (
+        <>
+            <div className="flex flex-col justify-evenly h-full">
+                <div className="flex flex-col px-3 pb-20">
+                    <span className="text-rt-dark-blue text-center text-xl md:text-2xl font-bold">
+                      Join the Green Movement on the UVic campus today!
+                    </span>
+                </div>
+
+                {statusBool? (<div className="text-red px-6 text-center">
+                                        Invalid email address. Please try again.
+                                      </div>) : ("") }
+
+                <div className="flex flex-col px-6 pb-5 xl:px-14">
+                    <FormControl isRequired isInvalid={(isEmpty || !isValid) && isTouched}>
+                        <FormLabel fontSize={[19,19,25,27]} textColor='rt-dark-blue'>Email Address</FormLabel>
+                        <Input 
+                          variant='outline'
+                          type='email'
+                          value={email}
+                          onChange={handleInputChange} />
+                        {isEmpty && isTouched ? (
+                            <FormErrorMessage>Email Address Required</FormErrorMessage>
+                        ): !isValid && isTouched ?(
+                            <FormErrorMessage>Must Be a Valid UVic Email Address</FormErrorMessage>
+                        ):(
+                            <FormHelperText></FormHelperText>
+                        )}
+                    </FormControl>  
+                </div> 
 
         <div className='flex flex-col justify-center items-center'>
           <div className='flex-col justify-center items-center'>

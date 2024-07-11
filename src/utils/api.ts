@@ -37,13 +37,12 @@ const fetchUser = async () => {
 
 const fetchBrowseListings = async (filterOptions:FilterOptions) => {
   let paramsString = "";
- 
+  
   Object.keys(filterOptions).forEach((key)=> {
     if (filterOptions[key] != '') {
       paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(filterOptions[key])}&`
     }
   })
-
 
   try {
     const response = await axios.get(`http://localhost:8080/listings/?${paramsString}`, 
@@ -159,7 +158,5 @@ const addReview = async (listingID: string | undefined, review: string, rating:n
       throw error;
   }
 };
-
-
 
 export { login, fetchUser, fetchBrowseListings, fetchSingleListing ,fetchMyListings,fetchListingReviews,fetchListingRating,addReview};

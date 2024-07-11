@@ -20,6 +20,7 @@ import RecoverPasswordPage from "./pages/RecoverPasswordPage";
 import RegistrationPhaseOnePage from "./pages/RegistrationPhaseOnePage";
 import RegistrationPhaseTwoPage from "./pages/RegistrationPhaseTwoPage";
 import NewPasswordPage from "./pages/NewPasswordPage";
+import VerificationSuccess from "./pages/VerificationSuccess";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
@@ -85,6 +86,12 @@ function App() {
                   path='signup-token/:jwt'
                   element={
                     <RegistrationPhaseTwoPage></RegistrationPhaseTwoPage>
+                  }
+                ></Route>
+                <Route
+                  path='success'
+                  element={
+                    <VerificationSuccess></VerificationSuccess>
                   }
                 ></Route>
                 <Route

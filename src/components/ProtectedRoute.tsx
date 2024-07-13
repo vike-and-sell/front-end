@@ -1,16 +1,23 @@
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
 import { useEffect } from "react";
 
 const ProtectedRoute = () => {
-    const { user, checkUserStatus} = useAuth()
-    
-    useEffect(() => {
-        checkUserStatus();
-    }, []);
+  const url = useLocation();
+  console.log(url);
+  const { user, checkUserStatus, isLoading } = useAuth();
 
-    return user? <Outlet/> : <Navigate to='/login'/>
+  useEffect(() => {
+    checkUserStatus();
+  }, []);
 
-}
+  if (isLoading) {
+    // You can return a loading spinner or some placeholder here
+    return <div>Loading before rendering the new screen...</div>;
+  }
 
-export default ProtectedRoute
+  return user ? <Outlet></Outlet> : <Navigate to="/login" />;
+  // return user ? <Navigate to={url.pathname} /> : <Navigate to="/login" />;
+};
+
+export default ProtectedRoute;

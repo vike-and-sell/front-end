@@ -3,8 +3,7 @@ import { useAuth } from "../utils/AuthContext";
 import { useEffect } from "react";
 
 const ProtectedRoute = () => {
-  const url = useLocation();
-  console.log(url);
+
   const { user, checkUserStatus, isLoading } = useAuth();
 
   useEffect(() => {

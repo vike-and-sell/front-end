@@ -9,9 +9,9 @@ export interface User {
 }
 
 export interface MessageType {
-  messageID: string;
-  messageContent: string;
-  senderID: string;
+  messageId: string;
+  content: string;
+  senderId: string;
   receiverID: string;
   timestamp: number;
 }
@@ -40,12 +40,6 @@ export interface LoginCredentials {
   password:string
 }
 
-export interface ReviewInfo {
-  username: string,
-  created_on: string,
-  review: string,
-}
-
 export interface AuthContextType {
   user: User | null;
   loginUser:  (username: string, password: string) => Promise<any>;
@@ -59,4 +53,13 @@ export interface AuthContextType {
 export interface SessionType {
   user:User
   expiration: number
+}
+
+export interface ChatType {
+  chatId: string
+  users: string[]
+  listingId: string
+  listingInfo: Listing
+  lastMessageTime: string
+  interlocutor: User
 }

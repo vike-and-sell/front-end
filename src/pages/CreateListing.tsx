@@ -1,6 +1,5 @@
 import PageHeading from "../components/PageHeading";
 import { useNavigate, useParams } from "react-router-dom";
-import { CreateListing, User } from "../utils/interfaces";
 import { FormControl,  FormErrorMessage, FormHelperText, FormLabel, Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react'
 import { useState, useEffect } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
@@ -15,9 +14,15 @@ export default function Edit () {
     const [ID, setID] = useState<Number>(0)
     const [location, setLocation] = useState<string>('')
     const [isTitleTouched, setIsTitleTouched] = useState<boolean>(false);
-    const [isCreated, setIsCreated] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
-    const [listingPayload, setListingPayload] = useState<CreateListing>();
+
+    const listingPayload = {
+        sellerId: ID,
+        title: title,
+        price: price === '' ? 0 : parseInt(price),
+        address: location,
+        status: "AVAILABLE"
+    };
     
     const isInvalidTitle  = isTitleTouched && title === ''
     
@@ -51,8 +56,8 @@ export default function Edit () {
                     withCredentials:true
                 }
             ).then( function (response) {
-                setIsCreated(true);
                 console.log("response " + response.status + " " + response.data + " " + response.statusText)
+                navigate(`/listing/${response.data.listingId}`)
             });
         } catch (error) {
             setIsError(true)
@@ -62,14 +67,6 @@ export default function Edit () {
 
     const handleCreate= () =>{
         setIsError(false);
-        setIsCreated(false);
-        setListingPayload({
-            sellerId: ID,
-            title: title,
-            price: price === '' ? 0 : parseInt(price),
-            address: location,
-            status: "AVAILABLE"
-        });
         createListing();
     }
 
@@ -87,7 +84,6 @@ export default function Edit () {
                                 onChange={(e) => {
                                     setTitle(e.target.value);
                                     setIsTitleTouched(true);
-                                    setIsCreated(false);
                                 }}
                                 type="text"
                             >
@@ -96,7 +92,7 @@ export default function Edit () {
                         </div>
                     </FormControl>
 
-                    <FormControl isRequired isInvalid={isInvalidPrice}>
+                    <FormControl isInvalid={isInvalidPrice}>
                         <div className="my-4 md:mr-80">
                             <FormLabel>Price</FormLabel>
                             <InputGroup>
@@ -106,8 +102,7 @@ export default function Edit () {
                                 <Input 
                                     value={price}
                                     onChange={(e) => {
-                                        setPrice(e.target.value); 
-                                        setIsCreated(false);
+                                        setPrice(e.target.value);
                                     }}
                                     type="number"  
                                 >
@@ -135,11 +130,6 @@ export default function Edit () {
                             
                         </div>
                     </FormControl>
-
-                    {isCreated? (
-                        <div className="text-pri-blue text-center text-xs sm:text-sm">
-                            Listing created!
-                        </div>) : ("") }    
 
                     {isError? (
                         <div className="text-red text-center text-xs sm:text-sm">

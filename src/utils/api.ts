@@ -1,23 +1,19 @@
 import axios from "axios";
-import { FilterOptions, LoginCredentials } from "./interfaces";
+import { FilterOptions } from "./interfaces";
 
 const fetchUser = async () => {
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/users/me`,
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error("Fetching user data failed");
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/users/me`,
+    {
+      withCredentials: true,
     }
+  );
 
-    return response.data;
-  } catch (error) {
-    throw error;
+  if (response.status !== 200) {
+    throw new Error("Fetching user data failed");
   }
+
+  return response.data;
 };
 
 const fetchBrowseListings = async (filterOptions: FilterOptions) => {
@@ -31,24 +27,20 @@ const fetchBrowseListings = async (filterOptions: FilterOptions) => {
     }
   });
 
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/listings/?${paramsString}`,
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error(
-        response.data?.message || "Fetching listings data failed..."
-      );
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/listings/?${paramsString}`,
+    {
+      withCredentials: true,
     }
+  );
 
-    return response.data;
-  } catch (error) {
-    throw error;
+  if (response.status !== 200) {
+    throw new Error(
+      response.data?.message || "Fetching listings data failed..."
+    );
   }
+
+  return response.data;
 };
 
 const fetchSingleListing = async (listingID: string | undefined) => {
@@ -110,21 +102,17 @@ const fetchListingReviews = async (listingID: string | undefined) => {
 };
 
 const fetchListingRating = async (listingID: string | undefined) => {
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/rating/${listingID}`,
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error(response.data?.message || "Failed to retrieve rating...");
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/rating/${listingID}`,
+    {
+      withCredentials: true,
     }
-    return response.data;
-  } catch (error) {
-    throw error;
+  );
+
+  if (response.status !== 200) {
+    throw new Error(response.data?.message || "Failed to retrieve rating...");
   }
+  return response.data;
 };
 
 const addReview = async (

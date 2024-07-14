@@ -9,9 +9,9 @@ export interface User {
 }
 
 export interface MessageType {
-  messageID: string;
-  messageContent: string;
-  senderID: string;
+  messageId: string;
+  content: string;
+  senderId: string;
   receiverID: string;
   timestamp: number;
 }

@@ -10,19 +10,14 @@ export default function Edit () {
 
     const navigate = useNavigate();
 
-    const [title, setTitle] = useState<string>("")
+    const [title, setTitle] = useState<string>('')
     const [price, setPrice] = useState<string>('')
-    const [ID, SetID] = useState<Number>(0)
+    const [ID, setID] = useState<Number>(0)
+    const [location, setLocation] = useState<string>('')
     const [isTitleTouched, setIsTitleTouched] = useState<boolean>(false);
     const [isCreated, setIsCreated] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
-    const [listingPayload, setListingPayload] = useState<CreateListing>({
-        sellerId: 1,
-        title: "",
-        price: 0,
-        address: "1145 Royal Oak Dr, Victoria, BC V8X 3T7",
-        status: "AVAILABLE"
-      });
+    const [listingPayload, setListingPayload] = useState<CreateListing>();
     
     const isInvalidTitle  = isTitleTouched && title === ''
     
@@ -30,18 +25,17 @@ export default function Edit () {
 
     const fetchUser = async ()=>{
         try{
-            const res = await axios.get('http://localhost:8080/users/me', 
+            const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/users/me`, 
                 {
                     withCredentials:true
                 }
             ).then( function (response) {
                 const newID = Number(response.data.userId)
-                SetID(newID)
-                console.log("response " + response.status + " " + response.data + " " + response.statusText)
+                setID(newID)
+                setLocation(response.data.location)
             })
         } catch (error) {
             console.log(error)
-            setIsError(true);
         }
 
     }
@@ -52,7 +46,7 @@ export default function Edit () {
 
     const createListing = async () =>{
         try{
-            const response = await axios.post('http://localhost:8080/listings/',
+            const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/listings/`,
                     listingPayload,{
                     withCredentials:true
                 }
@@ -73,7 +67,7 @@ export default function Edit () {
             sellerId: ID,
             title: title,
             price: price === '' ? 0 : parseInt(price),
-            address: "1145 Royal Oak Dr, Victoria, BC V8X 3T7",
+            address: location,
             status: "AVAILABLE"
         });
         createListing();
@@ -90,7 +84,11 @@ export default function Edit () {
                             <FormLabel>Title</FormLabel>
                             <Input 
                                 value={title}
-                                onChange={(e) => {setTitle(e.target.value); setIsTitleTouched(true);}}
+                                onChange={(e) => {
+                                    setTitle(e.target.value);
+                                    setIsTitleTouched(true);
+                                    setIsCreated(false);
+                                }}
                                 type="text"
                             >
                             </Input>
@@ -107,7 +105,10 @@ export default function Edit () {
                                 </InputLeftElement>
                                 <Input 
                                     value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
+                                    onChange={(e) => {
+                                        setPrice(e.target.value); 
+                                        setIsCreated(false);
+                                    }}
                                     type="number"  
                                 >
                                 </Input>

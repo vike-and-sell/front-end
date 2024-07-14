@@ -124,6 +124,7 @@ export default function Chat() {
                 <ChatPane 
                     ChatPaneDisplayToggle={ChatPaneDisplayToggle}
                     ChatPaneItems={chatsArray} 
+                    ChatPaneItems={chatsArray} 
                     fromChatPane = {PfromChatPane}>
 
                 </ChatPane>) }
@@ -161,6 +162,7 @@ export default function Chat() {
                         <Textarea 
                             colorScheme='teal' 
                             onChange={(e) => setInput(e.target.value)} 
+                            placeholder={currentChat ? `Message ${currentChat.interlocutor.username}` : 'Select a chat to start messaging'}
                             placeholder={currentChat ? `Message ${currentChat.interlocutor.username}` : 'Select a chat to start messaging'}
                             resize="none"
                             size="md"

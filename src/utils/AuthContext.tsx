@@ -192,6 +192,7 @@ export const AuthProvider = ({ children }: any) => {
       }
     } catch (error) {
       setUser(null);
+      setLoading(false);
       throw new Error("Unable to fetch user");
     }
   };
@@ -199,6 +200,7 @@ export const AuthProvider = ({ children }: any) => {
   const authData = {
     isLoading,
     user,
+    setLoading,
     loginUser,
     requestAccount,
     verifyAccount,

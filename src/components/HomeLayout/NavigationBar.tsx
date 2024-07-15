@@ -9,8 +9,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -34,7 +32,7 @@ function NavigationBar() {
         <CustomNavLink route='/mylistings/1' title='My Listings'>
           <FaListAlt></FaListAlt>
         </CustomNavLink>
-        <CustomNavLink route='/' title='My Profile'>
+        <CustomNavLink route='/mylistings/1' title='My Profile'>
           <CgProfile></CgProfile>
         </CustomNavLink>
         <CustomNavLink route='' title='My Messages' clickHandle={onOpen}>

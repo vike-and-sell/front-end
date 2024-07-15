@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
 import ErrorPage from "./ErrorPage";
-import { fetchSingleListing } from "../utils/api";
+import { fetchSingleListing, fetchUser } from "../utils/api";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import EditCreateSkeleton from "../components/Skeletons/EditCreateListingSkeleton";
@@ -34,14 +34,21 @@ export default function Edit() {
     queryFn: () => fetchSingleListing(listingID),
   });
 
+  // Fetch User Data
+  const { data: userData, isLoading: isUserDataLoading } = useQuery({
+    queryKey: ["userinfo"],
+    queryFn: fetchUser,
+    enabled: !listingInfo,
+  });
+
   // Used to load initial listingInfo data as a state (Can be refactored)
   useEffect(() => {
-    if (listingInfo) {
+    if (listingInfo && userData) {
       setTitle(listingInfo.title);
       setPrice(listingInfo.price);
       setStatus(listingInfo.status);
     }
-  }, [listingInfo]);
+  }, [listingInfo, userData]);
 
   if (isError) {
     return (
@@ -78,23 +85,33 @@ export default function Edit() {
       .catch((error) => console.error(error));
   };
 
-  return isLoading ? (
-    <EditCreateSkeleton></EditCreateSkeleton>
-  ) : (
+  if (isLoading || isUserDataLoading) {
+    return <EditCreateSkeleton></EditCreateSkeleton>;
+  }
+
+  if (listingInfo.sellerId != userData.userId) {
+    return (
+      <ErrorPage>
+        <div>Unauthorized Access</div>
+      </ErrorPage>
+    );
+  }
+
+  return (
     <>
-      <main className="px-4">
+      <main className='px-4'>
         <PageHeading title={"Edit Listing " + listingInfo.title}></PageHeading>
-        <div className="">
+        <div className=''>
           <FormControl isInvalid={isInvalidTitle}>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Title*</FormLabel>
               <Input
                 onChange={(e) => setTitle(e.target.value)}
-                type="text"
+                type='text'
                 value={title}
               ></Input>
               {isInvalidTitle ? (
-                <FormErrorMessage className="font-semibold">
+                <FormErrorMessage className='font-semibold'>
                   Title is required.
                 </FormErrorMessage>
               ) : (
@@ -104,24 +121,24 @@ export default function Edit() {
           </FormControl>
 
           <FormControl isInvalid={isInvalidPrice}>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Price*</FormLabel>
               <InputGroup>
                 <InputLeftElement
-                  pointerEvents="none"
-                  color="gray.300"
-                  fontSize="1.2em"
+                  pointerEvents='none'
+                  color='gray.300'
+                  fontSize='1.2em'
                 >
                   $
                 </InputLeftElement>
                 <Input
                   onChange={(e) => setPrice(parseInt(e.target.value))}
-                  type="number"
+                  type='number'
                   value={price}
                 ></Input>
               </InputGroup>
               {isInvalidPrice ? (
-                <FormErrorMessage className="font-semibold">
+                <FormErrorMessage className='font-semibold'>
                   Price is required.
                 </FormErrorMessage>
               ) : (
@@ -131,7 +148,7 @@ export default function Edit() {
           </FormControl>
 
           <FormControl>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Status*</FormLabel>
               <Select
                 className={`${
@@ -143,32 +160,32 @@ export default function Edit() {
                 defaultValue={listingInfo.status}
               >
                 <option
-                  className="text-green-700 font-semibold"
-                  value="AVAILABLE"
+                  className='text-green-700 font-semibold'
+                  value='AVAILABLE'
                 >
                   Available
                 </option>
-                <option className="text-invalid-red font-semibold" value="SOLD">
+                <option className='text-invalid-red font-semibold' value='SOLD'>
                   Sold
                 </option>
               </Select>
             </div>
           </FormControl>
 
-          <div className="my-5"></div>
+          <div className='my-5'></div>
 
           <FormControl>
-            <div className="my-5 flex">
+            <div className='my-5 flex'>
               <PriBlueButton
                 clickHandle={handleEdit}
                 isDisabled={isInvalidPrice || isInvalidTitle}
-                title="Save Changes"
+                title='Save Changes'
               ></PriBlueButton>
 
               <InverseBlueButton
                 clickHandle={() => navigate(-1)}
-                className="ml-4"
-                title="Cancel"
+                className='ml-4'
+                title='Cancel'
               ></InverseBlueButton>
             </div>
           </FormControl>

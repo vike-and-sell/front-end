@@ -1,4 +1,3 @@
-import PageHeading from "../components/PageHeading";
 import { FaArrowLeft } from "react-icons/fa6";
 import DefaultButton, {
   InvalidRedButton,
@@ -10,6 +9,7 @@ import { MdDoNotDisturb } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
   Button,
+  Badge,
   Menu,
   MenuButton,
   MenuList,
@@ -203,16 +203,25 @@ export default function IndividualListing() {
         </Modal>
       </div>
       <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
-        <div className='text-green-700 font-bold text-2xl'>
-          ${listingInfo.price}
+        <div className='flex items-center gap-3'>
+          <div className='text-green-700 font-bold text-2xl'>
+            ${listingInfo.price}
+          </div>
+          <Badge
+            colorScheme={`${
+              listingInfo.status == "AVAILABLE" ? "green" : "red"
+            }`}
+          >
+            {listingInfo.status}
+          </Badge>
         </div>
+
         <div className='text-sm'>
           {timeSincePost(listingInfo.listedAt)}
           <span className='font-bold'> {listingInfo.sellerId}</span>
         </div>
         <div className='flex gap-4'>
           <DefaultButton title='Message Seller'></DefaultButton>
-          <DefaultButton title='View Seller'></DefaultButton>
         </div>
       </div>
       <RatingSection

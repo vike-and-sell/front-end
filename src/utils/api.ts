@@ -16,6 +16,21 @@ const fetchUser = async () => {
   return response.data;
 };
 
+const fetchOtherUser = async (userId:string) => {
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/users/${userId}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  if (response.status !== 200) {
+    throw new Error("Fetching user data failed");
+  }
+
+  return response.data;
+};
+
 const fetchBrowseListings = async (filterOptions: FilterOptions) => {
   let paramsString = "";
 
@@ -151,6 +166,7 @@ const addReview = async (
 
 export {
   fetchUser,
+  fetchOtherUser,
   fetchBrowseListings,
   fetchSingleListing,
   fetchMyListings,

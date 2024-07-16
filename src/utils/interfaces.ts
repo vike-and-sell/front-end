@@ -63,3 +63,13 @@ export interface ChatType {
   lastMessageTime: string
   interlocutor: User
 }
+
+export interface Charity {
+  name: string,
+  status: "AVAILABLE" | "CLOSED",
+  fund : number,
+  logoUrl: string,
+  startDate: string,
+  endDate : string,
+  numListings : number
+}

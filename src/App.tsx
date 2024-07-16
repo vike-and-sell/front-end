@@ -27,6 +27,7 @@ const queryClient = new QueryClient();
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./utils/AuthContext";
 import MyListings from "./pages/MyListings";
+import CharityPage from "./pages/CharityPage";
 
 function App() {
   return (
@@ -36,47 +37,52 @@ function App() {
           <ChakraProvider>
             <Routes>
               <Route element={<ProtectedRoute />}>
-                <Route path="/" element={<HomeLayout />}>
+                <Route path='/' element={<HomeLayout />}>
                   <Route
-                    path="*"
+                    path='*'
                     element={<ErrorPage> Page Not Found</ErrorPage>}
                   />
-                  <Route index element={<Navigate to="/browse/1" />} />
+                  <Route index element={<Navigate to='/browse/1' />} />
                   <Route
-                    path="recomendations/:page"
+                    path='recomendations/:page'
                     element={<RecomendationsPage />}
                   />
-                  <Route path="browse/:page" element={<BrowsePage />} />
+                  <Route path='browse/:page' element={<BrowsePage />} />
                   <Route
-                    path="listing/:listingID"
+                    path='listing/:listingID'
                     element={<IndividualListingPage />}
                   />
-                  <Route path="chat" element={<Chat />} />
-                  <Route path="mylistings/:page" element={<MyListings />} />
-                  <Route path="create" element={<Create />} />
-                  <Route path="edit/:listingID" element={<Edit />} />
-                  <Route path="chat" element={<Chat />} />
+                  <Route path='chat' element={<Chat />} />
+                  <Route path='mylistings/:page' element={<MyListings />} />
+                  <Route path='create' element={<Create />} />
+                  <Route path='edit/:listingID' element={<Edit />} />
+                  <Route path='charity' element={<CharityPage />} />
+                  <Route
+                    path='charity/:charityName'
+                    element={<CharityPage />}
+                  />
+                  <Route path='chat' element={<Chat />} />
                 </Route>
               </Route>
 
-              <Route path="login" element={<LoginPage />} />
+              <Route path='login' element={<LoginPage />} />
               <Route
-                path="unverified/recover"
+                path='unverified/recover'
                 element={<RecoverPasswordPage />}
               />
 
-              <Route path="unverified" element={<RegistrationLayout />}>
+              <Route path='unverified' element={<RegistrationLayout />}>
                 <Route
-                  path="signup"
+                  path='signup'
                   index
                   element={<RegistrationPhaseOnePage />}
                 />
                 <Route
-                  path="signup-token/:jwt"
+                  path='signup-token/:jwt'
                   element={<RegistrationPhaseTwoPage />}
                 />
-                <Route path="success" element={<VerificationSuccess />} />
-                <Route path="reset/:jwt" element={<NewPasswordPage />} />
+                <Route path='success' element={<VerificationSuccess />} />
+                <Route path='reset/:jwt' element={<NewPasswordPage />} />
               </Route>
             </Routes>
           </ChakraProvider>

@@ -3,7 +3,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { FaListAlt } from "react-icons/fa";
 import { TbMessageCircle2Filled } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
-import { MdSell } from "react-icons/md";
+import { MdSell, MdOutlineHandshake } from "react-icons/md";
 import { FaShop } from "react-icons/fa6";
 import {
   Modal,
@@ -27,6 +27,9 @@ function NavigationBar() {
       <nav className='flex flex-col p-4 gap-4'>
         <CustomNavLink route='/browse/1' title='Browse'>
           <FaShop></FaShop>
+        </CustomNavLink>
+        <CustomNavLink route='/charity' title='Charities'>
+          <MdOutlineHandshake></MdOutlineHandshake>
         </CustomNavLink>
         <CustomNavLink route='/create' title='Create Listing'>
           <MdSell></MdSell>

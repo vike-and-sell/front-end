@@ -55,6 +55,7 @@ export default function SearchResultsPage() {
   } = useQuery({
     queryKey: [searchString, currentPage, filterOptions, searchListings],
     queryFn: () => fetchBrowseListings(filterOptions),
+    enabled: searchListings,
   });
 
   function handleNext() {
@@ -89,15 +90,15 @@ export default function SearchResultsPage() {
   }
   return (
     <>
-      <main className="px-4">
+      <main className='px-4'>
         <PageHeading title={`Results for "${searchString}"`}></PageHeading>
-        <div className="flex justify-between">
-          <div className="flex items-center gap-4">
+        <div className='flex justify-between'>
+          <div className='flex items-center gap-4'>
             <FilterListing
               filterOptions={filterOptions}
               setFilterOptions={setFilterOptions}
             ></FilterListing>
-            <div className="flex gap-2 text-sm">
+            <div className='flex gap-2 text-sm'>
               <button
                 className={`px-3 py-1 ${
                   searchListings
@@ -119,12 +120,14 @@ export default function SearchResultsPage() {
                 } rounded-full`}
                 onClick={() => {
                   if (!searchListings) return;
-                  queryClient.cancelQueries([
-                    searchString,
-                    currentPage,
-                    filterOptions,
-                    searchListings,
-                  ]);
+                  queryClient.cancelQueries({
+                    queryKey: [
+                      searchString,
+                      currentPage,
+                      filterOptions,
+                      searchListings,
+                    ],
+                  });
                   setSearchListings(false); // In theory this automatically triggers refresh / refetch
                 }}
               >

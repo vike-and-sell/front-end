@@ -79,23 +79,20 @@ export interface SearchResults {
 }
 
 export interface ChatType {
-  chatId: string
-  users: string[]
-  listingId: string
-  listingInfo: Listing
-  lastMessageTime: string
-  interlocutor: User
+  chatId: string;
+  users: string[];
+  listingId: string;
+  listingInfo: Listing;
+  lastMessageTime: string;
+  interlocutor: User;
 }
 
-<<<<<<< HEAD
-=======
 export interface Charity {
-  name: string,
-  status: "AVAILABLE" | "CLOSED",
-  fund : number,
-  logoUrl: string,
-  startDate: string,
-  endDate : string,
-  numListings : number
+  name: string;
+  status: "AVAILABLE" | "CLOSED";
+  fund: number;
+  logoUrl: string;
+  startDate: string;
+  endDate: string;
+  numListings: number;
 }
->>>>>>> b47faee (added basic charities page and charity page)

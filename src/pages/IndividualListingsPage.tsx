@@ -1,4 +1,3 @@
-import PageHeading from "../components/PageHeading";
 import { FaArrowLeft } from "react-icons/fa6";
 import DefaultButton, {
   InvalidRedButton,
@@ -10,6 +9,7 @@ import { MdDoNotDisturb } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
   Button,
+  Badge,
   Menu,
   MenuButton,
   MenuList,
@@ -26,10 +26,11 @@ import {
 import { useRef } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueries } from "@tanstack/react-query";
 import {
   fetchListingRating,
   fetchListingReviews,
+  fetchOtherUser,
   fetchSingleListing,
   fetchUser,
 } from "../utils/api";
@@ -75,11 +76,16 @@ export default function IndividualListing() {
     queryFn: () => fetchListingRating(listingID),
   });
 
-  // Fetch User Data
-  const { data: userData } = useQuery({
-    queryKey: ["userinfo"],
-    queryFn: fetchUser,
-    enabled: !listingInfo,
+  // Fetch User and Seller Info
+  const [userData, sellerData] = useQueries({
+    queries: [
+      { queryKey: ["userinfo"], queryFn: fetchUser, enabled: !listingInfo },
+      {
+        queryKey: ["sellerData"],
+        queryFn: () => fetchOtherUser(listingInfo.sellerId),
+        enabled: !listingInfo,
+      },
+    ],
   });
 
   // Error Screen for Listing Info
@@ -126,14 +132,25 @@ export default function IndividualListing() {
   const handleDelete = () => {};
   const handleDoNotRecommend = () => {};
 
+  // Check if all data is loaded
+  if (
+    isListingPending ||
+    isReviewPending ||
+    isRatingPending ||
+    userData.isLoading ||
+    sellerData.isLoading
+  ) {
+    return <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>;
+  }
+
   // Verifies User owns listing
   if (userData && listingInfo) {
-    if (userData.userId == listingInfo.sellerId) {
+    if (userData.data.userId == listingInfo.sellerId) {
       isUser = true;
     }
   }
 
-  return !isListingPending && !isReviewPending && !isRatingPending ? (
+  return (
     <main className='p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
       <div className='flex gap-2 items-center'>
         <button
@@ -203,16 +220,25 @@ export default function IndividualListing() {
         </Modal>
       </div>
       <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
-        <div className='text-green-700 font-bold text-2xl'>
-          ${listingInfo.price}
+        <div className='flex items-center gap-3'>
+          <div className='text-green-700 font-bold text-2xl'>
+            ${listingInfo.price}
+          </div>
+          <Badge
+            colorScheme={`${
+              listingInfo.status == "AVAILABLE" ? "green" : "red"
+            }`}
+          >
+            {listingInfo.status}
+          </Badge>
         </div>
+
         <div className='text-sm'>
           {timeSincePost(listingInfo.listedAt)}
-          <span className='font-bold'> {listingInfo.sellerId}</span>
+          <span className='font-bold'> {sellerData.data.username}</span>
         </div>
         <div className='flex gap-4'>
           <DefaultButton title='Message Seller'></DefaultButton>
-          <DefaultButton title='View Seller'></DefaultButton>
         </div>
       </div>
       <RatingSection
@@ -221,8 +247,6 @@ export default function IndividualListing() {
         ratings={ratings}
       ></RatingSection>
     </main>
-  ) : (
-    <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>
   );
 }
 

@@ -21,9 +21,12 @@ export default function Chat() {
     const forceUpdate = useCallback(() => updateState({}), []);
     const navigate = useNavigate();
 
-    const { user, checkUserStatus } = useAuth();
+    const auth = useAuth();
     useEffect(()=>{
-        checkUserStatus()
+        if (auth){
+            auth.checkUserStatus();
+        }
+        
         const fetchChats = async () => {
         try {
             const ChatIDResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, {
@@ -38,7 +41,7 @@ export default function Chat() {
                 });
 
                 const chatUsers: string[] = chatInfoResponse.data['users'];
-                const interlocutorId = chatUsers.filter((Id: string) => Id !== String(user.userId)).join("");
+                const interlocutorId = chatUsers.filter((Id: string) => auth?.user && Id !== String(auth.user.userId)).join("");
                 const interlocutorResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/users/${interlocutorId}`, {
                     withCredentials: true
                 });
@@ -124,7 +127,6 @@ export default function Chat() {
                 <ChatPane 
                     ChatPaneDisplayToggle={ChatPaneDisplayToggle}
                     ChatPaneItems={chatsArray} 
-                    ChatPaneItems={chatsArray} 
                     fromChatPane = {PfromChatPane}>
 
                 </ChatPane>) }
@@ -154,7 +156,7 @@ export default function Chat() {
                 </Box>
 
                 <div className="bg-whitw=e flex-grow my-5 overflow-y-auto flex-wrap container mx-auto">
-                    <Messages allMessages={currentMessages} user={user}/>
+                    {auth && auth.user && <Messages allMessages={currentMessages} user={auth.user}/>}
                 </div>
 
                 <div className="flex flex-wrap">
@@ -162,7 +164,6 @@ export default function Chat() {
                         <Textarea 
                             colorScheme='teal' 
                             onChange={(e) => setInput(e.target.value)} 
-                            placeholder={currentChat ? `Message ${currentChat.interlocutor.username}` : 'Select a chat to start messaging'}
                             placeholder={currentChat ? `Message ${currentChat.interlocutor.username}` : 'Select a chat to start messaging'}
                             resize="none"
                             size="md"

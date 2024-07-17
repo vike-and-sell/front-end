@@ -1,4 +1,4 @@
-import { useParams, useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
 import { useState } from 'react';
 import { Input,
@@ -32,7 +32,7 @@ export default function RegistrationPhaseTwoPage() {
     const [isLocationTouched, setIsLocationTouched] = useState<boolean>(false);
 
     const [statusBool, setStatusBool] = useState<boolean | null>(null);
-    const { verifyAccount } = useAuth();
+    const auth = useAuth();
     const location = useLocation();
 
     const token = new URLSearchParams(location.search).toString().substring(1);
@@ -41,9 +41,12 @@ export default function RegistrationPhaseTwoPage() {
         if(isValidPassLen && isValidPassSymbols && 
             isValidUserLen && isValidUserSymbols &&
             isValidConfPassword && !isEmptyLocation){
-              verifyAccount(token, username, password , userLocation)
+                if (auth){
+                    auth.verifyAccount(token, username, password , userLocation)
+                }
+              
             setStatusBool(null);
-            console.log('Sign-in successful');
+            console.log('Sign up successful');
         } else {
             setStatusBool(true);
         }

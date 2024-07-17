@@ -1,6 +1,7 @@
 import PageHeading from "../components/PageHeading";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -23,6 +24,7 @@ export default function Edit() {
   const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [status, setStatus] = useState<string>("");
+  const [forCharity, setForCharity] = useState<boolean>(true);
 
   const {
     data: listingInfo,
@@ -154,7 +156,7 @@ export default function Edit() {
                 className={`${
                   status === "AVAILABLE"
                     ? "text-green-700 font-semibold"
-                    : "text-invalid-red font-semibold"
+                    : "text-red font-semibold"
                 }`}
                 onChange={(e) => setStatus(e.target.value)}
                 defaultValue={listingInfo.status}
@@ -165,10 +167,44 @@ export default function Edit() {
                 >
                   Available
                 </option>
-                <option className='text-invalid-red font-semibold' value='SOLD'>
+                <option className='text-red font-semibold' value='SOLD'>
                   Sold
                 </option>
+                <option className='text-red font-semibold' value='REMOVED'>
+                  Removed
+                </option>
+                
               </Select>
+            </div>
+          </FormControl>
+
+          
+          <FormControl 
+            className={`${
+                  status === "SOLD"
+                    ? ""
+                    : "hidden"
+            }`}>
+              <div className="my-4">
+                <FormLabel>Select Buyer</FormLabel>
+                <Input
+                  placeholder="Search for the buyer's username"
+                />
+              </div>
+              
+          </FormControl>
+          
+
+          <FormControl>
+            <div className="my-4">
+            <FormLabel>Charity</FormLabel>
+              
+              <Checkbox 
+                isChecked={forCharity}
+                onChange={(e) => setForCharity(e.target.checked)} 
+                size='md' >
+                  I'd like to donate the earnings from this listing to charity {forCharity}
+                </Checkbox>
             </div>
           </FormControl>
 

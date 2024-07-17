@@ -1,7 +1,5 @@
 import PageHeading from "../components/PageHeading";
 import { useNavigate, useParams } from "react-router-dom";
-import { getListingInfoFromID } from "../utils/FakeListingsMock";
-import { Listing } from "../utils/interfaces";
 import {
   FormControl,
   FormErrorMessage,
@@ -14,9 +12,10 @@ import {
 import { useEffect, useState } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
 import ErrorPage from "./ErrorPage";
-import { fetchSingleListing } from "../utils/api";
+import { fetchSingleListing, fetchUser } from "../utils/api";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import EditCreateSkeleton from "../components/Skeletons/EditCreateListingSkeleton";
 
 export default function Edit() {
   const navigate = useNavigate();
@@ -28,19 +27,28 @@ export default function Edit() {
   const {
     data: listingInfo,
     isError,
+    isLoading,
     error,
   } = useQuery({
     queryKey: [listingID],
     queryFn: () => fetchSingleListing(listingID),
   });
 
+  // Fetch User Data
+  const { data: userData, isLoading: isUserDataLoading } = useQuery({
+    queryKey: ["userinfo"],
+    queryFn: fetchUser,
+    enabled: !listingInfo,
+  });
+
+  // Used to load initial listingInfo data as a state (Can be refactored)
   useEffect(() => {
-    if (listingInfo) {
+    if (listingInfo && userData) {
       setTitle(listingInfo.title);
       setPrice(listingInfo.price);
       setStatus(listingInfo.status);
     }
-  }, [listingInfo]);
+  }, [listingInfo, userData]);
 
   if (isError) {
     return (
@@ -59,7 +67,7 @@ export default function Edit() {
   const handleEdit = async () => {
     axios
       .patch(
-        `http://localhost:8080/listings/${listingID}`,
+        `${import.meta.env.VITE_REACT_APP_API_URL}/listings/${listingID}`,
         {
           title,
           price,
@@ -76,6 +84,18 @@ export default function Edit() {
       })
       .catch((error) => console.error(error));
   };
+
+  if (isLoading || isUserDataLoading) {
+    return <EditCreateSkeleton></EditCreateSkeleton>;
+  }
+
+  if (listingInfo.sellerId != userData.userId) {
+    return (
+      <ErrorPage>
+        <div>Unauthorized Access</div>
+      </ErrorPage>
+    );
+  }
 
   return (
     <>

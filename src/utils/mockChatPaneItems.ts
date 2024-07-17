@@ -2,21 +2,30 @@ import { User} from "./interfaces";
 
 export const mockChatPaneItems:User[] = [
     {
-        userID: "2",
+        userId: "2",
         username: "joby",
-        email: "joby@uvic.ca",
+        location: "V9B",
+        joiningDate: "2024-05-24T02:19:32.816610", 
+        itemsSold: [],
+        itemsPurchased: [],
         current: false
     },
     {
-        userID: "3",
+        userId: "3",
         username: "joby2",
-        email: "joby2@uvic.ca",
+        location: "V9A",
+        joiningDate: "2024-05-24T02:19:32.816610", 
+        itemsSold: [],
+        itemsPurchased: [],
         current: false
     },
     {
-        userID: "4",
+        userId: "4",
         username: "joby3",
-        email: "joby3@uvic.ca",
+        location: "V8T",
+        joiningDate: "2024-05-24T02:19:32.816610", 
+        itemsSold: [],
+        itemsPurchased: [],
         current: false
     }
 ]

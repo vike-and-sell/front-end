@@ -1,14 +1,17 @@
 export interface User {
-  userID: string;
+  userId: string;
   username: string;
-  email: string;
+  location: string;
+  joiningDate: string;
+  itemsSold: string[]
+  itemsPurchased: string[]
   current?: boolean;
 }
 
 export interface MessageType {
-  messageID: string;
-  messageContent: string;
-  senderID: string;
+  messageId: string;
+  content: string;
+  senderId: string;
   receiverID: string;
   timestamp: number;
 }
@@ -35,4 +38,28 @@ export interface FilterOptions {
 export interface LoginCredentials {
   username:string,
   password:string
+}
+
+export interface AuthContextType {
+  user: User | null;
+  loginUser:  (username: string, password: string) => Promise<any>;
+  requestAccount: (email: string, callback: string) => Promise<void>;
+  verifyAccount: (jwt: string, username: string, password: string, location: string) => Promise<void>;
+  requestReset: (email: string, callback: string) => Promise<void>;
+  verifyReset: (jwt: string, password: string) => Promise<void>;
+  checkUserStatus: () => Promise<void>;
+}
+
+export interface SessionType {
+  user:User
+  expiration: number
+}
+
+export interface ChatType {
+  chatId: string
+  users: string[]
+  listingId: string
+  listingInfo: Listing
+  lastMessageTime: string
+  interlocutor: User
 }

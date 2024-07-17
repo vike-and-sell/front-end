@@ -1,26 +1,27 @@
 import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AuthContextType, SessionType, User } from "./interfaces";
 
-const AuthContext = createContext();
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: any) => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<any>(null);
-  const [isLoading, setLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    //setLoading(false)
+    setLoading(true);
     checkUserStatus();
   }, []);
 
   const loginUser = async (username: string, password: string) => {
     try {
-      const res = await axios
+      await axios
         .post(
-          "http://localhost:8080/login",
+          `${import.meta.env.VITE_REACT_APP_API_URL}/login`,
           {
             username: username,
             password: password,
@@ -29,33 +30,28 @@ export const AuthProvider = ({ children }: any) => {
             withCredentials: true,
           }
         )
-        .then(function (response) {
-          console.log(
-            "response " +
-              response.status +
-              " " +
-              response.data +
-              " " +
-              response.statusText
-          );
-
-          setUser(true);
+        .then((response) => {
+          if (response.status !== 200) {
+            setUser(null);
+            throw new Error(
+              `Unable to login. Please try again later ${response.status}`
+            );
+          }
+          checkUserStatus();
+          console.log("refresh + forced login");
           navigate("/");
         });
     } catch (error) {
-
-      console.log(error);
-
       setUser(null);
+      throw new Error("Unable to login. Please try again later");
     }
   };
 
-
   const requestAccount = async (email: string, callback: string) => {
     try {
-      const res = await axios
+      await axios
         .post(
-          "http://localhost:8080/request_account",
+          `${import.meta.env.VITE_REACT_APP_API_URL}/request_account`,
           {
             email: email,
             callback: callback,
@@ -86,9 +82,9 @@ export const AuthProvider = ({ children }: any) => {
     location: string
   ) => {
     try {
-      const res = await axios
+      await axios
         .post(
-          "http://localhost:8080/verify_account",
+          `${import.meta.env.VITE_REACT_APP_API_URL}/verify_account`,
           {
             jwt: jwt,
             username: username,
@@ -102,7 +98,7 @@ export const AuthProvider = ({ children }: any) => {
         .then(function (response) {
           console.log(response.status);
           if (response.status == 201) {
-            navigate("/login");
+            navigate("/unverified/success");
           }
           console.log(
             "response " +
@@ -119,43 +115,92 @@ export const AuthProvider = ({ children }: any) => {
   };
 
   const requestReset = async (email: string, callback: string) => {
-    // try{
-    //     const res = await axios.post('http://localhost:8080/request_reset',
-    //         {
-    //             email:email,
-    //             callback:callback
-    //         },{
-    //             withCredentials:false
-    //         }
-    //     ).then( function (response) {
-    //         console.log("response " + response.status + " " + response.data + " " + response.statusText)
-    //     })
-    // } catch (error) {
-    //     console.log(error)
-    // }
+    try {
+      await axios
+        .post(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/request_reset`,
+          {
+            email: email,
+            callback: callback,
+          },
+          {
+            withCredentials: false,
+          }
+        )
+        .then(function (response) {
+          console.log(
+            "response " +
+              response.status +
+              " " +
+              response.data +
+              " " +
+              response.statusText
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const verifyReset = async (jwt: string, password: string) => {
-    // try{
-    //     const res = await axios.post('http://localhost:8080/verify_reset',
-    //         {
-    //             jwt:jwt,
-    //             password:password,
-    //         },{
-    //             withCredentials:false
-    //         }
-    //     ).then( function (response) {
-    //         console.log("response " + response.status + " " + response.data + " " + response.statusText)
-    //     })
-    // } catch (error) {
-    //     console.log(error)
-    // }
+    try {
+      await axios
+        .post(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/verify_reset`,
+          {
+            jwt: jwt,
+            password: password,
+          },
+          {
+            withCredentials: false,
+          }
+        )
+        .then(function (response) {
+          console.log(
+            "response " +
+              response.status +
+              " " +
+              response.data +
+              " " +
+              response.statusText
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const checkUserStatus = async () => {};
+  const checkUserStatus = async () => {
+    try {
+      const response = await axios.get<User>(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/users/me`,
+        {
+          withCredentials: true,
+        }
+      );
+      setLoading(false);
+      if (response.status == 401) {
+        setUser(null);
+        navigate("/login");
+        return;
+      }
+
+      if (response.data) {
+        setUser(response.data);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      setUser(null);
+      setLoading(false);
+      throw new Error("Unable to fetch user");
+    }
+  };
 
   const authData = {
+    isLoading,
     user,
+    setLoading,
     loginUser,
     requestAccount,
     verifyAccount,
@@ -164,20 +209,9 @@ export const AuthProvider = ({ children }: any) => {
     checkUserStatus,
   };
 
-
   return (
     <AuthContext.Provider value={authData}>
-      {isLoading ? (
-        <Spinner
-          thickness='4px'
-          speed='0.65s'
-          emptyColor='gray.200'
-          color='blue.500'
-          size='xl'
-        />
-      ) : (
-        children
-      )}
+      {isLoading ? <div>Loading</div> : children}
     </AuthContext.Provider>
   );
 };

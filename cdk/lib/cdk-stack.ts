@@ -93,7 +93,7 @@ export class CdkStack extends Stack {
     });
 
     new BucketDeployment(this, `VasBucketDeployment-${props.stage}`, {
-      sources: [Source.asset("../build")],
+      sources: [Source.asset("../dist")],
       destinationBucket: bucket,
       distribution,
       distributionPaths: ["/*"],

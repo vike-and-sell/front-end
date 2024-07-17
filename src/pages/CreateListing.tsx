@@ -1,6 +1,6 @@
 import PageHeading from "../components/PageHeading";
-import { useNavigate, useParams } from "react-router-dom";
-import { FormControl,  FormErrorMessage, FormHelperText, FormLabel, Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react'
+import { useNavigate } from "react-router-dom";
+import { FormControl,  FormErrorMessage, FormLabel, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { useState, useEffect } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
 import axios from "axios";
@@ -30,7 +30,7 @@ export default function Edit () {
 
     const fetchUser = async ()=>{
         try{
-            const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/users/me`, 
+            await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/users/me`, 
                 {
                     withCredentials:true
                 }
@@ -51,7 +51,7 @@ export default function Edit () {
 
     const createListing = async () =>{
         try{
-            const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/listings/`,
+            await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/listings/`,
                     listingPayload,{
                     withCredentials:true
                 }

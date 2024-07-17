@@ -5,7 +5,7 @@ import { Input,
         FormErrorMessage,
         FormHelperText
     } from '@chakra-ui/react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
 
 export default function NewPasswordPage() {
@@ -20,14 +20,18 @@ export default function NewPasswordPage() {
 
     const location = useLocation();
 
-    const { verifyReset } = useAuth()
+    const auth = useAuth()
 
     const token = new URLSearchParams(location.search).toString().substring(1);
 
     const onReset = ()=> {
         if(isValidPassLen && isValidPassSymbols && isValidConfPassword){
             setStatusBool(null);
-            verifyReset(token, password)
+
+            if (auth){
+                auth.verifyReset(token, password)
+            }
+            
         } else {
             setStatusBool(true);
         }

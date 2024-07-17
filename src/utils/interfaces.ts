@@ -33,6 +33,7 @@ export interface FilterOptions {
   isDescending?: boolean;
   status?: "SOLD" | "AVAILABLE" | "";
   sortBy?: "price" | "created_on" | "location" | "";
+  [key: string]: string | boolean | undefined;
 }
 
 export interface LoginCredentials {
@@ -48,6 +49,7 @@ export interface AuthContextType {
   requestReset: (email: string, callback: string) => Promise<void>;
   verifyReset: (jwt: string, password: string) => Promise<void>;
   checkUserStatus: () => Promise<void>;
+  isLoading: boolean;
 }
 
 export interface SessionType {

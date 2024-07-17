@@ -75,6 +75,13 @@ export class CdkStack extends Stack {
         defaultRootObject: "index.html",
         domainNames: [props.frontendDomain],
         minimumProtocolVersion: SecurityPolicyProtocol.TLS_V1_2_2021,
+        errorResponses: [
+          {
+            httpStatus: 403,
+            responseHttpStatus: 403,
+            responsePagePath: "/index.html",
+          },
+        ],
         defaultBehavior: {
           origin: new S3Origin(bucket, {
             originAccessIdentity: cloudfrontOAI,

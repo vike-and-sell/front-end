@@ -40,7 +40,7 @@ function NavigationBar() {
         </CustomNavLink>
         <CustomNavLink
           data-cy="my-profile-nav"
-          route="/mylistings/1"
+          route="/myprofile"
           title="My Profile"
         >
           <CgProfile></CgProfile>

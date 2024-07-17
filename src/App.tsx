@@ -30,6 +30,7 @@ import { AuthProvider } from "./utils/AuthContext";
 import MyListings from "./pages/MyListings";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import CharityPage from "./pages/CharityPage";
+import MyHistory from "./pages/MyHistory";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
                   />
                   <Route path="chat" element={<Chat />} />
                   <Route path="mylistings/:page" element={<MyListings />} />
+                  <Route path="myprofile" element={<MyHistory/>} />
                   <Route path="create" element={<Create />} />
                   <Route path="edit/:listingID" element={<Edit />} />
                   <Route path="charity" element={<CharityPage />} />

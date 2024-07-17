@@ -21,5 +21,5 @@ jobs:
         run: npm install
         working-directory: cdk
       - name: Deploy prod stack
-        run: npx cdk deploy -prod --require-approval never
+        run: npx cdk deploy VasFrontend-prod --require-approval never
         working-directory: cdk

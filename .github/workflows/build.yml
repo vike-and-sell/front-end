@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VITE_REACT_APP_API_URL: "https://gw.vikeandsell.ca"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3

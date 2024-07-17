@@ -16,7 +16,7 @@ export default function RegistrationPhaseOnePage() {
     const [statusBool, setStatusBool] = useState<boolean | null>(null);
 
     const navigate = useNavigate();
-    const { requestAccount } = useAuth();
+    const auth = useAuth();
 
     function validateEmail(email: string): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -34,7 +34,10 @@ export default function RegistrationPhaseOnePage() {
     const handleCreate = () =>{
         if(isValid && !isEmpty){
             setStatusBool(null);
-            requestAccount(email, "http://localhost:5173/unverified/signup-token/jwt?=");
+            if (auth){
+              auth.requestAccount(email, "http://localhost:5173/unverified/signup-token/jwt?=");
+            }
+            
         } else {
             setStatusBool(true);
         } 

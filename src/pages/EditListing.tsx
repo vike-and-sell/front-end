@@ -51,10 +51,10 @@ export default function Edit() {
   }, [listingInfo, userData]);
 
   if (isError) {
+    const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.message : error.message;
     return (
       <ErrorPage>
-        <div>{error.message}</div>
-        <div>{error.response?.data.message}</div>
+        <div>{errorMessage}</div>
       </ErrorPage>
     );
   }

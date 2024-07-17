@@ -15,7 +15,7 @@ export default function RecomendationsPage() {
   const navigate = useNavigate();
   const defaultListings: Listing[] = getListingIDs(); // MOCKING
   const [currentPage, setCurrentPage] = useState(page ? +page : 1);
-  const [listings, setListings] = useState<Listing[]>(defaultListings); // This will get replaced
+  const [listings,] = useState<Listing[]>(defaultListings); // This will get replaced
   const totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
 
   useEffect(() => {

@@ -8,8 +8,6 @@ interface RatingSectionProps {
   ratings: [];
 }
 
-type ItemStatus = "" | "SOLD" | "AVAILABLE" | undefined;
-
 export default function RatingSection({
   reviews,
   listingId,

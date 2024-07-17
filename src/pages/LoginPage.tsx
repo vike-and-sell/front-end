@@ -2,13 +2,11 @@ import {FormControl,
         FormErrorMessage,
         FormHelperText,
         FormLabel,
-        Input,
-        InputGroup 
+        Input 
 } from '@chakra-ui/react';
 import LoginHeading from "../components/LoginHeading";
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
 
 export default function LoginPage() {
@@ -24,22 +22,25 @@ export default function LoginPage() {
 
     const navigate = useNavigate()
 
-    const { user, loginUser, checkUserStatus} = useAuth()
+    const auth = useAuth()
 
     useEffect(()=> {
         //checkUserStatus()
-        if(user){
+        if(auth && auth.user){
             navigate('/')
         }
-    }, [user])
+    }, [auth, auth?.user])
 
     const onSignIn = async() =>{
         if(isValidPassLen && isValidPassSymbols && isPasswordTouched &&
             isValidUserLen && isValidUserSymbols && isUserTouched 
         ){
-            loginUser(username, password)
-            setStatusBool(null);
-            console.log('Sign-in successful');
+            if (auth){
+                await auth.loginUser(username, password)
+                setStatusBool(null);
+                console.log('Sign-in successful');
+            }
+            
         } else {
             setStatusBool(true);
         }

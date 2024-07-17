@@ -35,9 +35,10 @@ const fetchBrowseListings = async (filterOptions: FilterOptions) => {
   let paramsString = "";
 
   Object.keys(filterOptions).forEach((key) => {
-    if (filterOptions[key] != "") {
+    const filter = filterOptions[key]
+    if (filter !== undefined && filter !== "") {
       paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(
-        filterOptions[key]
+        String(filter)
       )}&`;
     }
   });

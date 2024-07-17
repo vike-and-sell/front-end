@@ -35,6 +35,7 @@ import {
   fetchUser,
 } from "../utils/api";
 import ErrorPage from "./ErrorPage";
+import axios from "axios";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
@@ -90,40 +91,30 @@ export default function IndividualListing() {
 
   // Error Screen for Listing Info
   if (isError) {
+    const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.message : error.message;
     return (
       <ErrorPage>
-        <div>{error.message}</div>
-        <div>{error.response?.data.message}</div>
+        <div>{errorMessage}</div>
       </ErrorPage>
     );
   }
 
   // Error Screen for Review
   if (isReviewError) {
+    const reviewErrorMessage = axios.isAxiosError(reviewError) && reviewError.response ? reviewError.response.data.message : reviewError.message;
     return (
       <ErrorPage>
-        <div>{reviewError.message}</div>
-        <div>{reviewError.response?.data.message}</div>
-      </ErrorPage>
-    );
-  }
-
-  // Error Screen for Review
-  if (isReviewError) {
-    return (
-      <ErrorPage>
-        <div>{reviewError.message}</div>
-        <div>{reviewError.response?.data.message}</div>
+        <div>{reviewErrorMessage}</div>
       </ErrorPage>
     );
   }
 
   // Error Screen for Rating
   if (isRatingError) {
+    const ratingErrorMessage = axios.isAxiosError(ratingError) && ratingError.response ? ratingError.response.data.message : ratingError.message;
     return (
       <ErrorPage>
-        <div>{ratingError.message}</div>
-        <div>{ratingError.response?.data.message}</div>
+        <div>{ratingErrorMessage}</div>
       </ErrorPage>
     );
   }

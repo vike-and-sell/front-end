@@ -205,7 +205,7 @@ function FilterMenu({
               clickHandle={clearFilterOptions}
             ></DefaultFillButton>
             <DefaultFillButton
-              title='Submit'
+              title='Apply'
               clickHandle={submitFilterOptions}
             ></DefaultFillButton>
           </div>

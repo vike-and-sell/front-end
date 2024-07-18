@@ -1,6 +1,7 @@
 import PageHeading from "../components/PageHeading";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  Avatar,
   Checkbox,
   FormControl,
   FormErrorMessage,
@@ -9,6 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   Select,
+  Text
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
@@ -17,6 +19,16 @@ import { fetchSingleListing, fetchUser } from "../utils/api";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import EditCreateSkeleton from "../components/Skeletons/EditCreateListingSkeleton";
+import {
+  AutoComplete,
+  AutoCompleteCreatable,
+  AutoCompleteGroup,
+  AutoCompleteInput,
+  AutoCompleteItem,
+  AutoCompleteList,
+} from "@choc-ui/chakra-autocomplete";
+import { useAuth } from "../utils/AuthContext";
+import { User } from "../utils/interfaces";
 
 export default function Edit() {
   const navigate = useNavigate();
@@ -24,7 +36,48 @@ export default function Edit() {
   const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [status, setStatus] = useState<string>("");
-  const [forCharity, setForCharity] = useState<boolean>(true);
+  const [forCharity, setForCharity] = useState<boolean>(false);
+  const [buyersArray, setBuyersArray] = useState<User[]>([]);
+
+  const auth = useAuth();
+
+  useEffect(()=>{
+    if (auth){
+        auth.checkUserStatus();
+    }
+    
+    const fetchChats = async () => {
+    try {
+        const ChatIDResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, {
+            withCredentials: true
+        });
+
+        const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
+
+        const BuyerInfoArray: User[] = await Promise.all(chatIDs.map(async (chatId: number) => {
+            const chatInfoResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats/${chatId}`, {
+                withCredentials: true
+            });
+
+            const chatUsers: string[] = chatInfoResponse.data['users'];
+            const interlocutorId = chatUsers.filter((Id: string) => auth?.user && Id !== String(auth.user.userId)).join("");
+            const interlocutorResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/users/${interlocutorId}`, {
+                withCredentials: true
+            });
+
+
+            return interlocutorResponse.data;
+        }));
+
+        setBuyersArray(BuyerInfoArray);
+    } catch (error) {
+        console.error("Unable to fetch chats:", error);
+    }
+  }
+
+  fetchChats();
+  }, [])
+
 
   const {
     data: listingInfo,
@@ -64,6 +117,10 @@ export default function Edit() {
   const isInvalidTitle = title === "";
 
   const isInvalidPrice = Number.isNaN(price);
+
+  const getUniqueBuyers = (buyers:User[]) => {
+    return buyers.filter((buyer, index, self) => index === self.findIndex((duplicateBuyer) => ( duplicateBuyer.userId === buyer.userId)))
+  }
 
   // Handle edit actually makes the changes
   const handleEdit = async () => {
@@ -187,9 +244,25 @@ export default function Edit() {
             }`}>
               <div className="my-4">
                 <FormLabel>Select Buyer</FormLabel>
-                <Input
-                  placeholder="Search for the buyer's username"
-                />
+                <AutoComplete rollNavigation creatable>
+                  <AutoCompleteInput placeholder="Search..." />
+                  <AutoCompleteList>
+                    <AutoCompleteGroup title="" showDivider>
+                      {getUniqueBuyers(buyersArray).map((buyer:User, index:number) => (
+                        <AutoCompleteItem
+                          key={`${index}`}
+                          value={buyer.username}
+                          textTransform="capitalize"
+                          align="center"
+                        >
+                          <Avatar size="sm" name={buyer.username} />
+                          <Text ml="4">{buyer.username}</Text>
+                        </AutoCompleteItem>
+                      ))}
+                    </AutoCompleteGroup>
+                    <AutoCompleteCreatable></AutoCompleteCreatable>
+                  </AutoCompleteList>
+                </AutoComplete>
               </div>
               
           </FormControl>

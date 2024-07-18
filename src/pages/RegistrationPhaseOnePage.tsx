@@ -35,7 +35,7 @@ export default function RegistrationPhaseOnePage() {
         if(isValid && !isEmpty){
             setStatusBool(null);
             if (auth){
-              auth.requestAccount(email, "http://localhost:5173/unverified/signup-token/jwt?=");
+              auth.requestAccount(email, `${location.origin}/unverified/signup-token/jwt?=`);
             }
             
         } else {

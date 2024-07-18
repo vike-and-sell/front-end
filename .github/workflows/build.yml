@@ -1,0 +1,22 @@
+name: Run vite build
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VITE_REACT_APP_API_URL: "https://gw.vikeandsell.ca"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+      - name: Install frontend dependencies
+        run: npm install
+      - name: Build frontend
+        run: npm run build

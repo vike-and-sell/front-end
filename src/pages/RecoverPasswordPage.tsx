@@ -22,7 +22,7 @@ export default function RecoverPasswordPage() {
         if(isValid){
             setStatusBool(null);
             if (auth){
-                auth.requestReset(email, "http://localhost:5173/unverified/reset/jwt?=") 
+                auth.requestReset(email, `${location.origin}/unverified/reset/jwt?=`) 
             }
             
         } else {

@@ -1,9 +1,10 @@
 import PageHeading from "../components/PageHeading";
 import { useNavigate } from "react-router-dom";
-import { FormControl,  FormErrorMessage, FormLabel, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
+import { Checkbox, FormControl,  FormErrorMessage, FormLabel, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { useState, useEffect } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
 import axios from "axios";
+
 
 export default function Edit () {
 
@@ -15,6 +16,8 @@ export default function Edit () {
     const [location, setLocation] = useState<string>('')
     const [isTitleTouched, setIsTitleTouched] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
+    const [forCharity, setForCharity] = useState<boolean>(false);
+    
 
     const listingPayload = {
         sellerId: ID,
@@ -109,6 +112,19 @@ export default function Edit () {
                                 </Input>
                             </InputGroup>
                             {isInvalidPrice ? (<FormErrorMessage className="font-semibold">Price is required.</FormErrorMessage>) : ('')} 
+                        </div>
+                    </FormControl>
+
+                    <FormControl>
+                        <div className="my-4">
+                        <FormLabel>Charity</FormLabel>
+                        
+                        <Checkbox 
+                            isChecked={forCharity}
+                            onChange={(e) => setForCharity(e.target.checked)} 
+                            size='md' >
+                            I'd like to donate the earnings from this listing to charity {forCharity}
+                            </Checkbox>
                         </div>
                     </FormControl>
 

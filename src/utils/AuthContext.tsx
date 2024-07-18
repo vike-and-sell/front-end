@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContextType, User } from "./interfaces";
+import LoadingPage from "../pages/LoadingPage";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -210,7 +211,7 @@ export const AuthProvider = ({ children }: any) => {
 
   return (
     <AuthContext.Provider value={authData}>
-      {isLoading ? <div>Loading</div> : children}
+      {isLoading ? <LoadingPage></LoadingPage> : children}
     </AuthContext.Provider>
   );
 };

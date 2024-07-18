@@ -38,6 +38,7 @@ export default function Edit() {
   const [status, setStatus] = useState<string>("");
   const [forCharity, setForCharity] = useState<boolean>(false);
   const [buyersArray, setBuyersArray] = useState<User[]>([]);
+  const [buyerUsername, setBuyerUsername] = useState<string>("");
 
   const auth = useAuth();
 
@@ -245,7 +246,11 @@ export default function Edit() {
               <div className="my-4">
                 <FormLabel>Select Buyer</FormLabel>
                 <AutoComplete rollNavigation creatable>
-                  <AutoCompleteInput placeholder="Search..." />
+                  <AutoCompleteInput 
+                    defaultValue={buyerUsername} 
+                    placeholder="Search..." 
+                    onChange={(e) => setBuyerUsername(e.target.value)}
+                  />
                   <AutoCompleteList>
                     <AutoCompleteGroup title="" showDivider>
                       {getUniqueBuyers(buyersArray).map((buyer:User, index:number) => (

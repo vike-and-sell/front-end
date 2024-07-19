@@ -28,7 +28,7 @@ const fetchBrowseListings = async (filterOptions: FilterOptions) => {
   });
 
   const response = await axios.get(
-    `${import.meta.env.VITE_REACT_APP_API_URL}listings/?${paramsString}`,
+    `${import.meta.env.VITE_REACT_APP_API_URL}/listings?${paramsString}`,
     {
       withCredentials: true,
     }

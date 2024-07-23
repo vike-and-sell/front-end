@@ -28,7 +28,8 @@ export default function RegistrationPhaseTwoPage() {
     const [isConfPasswordTouched, setIsConfPasswordTouched] = useState<boolean>(false);
 
     const [userLocation, setUserLocation] = useState("");
-    const isEmptyLocation = userLocation === "";
+    const locationRegex = /^[A-Za-z]\d[A-Za-z][ ]?\d[A-Za-z]\d$/;
+    const isValidLocation = locationRegex.test(userLocation);
     const [isLocationTouched, setIsLocationTouched] = useState<boolean>(false);
 
     const [statusBool, setStatusBool] = useState<boolean | null>(null);
@@ -40,9 +41,9 @@ export default function RegistrationPhaseTwoPage() {
     const onSignUp = async() =>{
         if(isValidPassLen && isValidPassSymbols && 
             isValidUserLen && isValidUserSymbols &&
-            isValidConfPassword && !isEmptyLocation){
+            isValidConfPassword && isValidLocation){
                 if (auth){
-                    auth.verifyAccount(token, username, password , userLocation)
+                    auth.verifyAccount(token, username, password , userLocation.substring(0,3))
                 }
               
             setStatusBool(null);
@@ -92,7 +93,7 @@ export default function RegistrationPhaseTwoPage() {
                         <Input
                           size={['sm', 'md', 'md','small']}
                           variant='outline'
-                          type='text'
+                          type='password'
                           value={password}
                           onChange={(e) => {
                             setPassword(e.target.value);
@@ -115,7 +116,7 @@ export default function RegistrationPhaseTwoPage() {
                         <Input
                           size={['sm', 'md', 'md','small']}
                           variant='outline'
-                          type='text'
+                          type='password'
                           value={confPassword}
                           onChange={(e) => {
                             setConfPassword(e.target.value);
@@ -129,7 +130,7 @@ export default function RegistrationPhaseTwoPage() {
                         )}
                     </FormControl> 
    
-                    <FormControl isRequired isInvalid={isEmptyLocation && isLocationTouched}>
+                    <FormControl isRequired isInvalid={!isValidLocation && isLocationTouched}>
                         <FormLabel fontSize={[16,19,25,18]} textColor='rt-dark-blue'>Postal Code</FormLabel>
                         <Input
                           size={['sm', 'md', 'md','small']}
@@ -137,14 +138,14 @@ export default function RegistrationPhaseTwoPage() {
                           type='text'
                           value={userLocation}
                           onChange={(e) => {
-                            setUserLocation(e.target.value);
+                            setUserLocation(e.target.value.toUpperCase());
                             setIsLocationTouched(true);
                           }}
                         />
-                        {isEmptyLocation && isLocationTouched ? (
-                            <FormErrorMessage fontSize={['xs', 'sm']}>Location Required</FormErrorMessage>
+                        {!isValidLocation && isLocationTouched ?(
+                            <FormErrorMessage fontSize={['xs', 'sm']}>Enter a valid postal code</FormErrorMessage>
                         ):(
-                            <FormHelperText fontSize={['xs', 'sm']}></FormHelperText>
+                            ('')
                         )}
                     </FormControl> 
                 </div>    

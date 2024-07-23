@@ -71,6 +71,7 @@ export const AuthProvider = ({ children }: any) => {
         });
     } catch (error) {
       console.log(error);
+      throw new Error("Unable to request new account");
     }
   };
 
@@ -110,6 +111,7 @@ export const AuthProvider = ({ children }: any) => {
         });
     } catch (error) {
       console.log(error);
+      throw new Error("Unable to fetch user");
     }
   };
 

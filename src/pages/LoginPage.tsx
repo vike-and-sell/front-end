@@ -62,12 +62,12 @@ export default function LoginPage() {
 
                         <FormControl>
                             <FormLabel fontSize={[16,19,25,27]} textColor='white'>Username</FormLabel>
-                            <Input size={['sm', 'md', 'md','md']} bg='white' type='text' value={username} onChange={handleUsernameChange} />
+                            <Input data-cy="username-input" size={['sm', 'md', 'md','md']} bg='white' type='text' value={username} onChange={handleUsernameChange} />
                         </FormControl> 
 
                         <FormControl>
                             <FormLabel fontSize={[16,19,25,27]} textColor='white'>Password</FormLabel>
-                            <Input size={['sm', 'md', 'md','md']} bg='white' type='password' value={password} onChange={handlePasswordChange} />
+                            <Input data-cy="password-input" size={['sm', 'md', 'md','md']} bg='white' type='password' value={password} onChange={handlePasswordChange} />
                         </FormControl> 
                     </div>
 

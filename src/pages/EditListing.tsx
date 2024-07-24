@@ -160,12 +160,13 @@ export default function Edit() {
   return (
     <>
       <main className='px-4'>
-        <PageHeading title={"Edit Listing " + listingInfo.title}></PageHeading>
+        <PageHeading data-cy="page-heading" title={"Edit Listing " + listingInfo.title}></PageHeading>
         <div className=''>
           <FormControl isInvalid={isInvalidTitle}>
             <div className='my-4'>
               <FormLabel>Title*</FormLabel>
               <Input
+                data-cy="edit-title-input"
                 onChange={(e) => setTitle(e.target.value)}
                 type='text'
                 value={title}
@@ -192,6 +193,7 @@ export default function Edit() {
                   $
                 </InputLeftElement>
                 <Input
+                  data-cy="edit-price-input"
                   onChange={(e) => setPrice(parseInt(e.target.value))}
                   type='number'
                   value={price}
@@ -211,6 +213,7 @@ export default function Edit() {
             <div className='my-4'>
               <FormLabel>Status*</FormLabel>
               <Select
+                data-cy="edit-status-dropdown"
                 className={`${
                   status === "AVAILABLE"
                     ? "text-green-700 font-semibold"
@@ -246,10 +249,11 @@ export default function Edit() {
               <div className="my-4">
                 <FormLabel>Select Buyer</FormLabel>
                 <AutoComplete rollNavigation creatable>
-                  <AutoCompleteInput 
+                  <AutoCompleteInput
+                    data-cy="edit-buyer-autocomplete" 
                     defaultValue={buyerUsername} 
                     placeholder="Search..." 
-                    onChange={(e) => setBuyerUsername(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBuyerUsername(e.target.value)}
                   />
                   <AutoCompleteList>
                     <AutoCompleteGroup title="" showDivider>
@@ -277,7 +281,8 @@ export default function Edit() {
             <div className="my-4">
             <FormLabel>Charity</FormLabel>
               
-              <Checkbox 
+              <Checkbox
+                data-cy="edit-charity-checkbox" 
                 isChecked={forCharity}
                 onChange={(e) => setForCharity(e.target.checked)} 
                 size='md' >
@@ -292,6 +297,7 @@ export default function Edit() {
             <div className='my-5 flex'>
               <PriBlueButton
                 clickHandle={handleEdit}
+                data-cy="edit-listing-button" 
                 isDisabled={isInvalidPrice || isInvalidTitle}
                 title='Save Changes'
               ></PriBlueButton>
@@ -299,6 +305,7 @@ export default function Edit() {
               <InverseBlueButton
                 clickHandle={() => navigate(-1)}
                 className='ml-4'
+                data-cy="cancel-button" 
                 title='Cancel'
               ></InverseBlueButton>
             </div>

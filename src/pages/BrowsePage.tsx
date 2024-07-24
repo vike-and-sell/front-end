@@ -79,7 +79,7 @@ export default function BrowsePage() {
   return (
     <>
       <main className='px-4'>
-        <PageHeading title='Browse Around'></PageHeading>
+        <PageHeading data-cy="page-heading" title='Browse Around'></PageHeading>
         <div className='flex justify-between'>
           <FilterListing
             filterOptions={filterOptions}

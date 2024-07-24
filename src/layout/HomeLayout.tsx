@@ -19,7 +19,7 @@ export default function HomeLayout() {
           ></Header>
           <SearchBar></SearchBar>
         </div>
-        <div className="bg-pri-blue items-stretch h-full hidden lg:block rounded-t-[40px] mx-5">
+        <div data-cy="nav-bar-lg-div"className="bg-pri-blue items-stretch h-full hidden lg:block rounded-t-[40px] mx-5">
           <NavigationBar></NavigationBar>
         </div>
         <div className="overflow-y-auto">

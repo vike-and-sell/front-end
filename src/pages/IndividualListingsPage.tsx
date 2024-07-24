@@ -146,16 +146,17 @@ export default function IndividualListing() {
       <div className='flex gap-2 items-center'>
         <button
           className=' p-1 rounded-lg bg-pri-blue'
+          data-cy="back-button" 
           title='Back Button'
           onClick={() => navigate(-1)}
         >
           <FaArrowLeft size={15} color='white' />
         </button>
-        <h1 className='font-semibold text-pri-blue text-3xl p-0'>
+        <h1 className='font-semibold text-pri-blue text-3xl p-0' data-cy="listing-title" >
           {listingInfo.title}
         </h1>
         <Menu>
-          <MenuButton as={Button} width='47px' background='white'>
+          <MenuButton as={Button} width='47px' background='white' data-cy="menu-button">
             <FaEllipsisH color='#166aac'></FaEllipsisH>
           </MenuButton>
           <MenuList>
@@ -199,11 +200,13 @@ export default function IndividualListing() {
             <ModalFooter>
               <InvalidRedButton
                 clickHandle={handleDelete}
+                data-cy="delete-listing"
                 title='Yes'
                 className='mr-3'
               ></InvalidRedButton>
               <InverseBlueButton
                 clickHandle={onClose}
+                data-cy="cancel-delete-listing"
                 title='No'
               ></InverseBlueButton>
             </ModalFooter>
@@ -212,24 +215,33 @@ export default function IndividualListing() {
       </div>
       <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
         <div className='flex items-center gap-3'>
-          <div className='text-green-700 font-bold text-2xl'>
+          <div className='text-green-700 font-bold text-2xl' data-cy="listing-price">
             ${listingInfo.price}
           </div>
           <Badge
             colorScheme={`${
               listingInfo.status == "AVAILABLE" ? "green" : "red"
             }`}
+            data-cy="listing-status-badge"
           >
             {listingInfo.status}
           </Badge>
+          { listingInfo?.forCharity? 
+          <Badge
+            data-cy="listing-charity-badge"
+          >
+            CHARITY
+          </Badge>
+          : ''
+          }
         </div>
 
-        <div className='text-sm'>
+        <div className='text-sm' data-cy="listing-time">
           {timeSincePost(listingInfo.listedAt)}
-          <span className='font-bold'> {sellerData.data.username}</span>
+          <span className='font-bold' data-cy="listing-seller"> {sellerData.data.username}</span>
         </div>
         <div className='flex gap-4'>
-          <DefaultButton title='Message Seller'></DefaultButton>
+          <DefaultButton title='Message Seller' data-cy="message-seller-button"></DefaultButton>
         </div>
       </div>
       <RatingSection

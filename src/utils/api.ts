@@ -133,13 +133,13 @@ const fetchListingRating = async (listingID: string | undefined) => {
 
 const addReview = async (
   listingID: string | undefined,
-  review: string,
-  rating: number
+  reviewContent: string,
+  ratingValue: number
 ) => {
   const responseReview = await axios.post(
     `${import.meta.env.VITE_REACT_APP_API_URL}/review/${listingID}`,
     {
-      review,
+      reviewContent,
     },
     {
       withCredentials: true,
@@ -149,18 +149,18 @@ const addReview = async (
   const responseRating = await axios.post(
     `${import.meta.env.VITE_REACT_APP_API_URL}/rating/${listingID}`,
     {
-      rating,
+      ratingValue,
     },
     {
       withCredentials: true,
     }
   );
 
-  if (responseReview.status !== 200) {
+  if (responseReview.status !== 201) {
     throw new Error(responseReview.data?.message || "Failed to add review...");
   }
 
-  if (responseRating.status !== 200) {
+  if (responseRating.status !== 201) {
     throw new Error(responseRating.data?.message || "Failed to add rating...");
   }
 };

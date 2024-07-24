@@ -1,6 +1,6 @@
 import PageHeading from "../components/PageHeading";
 import { useNavigate } from "react-router-dom";
-import { Button, FormControl,  FormErrorMessage, FormLabel, Input } from '@chakra-ui/react'
+import { FormControl,  FormErrorMessage, FormLabel, Input } from '@chakra-ui/react'
 import { Box,Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from '@chakra-ui/react'
 import { useState, useEffect } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
@@ -16,7 +16,7 @@ export default function Settings () {
 
     const fetchUser = async ()=>{
         try{
-            const res = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/users/me`, 
+            await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/users/me`, 
                 {
                     withCredentials:true
                 }
@@ -40,7 +40,7 @@ export default function Settings () {
 
     const handleConfirm = async () =>{
         try{
-            await axios.patch(`${import.meta.env.VITE_REACT_APP_API_URL}/users/1`,
+            await axios.patch(`${import.meta.env.VITE_REACT_APP_API_URL}/users/me`,
                     {location: location.substring(0,3)},{
                     withCredentials:true
                 }

@@ -41,7 +41,7 @@ export default function PaginatedListings({ listingIds, accordionIndex, isOpen }
   } = useQuery({
     queryKey: [currentPage, currentListingIds],
     queryFn: async () => {
-      const listingPromises = currentListingIds.map((id) => fetchSingleListing(id));
+      const listingPromises = currentListingIds.map((id) => fetchSingleListing(id.toString()));
       return Promise.all(listingPromises);
     },
     enabled: isOpen && currentListingIds.length > 0,

@@ -77,12 +77,13 @@ export default function Edit () {
         
         <>
             <main className='px-4'>
-                <PageHeading title={"Create Listing"}></PageHeading>
+                <PageHeading data-cy="page-heading" title={"Create Listing"}></PageHeading>
                 <div className="">
                     <FormControl isRequired isInvalid={isInvalidTitle}>
                         <div className="my-4 md:mr-80">
                             <FormLabel>Title</FormLabel>
-                            <Input 
+                            <Input
+                                data-cy="create-title-input"
                                 value={title}
                                 onChange={(e) => {
                                     setTitle(e.target.value);
@@ -102,7 +103,8 @@ export default function Edit () {
                                 <InputLeftElement pointerEvents='none' color='gray.300' fontSize='1.2em'>
                                 $
                                 </InputLeftElement>
-                                <Input 
+                                <Input
+                                    data-cy="create-price-input" 
                                     value={price}
                                     onChange={(e) => {
                                         setPrice(e.target.value);
@@ -117,20 +119,22 @@ export default function Edit () {
 
                     <FormControl>
                         <div className="my-4">
-                        <FormLabel>Charity</FormLabel>
+                            <FormLabel>Charity</FormLabel>
                         
-                        <Checkbox 
-                            isChecked={forCharity}
-                            onChange={(e) => setForCharity(e.target.checked)} 
-                            size='md' >
-                            I'd like to donate the earnings from this listing to charity {forCharity}
+                            <Checkbox 
+                                data-cy="create-charity-checkbox"
+                                isChecked={forCharity}
+                                onChange={(e) => setForCharity(e.target.checked)} 
+                                size='md' >
+                                I'd like to donate the earnings from this listing to charity {forCharity}
                             </Checkbox>
                         </div>
                     </FormControl>
 
                     <FormControl>
                         <div className="my-5 flex">
-                            <PriBlueButton 
+                            <PriBlueButton
+                                data-cy="create-listing-button" 
                                 isDisabled={isInvalidPrice || (isInvalidTitle && isTitleTouched)}
                                 clickHandle={handleCreate}
                                 title="Create Listing">
@@ -138,6 +142,7 @@ export default function Edit () {
                             </PriBlueButton>
 
                             <InverseBlueButton
+                                data-cy="cancel-button"
                                 clickHandle={() => navigate(-1)}
                                 className="ml-4"
                                 title="Cancel">
@@ -148,7 +153,7 @@ export default function Edit () {
                     </FormControl>
 
                     {isError? (
-                        <div className="text-red text-center text-xs sm:text-sm">
+                        <div className="text-red text-center text-xs sm:text-sm" data-cy="create-listing-error" >
                             Could not create listing.
                         </div>) : ("") }                  
                     

@@ -93,7 +93,7 @@ export default function LoginPage() {
 
                         <FormControl isRequired isInvalid={(!isValidUserSymbols || !isValidUserLen) && isUserTouched}>
                             <FormLabel fontSize={[16,19,25,27]} textColor='white'>Username</FormLabel>
-                            <Input size={['sm', 'md', 'md','md']} bg='white' type='text' value={username} onChange={handleUsernameChange} />
+                            <Input data-cy="username-input" size={['sm', 'md', 'md','md']} bg='white' type='text' value={username} onChange={handleUsernameChange} />
                             {!isValidUserSymbols && isUserTouched ? (
                                 <FormErrorMessage fontSize={['xs', 'sm']} textColor='white'>Only use alphanumeric or '_' or '@' characters</FormErrorMessage>
                             ): !isValidUserLen && isUserTouched ? (
@@ -105,7 +105,7 @@ export default function LoginPage() {
 
                         <FormControl isRequired isInvalid={(!isValidPassSymbols || !isValidPassLen) && isPasswordTouched}>
                             <FormLabel fontSize={[16,19,25,27]} textColor='white'>Password</FormLabel>
-                            <Input size={['sm', 'md', 'md','md']} bg='white' type='password' value={password} onChange={handlePasswordChange} />
+                            <Input size={['sm', 'md', 'md','md']} bg='white' type='password' value={password} onChange={handlePasswordChange} data-cy="password-input"/>
                             {!isValidPassSymbols && isPasswordTouched ? (
                                 <FormErrorMessage fontSize={['xs', 'sm']} textColor='white'>Must contain at least 1 of each character: uppercase, lowercase, number, special</FormErrorMessage>
                             ):!isValidPassLen && isPasswordTouched ? (
@@ -119,6 +119,7 @@ export default function LoginPage() {
                     <div className="p-4">
                         <button 
                             className="bg-white relative px-4 rounded-md text-pri-blue text-sm sm:text-md font-semibold p-3"
+                            data-cy="signin-button"
                             onClick={onSignIn}
                             >
                             Sign In
@@ -127,11 +128,23 @@ export default function LoginPage() {
                     
                     <div className="pb-0 sm:pb-1">
                        <span className="text-white text-sm font-bold">Don't have an account? </span>
-                        <button className="text-white text-sm  underline" onClick={()=>{navigate("/unverified/signup")}}>Create One</button> 
+                        <button 
+                            className="text-white text-sm  underline" 
+                            data-cy="create-account-button"
+                            onClick={()=>{navigate("/unverified/signup")}}
+                        >
+                                Create One
+                        </button> 
                     </div>
                     <div className="">
                         <span className="text-white text-sm font-bold">Forget password? </span>
-                        <button className="text-white text-sm  underline" onClick={()=>{navigate("/unverified/recover")}}>Recover it</button>
+                        <button 
+                            className="text-white text-sm  underline" 
+                            data-cy="recover-account-button"
+                            onClick={()=>{navigate("/unverified/recover")}}
+                        >
+                            Recover it
+                        </button>
                     </div>
                     
                 </div>

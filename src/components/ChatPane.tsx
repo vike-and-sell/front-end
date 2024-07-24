@@ -22,12 +22,13 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
 
 
     return(
-        <div className="bg-pri-blue h-screen rounded-lg ">
+        <div className="bg-pri-blue h-screen rounded-lg" data-cy="chat-pane">
             <Stack direction='column' spacing={3} className="mx-3" >
                 <Input
-                    className="mt-3"
                     background='white' 
-                    borderRadius='full' 
+                    borderRadius='full'
+                    className="mt-3"
+                    data-cy="chat-pane-input"
                     fontWeight='semibold'
                     onChange={(e) => setSearchQuery(e.target.value)}  
                     placeholder='Find a chat' 
@@ -43,6 +44,7 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                             bg='rt-dark-blue'
                             className=""
                             color='#ffffff'
+                            data-cy="chat-pane-item"
                             height='68px'
                             _hover={{ bg: '#0f4a79' }}
                             key={index}

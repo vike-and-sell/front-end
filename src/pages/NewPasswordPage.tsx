@@ -75,7 +75,7 @@ export default function NewPasswordPage() {
                 <div className='flex flex-col px-8 gap-6'>    
                     <FormControl isRequired isInvalid={(!isValidPassSymbols || !isValidPassLen) && isPasswordTouched}>
                         <FormLabel fontSize={[16,19,25,27]} textColor='rt-dark-blue'>New Password</FormLabel>
-                        <Input variant='outline' type='password' value={password} onChange={handlePasswordChange} />
+                        <Input variant='outline' type='password' value={password} onChange={handlePasswordChange} data-cy="" />
                         {!isValidPassSymbols && isPasswordTouched ? (
                             <FormErrorMessage>Must contain at least 1 of each character: uppercase, lowercase, number, special</FormErrorMessage>
                         ):!isValidPassLen && isPasswordTouched ? (

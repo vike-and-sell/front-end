@@ -71,7 +71,7 @@ export default function MyListings() {
   return (
     <>
       <main className='px-4'>
-        <PageHeading title='My Listings'></PageHeading>
+        <PageHeading data-cy="page-heading" title='My Listings'></PageHeading>
         <div className='flex justify-end'>
           {isListingPending ? (
             <PaginationBarSkeleton></PaginationBarSkeleton>

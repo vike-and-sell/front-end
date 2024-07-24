@@ -16,7 +16,7 @@ const fetchUser = async () => {
   return response.data;
 };
 
-const fetchOtherUser = async (userId:string) => {
+const fetchOtherUser = async (userId: string) => {
   const response = await axios.get(
     `${import.meta.env.VITE_REACT_APP_API_URL}/users/${userId}`,
     {
@@ -35,7 +35,7 @@ const fetchBrowseListings = async (filterOptions: FilterOptions) => {
   let paramsString = "";
 
   Object.keys(filterOptions).forEach((key) => {
-    const filter = filterOptions[key]
+    const filter = filterOptions[key];
     if (filter !== undefined && filter !== "") {
       paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(
         String(filter)
@@ -44,7 +44,7 @@ const fetchBrowseListings = async (filterOptions: FilterOptions) => {
   });
 
   const response = await axios.get(
-    `${import.meta.env.VITE_REACT_APP_API_URL}/listings/?${paramsString}`,
+    `${import.meta.env.VITE_REACT_APP_API_URL}/listings?${paramsString}`,
     {
       withCredentials: true,
     }

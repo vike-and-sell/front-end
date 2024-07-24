@@ -5,14 +5,15 @@ import { ChatType } from '../utils/interfaces';
 
 
 export function ChatPaneTest () {
-  const [ChatPaneHidden, setChatPaneHidden] = useState<boolean>(false);
+  const [, setChatPaneHidden] = useState<boolean>(false);
 
   const ChatPaneDisplayToggle = (status: boolean) => {
     setChatPaneHidden(status)
+
   }
 
   const PfromChatPane = async (clickedChat:ChatType) => {
-
+    clickedChat
   }
 
   return ( 

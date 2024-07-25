@@ -15,6 +15,11 @@ export default function SearchBar() {
           setSearchString(e.target.value);
         }}
         value={searchString}
+        onKeyDown={(e) => {
+          if (e.key == "Enter") {
+            navigate(`/search/${searchString}/1`);
+          }
+        }}
       ></Input>
       <button
         title='Search Button'

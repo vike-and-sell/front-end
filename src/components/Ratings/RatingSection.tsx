@@ -13,18 +13,19 @@ export default function RatingSection({
   listingId,
   ratings,
 }: RatingSectionProps) {
-  let isReviews = reviews === undefined || reviews.length === 0 ? true : false;
+  const isReviews =
+    reviews === undefined || reviews.length === 0 ? true : false;
   const averageRating = calculateAverageRating(ratings);
   return (
     <div>
-      <hr className='mb-7'></hr>
+      <hr className="mb-7"></hr>
       <UserReview listingId={listingId}></UserReview>
       <Reviews averageRating={averageRating}>
         {isReviews ? (
-          <div className='text-slate-400'>Nothing here...</div>
+          <div className="text-slate-400">Nothing here...</div>
         ) : (
           reviews.map((review: ReviewInfo, index) => {
-            let reviewString = review.review;
+            const reviewString = review.review;
             return <Review key={index} review={reviewString}></Review>;
           })
         )}
@@ -40,7 +41,7 @@ interface RatingInfo {
 }
 
 function calculateAverageRating(ratingList: []) {
-  let ratings = ratingList.map((obj: RatingInfo) => obj.rating);
+  const ratings = ratingList.map((obj: RatingInfo) => obj.rating);
   if (ratings.length === 0) return "No Ratings";
   const sum = ratings.reduce((acc, num) => acc + num, 0);
   const average = sum / ratings.length;

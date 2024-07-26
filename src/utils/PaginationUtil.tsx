@@ -1,7 +1,7 @@
-import { Listing } from "./interfaces";
+import { Listing, UserSearchItem } from "./interfaces";
 
 export function arrayPagination(
-  arr: Listing[],
+  arr: Listing[] | UserSearchItem[],
   currentPage: number,
   maxListingsPerPage: number
 ) {

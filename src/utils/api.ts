@@ -149,20 +149,30 @@ const addReview = async (
   }
 };
 
-const queryListings = async function (query:string, filterOptions:FilterOptions) {
-  console.log(`${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(query)}`);
-  const searchResponse = await axios.get(
-    `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(query)}`,
-    {
-      withCredentials: true,
-    }
+const queryListings = async function (
+  query: string,
+  filterOptions: FilterOptions
+) {
+  console.log(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(
+      query
+    )}`
   );
+  console.log(filterOptions);
+  // ISO 8601 date string}], users: [{ username: "john_doe", userId: "1" }] };
 
-  if (searchResponse.status !== 200) {
-    throw new Error("Failed to search for items or users");
-  }
+  // Actual API Call
+  // const searchResponse = await axios.get(
+  //   `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(query)}`,
+  //   {
+  //     withCredentials: true,
+  //   }
+  // );
 
-}
+  // if (searchResponse.status !== 200) {
+  //   throw new Error("Failed to search for items or users");
+  // }
+};
 
 export {
   queryListings,

@@ -9,7 +9,7 @@ const UserGrid = forwardRef<HTMLDivElement, UserGrid>(({ children }, ref) => {
   return (
     <main
       ref={ref}
-      className="flex flex-col px-4 pb-4 pt-2 lg:overflow-y-scroll lg:max-h-[calc(100vh-250px)] min-h-[400px]"
+      className="flex flex-col px-4 pb-4 pt-2 lg:overflow-y-scroll lg:max-h-[calc(100vh-250px)] min-h-[400px] gap-2"
     >
       {children}
     </main>

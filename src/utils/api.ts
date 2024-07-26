@@ -18,7 +18,6 @@ const fetchUser = async () => {
 
 const fetchBrowseListings = async (filterOptions: FilterOptions) => {
   let paramsString = "";
-
   Object.keys(filterOptions).forEach((key) => {
     if (filterOptions[key] != "") {
       paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(
@@ -153,17 +152,27 @@ const queryListings = async function (
   query: string,
   filterOptions: FilterOptions
 ) {
-  console.log(
-    `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(
-      query
-    )}`
-  );
-  console.log(filterOptions);
-  // ISO 8601 date string}], users: [{ username: "john_doe", userId: "1" }] };
+  let paramsString = "";
+  Object.keys(filterOptions).forEach((key) => {
+    if (filterOptions[key] != "") {
+      paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(
+        filterOptions[key]
+      )}&`;
+    }
+  });
 
-  // Actual API Call
+  console.log(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${
+      encodeURIComponent(query) + paramsString
+    }`
+  );
+
+  return "";
+
   // const searchResponse = await axios.get(
-  //   `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(query)}`,
+  //   `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(
+  //     query
+  //   )}`,
   //   {
   //     withCredentials: true,
   //   }
@@ -172,6 +181,8 @@ const queryListings = async function (
   // if (searchResponse.status !== 200) {
   //   throw new Error("Failed to search for items or users");
   // }
+
+  // return searchResponse.data;
 };
 
 export {

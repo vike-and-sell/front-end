@@ -44,6 +44,7 @@ export default function SearchResultsPage() {
   } = useQuery({
     queryKey: [searchString ? searchString : "", filterOptions],
     queryFn: () => {
+      queryListings(searchString ? searchString : "", filterOptions);
       const searchResults: SearchResults = {
         listings: [
           {

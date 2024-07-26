@@ -35,7 +35,6 @@ import {
   fetchUser,
 } from "../utils/api";
 import ErrorPage from "./ErrorPage";
-import axios from "axios";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
@@ -49,7 +48,6 @@ export default function IndividualListing() {
     data: listingInfo,
     isPending: isListingPending,
     isError,
-    error,
   } = useQuery({
     queryKey: ["listings", listingID],
     queryFn: () => fetchSingleListing(listingID),
@@ -60,7 +58,6 @@ export default function IndividualListing() {
     data: reviews,
     isError: isReviewError,
     isPending: isReviewPending,
-    error: reviewError,
   } = useQuery({
     queryKey: ["reviews", listingID],
     queryFn: () => fetchListingReviews(listingID),
@@ -71,7 +68,6 @@ export default function IndividualListing() {
     data: ratings,
     isError: isRatingError,
     isPending: isRatingPending,
-    error: ratingError,
   } = useQuery({
     queryKey: ["ratings", listingID],
     queryFn: () => fetchListingRating(listingID),
@@ -93,43 +89,10 @@ export default function IndividualListing() {
     ],
   });
 
-  // Error Screen for Listing Info
-  if (isError) {
-    const errorMessage =
-      axios.isAxiosError(error) && error.response
-        ? error.response.data.message
-        : error.message;
-    return (
-      <ErrorPage>
-        <div>{errorMessage}</div>
-      </ErrorPage>
-    );
-  }
-
-  // Error Screen for Review
-  if (isReviewError) {
-    const reviewErrorMessage =
-      axios.isAxiosError(reviewError) && reviewError.response
-        ? reviewError.response.data.message
-        : reviewError.message;
-    return (
-      <ErrorPage>
-        <div>{reviewErrorMessage}</div>
-      </ErrorPage>
-    );
-  }
-
-  // Error Screen for Rating
-  if (isRatingError) {
-    const ratingErrorMessage =
-      axios.isAxiosError(ratingError) && ratingError.response
-        ? ratingError.response.data.message
-        : ratingError.message;
-    return (
-      <ErrorPage>
-        <div>{ratingErrorMessage}</div>
-      </ErrorPage>
-    );
+  if (isError || isReviewError || isRatingError) {
+    <ErrorPage>
+      <div>Something went wrong with loading the listing</div>
+    </ErrorPage>;
   }
 
   // Still need to be implemented

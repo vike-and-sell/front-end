@@ -57,7 +57,7 @@ export default function SearchBar() {
         self.findIndex(
           (duplicateSearchItem) => duplicateSearchItem === searchItem
         )
-    );
+    ).filter(searchItem => searchItem.trim() !== '');
   };
 
   return (

@@ -3,8 +3,8 @@ export interface User {
   username: string;
   location: string;
   joiningDate: string;
-  itemsSold: string[]
-  itemsPurchased: string[]
+  itemsSold: string[];
+  itemsPurchased: string[];
   current?: boolean;
 }
 
@@ -37,21 +37,26 @@ export interface FilterOptions {
 }
 
 export interface LoginCredentials {
-  username:string,
-  password:string
+  username: string;
+  password: string;
 }
 
 export interface ReviewInfo {
-  username: string,
-  created_on: string,
-  review: string,
+  username: string;
+  created_on: string;
+  review: string;
 }
 
 export interface AuthContextType {
   user: User | null;
-  loginUser:  (username: string, password: string) => Promise<any>;
+  loginUser: (username: string, password: string) => Promise<any>;
   requestAccount: (email: string, callback: string) => Promise<void>;
-  verifyAccount: (jwt: string, username: string, password: string, location: string) => Promise<void>;
+  verifyAccount: (
+    jwt: string,
+    username: string,
+    password: string,
+    location: string
+  ) => Promise<void>;
   requestReset: (email: string, callback: string) => Promise<void>;
   verifyReset: (jwt: string, password: string) => Promise<void>;
   checkUserStatus: () => Promise<void>;
@@ -59,8 +64,18 @@ export interface AuthContextType {
 }
 
 export interface SessionType {
-  user:User
-  expiration: number
+  user: User;
+  expiration: number;
+}
+
+export interface UserSearchItem {
+  username: string;
+  userId: string;
+}
+
+export interface SearchResults {
+  listings: Listing[];
+  users: UserSearchItem[];
 }
 
 export interface ChatType {
@@ -71,3 +86,4 @@ export interface ChatType {
   lastMessageTime: string
   interlocutor: User
 }
+

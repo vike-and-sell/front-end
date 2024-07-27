@@ -41,7 +41,7 @@ export default function BrowsePage() {
     isError,
     error,
   } = useQuery({
-    queryKey: [currentPage, filterOptions],
+    queryKey: [filterOptions],
     queryFn: () => fetchBrowseListings(filterOptions),
   });
 
@@ -73,14 +73,17 @@ export default function BrowsePage() {
   }
 
   if (isError) {
-    const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.message : error.message;
+    const errorMessage =
+      axios.isAxiosError(error) && error.response
+        ? error.response.data.message
+        : error.message;
     return <ErrorPage>{errorMessage}</ErrorPage>;
   }
   return (
     <>
-      <main className='px-4'>
-        <PageHeading data-cy="page-heading" title='Browse Around'></PageHeading>
-        <div className='flex justify-between'>
+      <main className="px-4">
+        <PageHeading data-cy="page-heading" title="Browse Around"></PageHeading>
+        <div className="flex justify-between">
           <FilterListing
             filterOptions={filterOptions}
             setFilterOptions={setFilterOptions}

@@ -31,9 +31,6 @@ export default function SearchBar() {
         const allSearchHistory:string[] = searchHistoryResponse.data
         setSearchHistory(getUniqueSearches(allSearchHistory.reverse()))
 
-        console.log(searchHistory.slice(0, 10))
-
-
       } catch (error) {
         console.error("Unable to fetch search history:", error);
       }
@@ -42,11 +39,7 @@ export default function SearchBar() {
     fetchSearchHistory();
   }, []);
 
-  console.log(`Search String: ${searchString}`)
-
   useEffect(() => {
-
-    //console.log(`Location - ${location.pathname}`)
     if(location.pathname.includes(`/search/${searchString}`)){
 
     }else{
@@ -67,7 +60,6 @@ export default function SearchBar() {
     );
   };
 
-  
   return (
     <div className='flex items-center flex-grow gap-2 p-4 z-50'>
       <AutoComplete

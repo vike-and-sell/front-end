@@ -35,11 +35,22 @@ import {
   fetchUser,
 } from "../utils/api";
 import ErrorPage from "./ErrorPage";
+import Chat from "./chat";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
   const navigate = useNavigate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { 
+    isOpen: isDeleteOpen, 
+    onOpen: onDeleteOpen, 
+    onClose: onDeleteClose 
+  } = useDisclosure();
+  
+  const { 
+    isOpen: isChatOpen, 
+    onOpen: onChatOpen, 
+    onClose: onChatClose 
+  } = useDisclosure();
   const finalRef = useRef(null);
   let isUser = false;
 
@@ -152,7 +163,7 @@ export default function IndividualListing() {
                 >
                   Edit Listing
                 </MenuItem>
-                <MenuItem icon={<AiOutlineDelete />} onClick={onOpen}>
+                <MenuItem icon={<AiOutlineDelete />} onClick={onDeleteOpen}>
                   Delete Listing
                 </MenuItem>
               </>
@@ -171,8 +182,8 @@ export default function IndividualListing() {
 
         <Modal
           finalFocusRef={finalRef}
-          isOpen={isOpen}
-          onClose={onClose}
+          isOpen={isDeleteOpen}
+          onClose={onDeleteClose}
           isCentered
         >
           <ModalOverlay />
@@ -189,11 +200,30 @@ export default function IndividualListing() {
                 className="mr-3"
               ></InvalidRedButton>
               <InverseBlueButton
-                clickHandle={onClose}
+                clickHandle={onDeleteClose}
                 data-cy="cancel-delete-listing"
                 title="No"
               ></InverseBlueButton>
             </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </div>
+      
+      <div>
+        <Modal
+          finalFocusRef={finalRef}
+          isOpen={isChatOpen}
+          onClose={onChatClose}
+          scrollBehavior="outside"
+          size='full'
+          isCentered
+        >
+          <ModalOverlay />
+          <ModalContent m={10} >
+            <ModalCloseButton ml={5} />
+            <ModalBody my={3} mr={4}>
+              <Chat></Chat>
+            </ModalBody>
           </ModalContent>
         </Modal>
       </div>
@@ -231,6 +261,7 @@ export default function IndividualListing() {
           <DefaultButton
             title="Message Seller"
             data-cy="message-seller-button"
+            clickHandle={onChatOpen}
           ></DefaultButton>
         </div>
       </div>

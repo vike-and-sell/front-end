@@ -74,6 +74,7 @@ export default function LoginPage() {
                     <div className="p-4">
                         <button 
                             className="bg-white relative px-4 rounded-md text-pri-blue text-sm sm:text-md font-semibold p-3"
+                            data-cy="signin-button"
                             onClick={onSignIn}
                             >
                             Sign In

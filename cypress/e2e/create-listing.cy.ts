@@ -3,7 +3,7 @@ describe('User can create a listing', () => {
   beforeEach(()=>{
 
     cy.viewport('macbook-13')
-    cy.visit('http://localhost:5173/login')
+    cy.visit('https://localhost:5173/login')
 
     cy.get('[data-cy="username-input"]').type('john_doe')
     cy.get('[data-cy="password-input"]').type('Password123!')

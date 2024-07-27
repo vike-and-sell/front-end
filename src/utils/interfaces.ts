@@ -28,12 +28,13 @@ export interface Listing {
 }
 
 export interface FilterOptions {
+  offset: number;
   maxPrice?: string;
   minPrice?: string;
   isDescending?: boolean;
   status?: "SOLD" | "AVAILABLE" | "";
   sortBy?: "price" | "created_on" | "location" | "";
-  [key: string]: string | boolean | undefined;
+  [key: string]: string | boolean | number | undefined;
 }
 
 export interface LoginCredentials {
@@ -79,11 +80,10 @@ export interface SearchResults {
 }
 
 export interface ChatType {
-  chatId: string
-  users: string[]
-  listingId: string
-  listingInfo: Listing
-  lastMessageTime: string
-  interlocutor: User
+  chatId: string;
+  users: string[];
+  listingId: string;
+  listingInfo: Listing;
+  lastMessageTime: string;
+  interlocutor: User;
 }
-

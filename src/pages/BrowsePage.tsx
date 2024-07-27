@@ -29,6 +29,7 @@ export default function BrowsePage() {
     maxPrice: "",
     minPrice: "",
     status: "",
+    offset: 0,
   });
 
   useEffect(() => {
@@ -41,20 +42,26 @@ export default function BrowsePage() {
     isError,
     error,
   } = useQuery({
-    queryKey: [filterOptions],
-    queryFn: () => fetchBrowseListings(filterOptions),
+    queryKey: [filterOptions, currentPage],
+    queryFn: () =>
+      fetchBrowseListings({
+        ...filterOptions,
+        offset: (currentPage - 1) * 30,
+      }),
   });
 
-  function handleNext() {
-    setCurrentPage(currentPage + 1);
-    navigate(`/browse/${currentPage + 1}`);
+  function goToPage(newPage: number) {
+    setCurrentPage(newPage);
+    navigate(`/browse/${newPage}`);
     scrollTop();
   }
 
+  function handleNext() {
+    goToPage(currentPage + 1);
+  }
+
   function handlePrev() {
-    setCurrentPage(currentPage - 1);
-    navigate(`/browse/${currentPage - 1}`);
-    scrollTop();
+    goToPage(currentPage - 1);
   }
 
   function scrollTop() {
@@ -93,9 +100,10 @@ export default function BrowsePage() {
           ) : (
             <PaginationBar
               currentPage={currentPage}
-              totalPages={totalPages}
+              hasMore={listings.length >= 30}
               handleNext={handleNext}
               handlePrev={handlePrev}
+              goToPage={goToPage}
             ></PaginationBar>
           )}
         </div>
@@ -103,7 +111,7 @@ export default function BrowsePage() {
           <ListingsGridSkeleton></ListingsGridSkeleton>
         ) : (
           <ListingsGrid ref={scrollRef}>
-            {activePageListing.map((listing) => (
+            {listings.map((listing: Listing) => (
               <ListingCard
                 listingInfo={listing}
                 key={listing.listingId}

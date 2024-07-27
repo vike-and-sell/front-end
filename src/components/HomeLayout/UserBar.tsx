@@ -20,7 +20,7 @@ export default function UserBar() {
           </Text>
           <Tooltip label="Sign Out">
             <button
-              className="bg-pri-blue border-pri-blue border-2 p-3 rounded-lg text-white lg:border-s-0 lg:border-e-2 lg:rounded-s-none"
+              className="bg-pri-blue lg:border-pri-blue lg:border-2 p-3 rounded-lg text-white lg:border-s-0 lg:border-e-2 lg:rounded-s-none"
               onClick={logout}
             >
               <FaSignOutAlt />

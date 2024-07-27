@@ -1,26 +1,107 @@
-import { Input } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  AutoComplete,
+  AutoCompleteInput,
+  AutoCompleteItem,
+  AutoCompleteList,
+} from "@choc-ui/chakra-autocomplete";
+import axios from "axios";
 
 export default function SearchBar() {
   const [searchString, setSearchString] = useState("");
-
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const navigate = useNavigate();
-  return (
-    <div className='flex items-center flex-grow gap-2 p-4'>
-      <Input
-        placeholder='Search for used...'
-        onChange={(e) => {
-          setSearchString(e.target.value);
-        }}
-        value={searchString}
-        onKeyDown={(e) => {
-          if (e.key == "Enter") {
-            navigate(`/search/${searchString}/1`);
+  const location = useLocation();
+  
+
+  useEffect(() => {
+    
+    const fetchSearchHistory = async () => {
+      try {
+        const searchHistoryResponse = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/users/me/searches`,
+          {
+            withCredentials: true,
           }
-        }}
-      ></Input>
+        );
+
+        const allSearchHistory:string[] = searchHistoryResponse.data
+        setSearchHistory(getUniqueSearches(allSearchHistory.reverse()))
+
+        console.log(searchHistory.slice(0, 10))
+
+
+      } catch (error) {
+        console.error("Unable to fetch search history:", error);
+      }
+    };
+
+    fetchSearchHistory();
+  }, []);
+
+  console.log(`Search String: ${searchString}`)
+
+  useEffect(() => {
+
+    //console.log(`Location - ${location.pathname}`)
+    if(location.pathname.includes(`/search/${searchString}`)){
+
+    }else{
+      setSearchString("")
+    }
+
+  }, [location])
+
+  const filteredSearchHistory = searchHistory.filter((searchItem:string) => searchItem.toLowerCase().includes(searchString))
+
+  const getUniqueSearches = (searchHistory: string[]) => {
+    return searchHistory.filter(
+      (searchItem, index, self) =>
+        index ===
+        self.findIndex(
+          (duplicateSearchItem) => duplicateSearchItem === searchItem
+        )
+    );
+  };
+
+  
+  return (
+    <div className='flex items-center flex-grow gap-2 p-4 z-50'>
+      <AutoComplete
+        maxSuggestions={10}
+        openOnFocus 
+        onSelectOption={(item) => {navigate(`/search/${item.item.value}/1`); setSearchString(item.item.value)}}
+      >
+        <AutoCompleteInput
+          placeholder='Search for used...'
+          onChange={(e) => {
+            setSearchString(e.target.value);
+          }}
+          value={searchString}
+          onKeyDown={(e) => {
+            if (e.key == "Enter") {
+              navigate(`/search/${searchString}/1`);
+            }
+          }}
+        />
+        {filteredSearchHistory.length > 0 && (
+        <AutoCompleteList>
+          { searchHistory.map(
+            (search:string) => (
+              <AutoCompleteItem
+                key={`${search}`}
+                value={search}
+                align="center"
+              >
+                <Text ml="4">{search}</Text>
+              </AutoCompleteItem>
+            )
+          )}
+        </AutoCompleteList>)}
+      </AutoComplete>
       <button
         title='Search Button'
         className='bg-pri-blue p-3 rounded-md'

@@ -28,6 +28,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./utils/AuthContext";
 import MyListings from "./pages/MyListings";
 import SearchResultsPage from "./pages/SearchResultsPage";
+import CharityPage from "./pages/CharityPage";
 
 function App() {
   return (
@@ -56,7 +57,11 @@ function App() {
                   <Route path="mylistings/:page" element={<MyListings />} />
                   <Route path="create" element={<Create />} />
                   <Route path="edit/:listingID" element={<Edit />} />
-                  <Route path="chat" element={<Chat />} />
+                  <Route path="charity" element={<CharityPage />} />
+                  <Route
+                    path="charity/:charityName"
+                    element={<CharityPage />}
+                  />
                   <Route
                     path="search/:searchString/:page"
                     element={<SearchResultsPage />}

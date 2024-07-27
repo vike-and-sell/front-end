@@ -87,3 +87,15 @@ export interface ChatType {
   interlocutor: User
 }
 
+<<<<<<< HEAD
+=======
+export interface Charity {
+  name: string,
+  status: "AVAILABLE" | "CLOSED",
+  fund : number,
+  logoUrl: string,
+  startDate: string,
+  endDate : string,
+  numListings : number
+}
+>>>>>>> b47faee (added basic charities page and charity page)

@@ -3,7 +3,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { FaListAlt } from "react-icons/fa";
 import { TbMessageCircle2Filled } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
-import { MdSell } from "react-icons/md";
+import { MdSell, MdOutlineHandshake } from "react-icons/md";
 import { FaShop } from "react-icons/fa6";
 import {
   Modal,
@@ -26,6 +26,7 @@ function NavigationBar() {
         <CustomNavLink data-cy="browse-nav" route='/browse/1' title='Browse'>
           <FaShop></FaShop>
         </CustomNavLink>
+<<<<<<< HEAD
         <div data-cy="create-listing-nav">
           <CustomNavLink data-cy="create-listing-nav" route='/create' title='Create Listing'>
             <MdSell></MdSell>
@@ -33,6 +34,15 @@ function NavigationBar() {
         </div>
         
         <CustomNavLink data-cy="my-listings-nav" route='/mylistings/1' title='My Listings'>
+=======
+        <CustomNavLink route='/charity' title='Charities'>
+          <MdOutlineHandshake></MdOutlineHandshake>
+        </CustomNavLink>
+        <CustomNavLink route='/create' title='Create Listing'>
+          <MdSell></MdSell>
+        </CustomNavLink>
+        <CustomNavLink route='/mylistings/1' title='My Listings'>
+>>>>>>> b47faee (added basic charities page and charity page)
           <FaListAlt></FaListAlt>
         </CustomNavLink>
         <CustomNavLink data-cy="my-profile-nav" route='/mylistings/1' title='My Profile'>

@@ -11,7 +11,7 @@ export default function Settings () {
     const [isLocationTouched, setIsLocationTouched] = useState<boolean>(false)
     const [currentLocation, setCurrentLocation] = useState<string>('')
     const locationRegex =  /^[A-Za-z]\d[A-Za-z]\s?\d[A-Za-z]\d$/
-    const isValidLocation = locationRegex.test(location) || true
+    const isValidLocation = locationRegex.test(location)
     const navigate = useNavigate();
 
     const fetchUser = async ()=>{
@@ -46,7 +46,6 @@ export default function Settings () {
                 }
             ).then( function (response) {
                 console.log("response " + response.status + " " + response.data + " " + response.statusText);
-                //reload
                 setCurrentLocation(location.substring(0,3))
             });
         } catch (error) {
@@ -80,6 +79,7 @@ export default function Settings () {
                                         value={location}
                                         onChange={handleLocationChange}
                                         type="text"
+                                        placeholder="e.g V8W 5A2"
                                     >
                                     </Input>
                                     {!isValidLocation && isLocationTouched ? (

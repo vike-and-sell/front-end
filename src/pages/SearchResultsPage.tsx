@@ -15,6 +15,7 @@ import { queryListings } from "../utils/api";
 import ErrorPage from "./ErrorPage";
 import UserGrid from "../components/UserGrid";
 import UserCard from "../components/UserCard";
+import { UserListingSkeleton } from "../components/Skeletons/UserListingsSkeleton";
 
 export default function SearchResultsPage() {
   const MAX_LISTINGS_PAGE = 30;
@@ -178,7 +179,7 @@ export default function SearchResultsPage() {
             </ListingsGrid>
           )
         ) : isSearchLoading ? (
-          <div>Loading</div>
+          <UserListingSkeleton></UserListingSkeleton>
         ) : activeUserListings.length == 0 ? (
           <div>No users found</div>
         ) : (

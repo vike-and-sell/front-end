@@ -61,7 +61,7 @@ export default function Edit() {
     try {
       await axios
         .post(
-          `${import.meta.env.VITE_REACT_APP_API_URL}/listings`,
+          `${import.meta.env.VITE_REACT_APP_API_URL}/listings/`,
           listingPayload,
           {
             withCredentials: true,
@@ -91,26 +91,26 @@ export default function Edit() {
 
   return (
     <>
-      <main className='px-4'>
+      <main className="px-4">
         <PageHeading
-          data-cy='page-heading'
+          data-cy="page-heading"
           title={"Create Listing"}
         ></PageHeading>
-        <div className=''>
+        <div className="">
           <FormControl isRequired isInvalid={isInvalidTitle}>
-            <div className='my-4 md:mr-80'>
+            <div className="my-4 md:mr-80">
               <FormLabel>Title</FormLabel>
               <Input
-                data-cy='create-title-input'
+                data-cy="create-title-input"
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
                   setIsTitleTouched(true);
                 }}
-                type='text'
+                type="text"
               ></Input>
               {isInvalidTitle ? (
-                <FormErrorMessage className='font-semibold'>
+                <FormErrorMessage className="font-semibold">
                   Title is required.
                 </FormErrorMessage>
               ) : (
@@ -120,19 +120,21 @@ export default function Edit() {
           </FormControl>
 
           <FormControl isInvalid={isInvalidPrice}>
-            <div className='my-4 md:mr-80'>
+            <div className="my-4 md:mr-80">
               <FormLabel>Price</FormLabel>
               <InputGroup>
                 <InputLeftElement
-                  pointerEvents='none'
-                  color='gray.300'
-                  fontSize='1.2em'
+                  pointerEvents="none"
+                  color="gray.300"
+                  fontSize="1.2em"
                 >
                   $
                 </InputLeftElement>
                 <Input
-                  data-cy='create-price-input'
+                  data-cy="create-price-input"
                   value={price}
+                  min="0"
+                  max="999999999.99"
                   onChange={(e) => {
                     let value = e.target.value;
 
@@ -149,11 +151,11 @@ export default function Edit() {
                       }
                     }
                   }}
-                  type='number'
+                  type="number"
                 ></Input>
               </InputGroup>
               {isInvalidPrice ? (
-                <FormErrorMessage className='font-semibold'>
+                <FormErrorMessage className="font-semibold">
                   Price is required.
                 </FormErrorMessage>
               ) : (
@@ -163,14 +165,14 @@ export default function Edit() {
           </FormControl>
 
           <FormControl>
-            <div className='my-4'>
+            <div className="my-4">
               <FormLabel>Charity</FormLabel>
 
               <Checkbox
-                data-cy='create-charity-checkbox'
+                data-cy="create-charity-checkbox"
                 isChecked={forCharity}
                 onChange={(e) => setForCharity(e.target.checked)}
-                size='md'
+                size="md"
               >
                 I'd like to donate the earnings from this listing to charity{" "}
                 {forCharity}
@@ -179,29 +181,29 @@ export default function Edit() {
           </FormControl>
 
           <FormControl>
-            <div className='my-5 flex'>
+            <div className="my-5 flex">
               <PriBlueButton
-                data-cy='create-listing-button'
+                data-cy="create-listing-button"
                 isDisabled={
                   isInvalidPrice || (isInvalidTitle && isTitleTouched)
                 }
                 clickHandle={handleCreate}
-                title='Create Listing'
+                title="Create Listing"
               ></PriBlueButton>
 
               <InverseBlueButton
-                data-cy='cancel-button'
+                data-cy="cancel-button"
                 clickHandle={() => navigate(-1)}
-                className='ml-4'
-                title='Cancel'
+                className="ml-4"
+                title="Cancel"
               ></InverseBlueButton>
             </div>
           </FormControl>
 
           {isError ? (
             <div
-              className='text-red text-center text-xs sm:text-sm'
-              data-cy='create-listing-error'
+              className="text-red text-center text-xs sm:text-sm"
+              data-cy="create-listing-error"
             >
               Could not create listing.
             </div>

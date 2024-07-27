@@ -221,8 +221,22 @@ export default function Edit() {
                 </InputLeftElement>
                 <Input
                   data-cy="edit-price-input"
-                  onChange={(e) => setPrice(parseInt(e.target.value))}
+
+                  onChange={(e) => {
+                    let value = e.target.value;
+
+                    // Allow the value if it's empty or matches the float pattern with up to two decimal places
+                    if (value === "" || /^\d+(\.\d{0,2})?$/.test(value)) {
+                      setPrice(parseFloat(value));
+                    } else {
+                      // If the value does not conform, truncate it to the valid format
+                      value = parseFloat(value).toFixed(2);
+                      setPrice(parseFloat(value));
+                    }
+                  }}
                   type="number"
+
+
                   value={price}
                 ></Input>
               </InputGroup>
@@ -309,7 +323,9 @@ export default function Edit() {
                 onChange={(e) => setForCharity(e.target.checked)}
                 size="md"
               >
+
                 I'd like to donate the earnings from this listing to charity
+
               </Checkbox>
             </div>
           </FormControl>

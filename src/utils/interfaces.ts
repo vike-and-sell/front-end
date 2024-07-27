@@ -50,6 +50,7 @@ export interface ReviewInfo {
 export interface AuthContextType {
   user: User | null;
   loginUser: (username: string, password: string) => Promise<any>;
+  logoutUser: () => Promise<any>;
   requestAccount: (email: string, callback: string) => Promise<void>;
   verifyAccount: (
     jwt: string,
@@ -79,11 +80,10 @@ export interface SearchResults {
 }
 
 export interface ChatType {
-  chatId: string
-  users: string[]
-  listingId: string
-  listingInfo: Listing
-  lastMessageTime: string
-  interlocutor: User
+  chatId: string;
+  users: string[];
+  listingId: string;
+  listingInfo: Listing;
+  lastMessageTime: string;
+  interlocutor: User;
 }
-

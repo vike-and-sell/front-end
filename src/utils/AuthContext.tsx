@@ -47,6 +47,23 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
+  const logoutUser = async () => {
+    try {
+      await axios
+        .get(`${import.meta.env.VITE_REACT_APP_API_URL}/logout`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            setUser(null);
+            navigate("/");
+          }
+        });
+    } catch (error) {
+      setUser(null);
+    }
+  };
+
   const requestAccount = async (email: string, callback: string) => {
     try {
       await axios
@@ -204,6 +221,7 @@ export const AuthProvider = ({ children }: any) => {
     user,
     setLoading,
     loginUser,
+    logoutUser,
     requestAccount,
     verifyAccount,
     requestReset,

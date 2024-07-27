@@ -20,7 +20,7 @@ export default function RecoverPasswordPage() {
 
     const handleReset = ()=> {
         if(isValid){
-            setEmail(email + "uvic.ca");
+            setEmail(email + "@uvic.ca");
             setStatusBool(null);
             if (auth){
                 auth.requestReset(email, `${location.origin}/unverified/reset/jwt?=`) 

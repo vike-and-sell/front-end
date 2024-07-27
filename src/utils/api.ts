@@ -33,7 +33,6 @@ const fetchOtherUser = async (userId: string) => {
 
 const fetchBrowseListings = async (filterOptions: FilterOptions) => {
   let paramsString = "";
-
   Object.keys(filterOptions).forEach((key) => {
     const filter = filterOptions[key];
     if (filter !== undefined && filter !== "") {
@@ -77,44 +76,36 @@ const fetchSingleListing = async (listingID: string | undefined) => {
 };
 
 const fetchMyListings = async () => {
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/listings/me`,
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error(
-        response.data?.message || "Fetching single listing data failed..."
-      );
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/listings/me`,
+    {
+      withCredentials: true,
     }
+  );
 
-    return response.data;
-  } catch (error) {
-    throw error;
+  if (response.status !== 200) {
+    throw new Error(
+      response.data?.message || "Fetching single listing data failed..."
+    );
   }
+
+  return response.data;
 };
 
 const fetchListingReviews = async (listingID: string | undefined) => {
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/review/${listingID}`,
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error(
-        response.data?.message || "Fetching review listing data failed..."
-      );
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/review/${listingID}`,
+    {
+      withCredentials: true,
     }
-    return response.data;
-  } catch (error) {
-    throw error;
+  );
+
+  if (response.status !== 200) {
+    throw new Error(
+      response.data?.message || "Fetching review listing data failed..."
+    );
   }
+  return response.data;
 };
 
 const fetchListingRating = async (listingID: string | undefined) => {
@@ -165,7 +156,38 @@ const addReview = async (
   }
 };
 
+const queryListings = async function (
+  query: string,
+  filterOptions: FilterOptions
+) {
+  let paramsString = "";
+  Object.keys(filterOptions).forEach((key) => {
+    const filter = filterOptions[key];
+    if (filter !== undefined && filter !== "") {
+      paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(
+        String(filter)
+      )}&`;
+    }
+  });
+
+  const searchResponse = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(
+      query
+    )}${"&" + paramsString}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  if (searchResponse.status !== 200) {
+    throw new Error("Failed to search for items or users");
+  }
+  console.log(searchResponse.data);
+  return searchResponse.data;
+};
+
 export {
+  queryListings,
   fetchUser,
   fetchOtherUser,
   fetchBrowseListings,

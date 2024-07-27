@@ -221,6 +221,7 @@ export default function Edit() {
                 </InputLeftElement>
                 <Input
                   data-cy="edit-price-input"
+
                   onChange={(e) => {
                     let value = e.target.value;
 
@@ -234,7 +235,8 @@ export default function Edit() {
                     }
                   }}
                   type="number"
-                  step="0.01"
+
+
                   value={price}
                 ></Input>
               </InputGroup>
@@ -321,8 +323,9 @@ export default function Edit() {
                 onChange={(e) => setForCharity(e.target.checked)}
                 size="md"
               >
-                I'd like to donate the earnings from this listing to charity{" "}
-                {forCharity}
+
+                I'd like to donate the earnings from this listing to charity
+
               </Checkbox>
             </div>
           </FormControl>

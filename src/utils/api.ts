@@ -76,44 +76,36 @@ const fetchSingleListing = async (listingID: string | undefined) => {
 };
 
 const fetchMyListings = async () => {
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/listings/me`,
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error(
-        response.data?.message || "Fetching single listing data failed..."
-      );
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/listings/me`,
+    {
+      withCredentials: true,
     }
+  );
 
-    return response.data;
-  } catch (error) {
-    throw error;
+  if (response.status !== 200) {
+    throw new Error(
+      response.data?.message || "Fetching single listing data failed..."
+    );
   }
+
+  return response.data;
 };
 
 const fetchListingReviews = async (listingID: string | undefined) => {
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/review/${listingID}`,
-      {
-        withCredentials: true,
-      }
-    );
-
-    if (response.status !== 200) {
-      throw new Error(
-        response.data?.message || "Fetching review listing data failed..."
-      );
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/review/${listingID}`,
+    {
+      withCredentials: true,
     }
-    return response.data;
-  } catch (error) {
-    throw error;
+  );
+
+  if (response.status !== 200) {
+    throw new Error(
+      response.data?.message || "Fetching review listing data failed..."
+    );
   }
+  return response.data;
 };
 
 const fetchListingRating = async (listingID: string | undefined) => {
@@ -170,9 +162,10 @@ const queryListings = async function (
 ) {
   let paramsString = "";
   Object.keys(filterOptions).forEach((key) => {
-    if (filterOptions[key] != "") {
+    const filter = filterOptions[key];
+    if (filter !== undefined && filter !== "") {
       paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(
-        filterOptions[key]
+        String(filter)
       )}&`;
     }
   });

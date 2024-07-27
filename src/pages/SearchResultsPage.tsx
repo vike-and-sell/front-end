@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
 import { Listing, UserSearchItem } from "../utils/interfaces";
-import { arrayPagination } from "../utils/PaginationUtil";
+import { arrayPagination, arrayPaginationUsers } from "../utils/PaginationUtil";
 import FilterListing from "../components/FilterListings";
 import { FilterOptions } from "../utils/interfaces";
 import { ListingsGridSkeleton } from "../components/Skeletons/ListingGridSkeleton";
@@ -23,7 +23,8 @@ export default function SearchResultsPage() {
   const [searchListings, setSearchListings] = useState(true);
   const navigate = useNavigate();
   let totalPages = 0;
-  let activePageListing: Listing[] | UserSearchItem[] = [];
+  let activePageListing: Listing[] = [];
+  let activeUserListings: UserSearchItem[] = [];
   const [currentPage, setCurrentPage] = useState(page ? +page : 1);
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     sortBy: "",
@@ -73,18 +74,32 @@ export default function SearchResultsPage() {
 
   // Logic to partition search results correct
   if (searchResults) {
-    const subSearchResult: Listing[] | UserSearchItem[] = searchListings
+    // const halfLength = Math.ceil(searchResults.users.length / 2);
+    // const subSearchResult = searchListings
+    //   ? searchResults.listings
+    //   : searchResults.users.slice(0, halfLength);
+    const subSearchResult = searchListings
       ? searchResults.listings
       : searchResults.users;
+
     totalPages = Math.max(
       Math.ceil(subSearchResult.length / MAX_LISTINGS_PAGE),
       1
     );
-    activePageListing = arrayPagination(
-      subSearchResult,
-      currentPage,
-      MAX_LISTINGS_PAGE
-    );
+
+    if (searchListings) {
+      activePageListing = arrayPagination(
+        subSearchResult,
+        currentPage,
+        MAX_LISTINGS_PAGE
+      );
+    } else {
+      activeUserListings = arrayPaginationUsers(
+        subSearchResult,
+        currentPage,
+        MAX_LISTINGS_PAGE
+      );
+    }
   }
 
   if (isError) {
@@ -147,27 +162,32 @@ export default function SearchResultsPage() {
           )}
         </div>
 
-        {activePageListing.length == 0 ? (
-          <div className="text-lg text-pri-blue font-semibold">
-            No {searchListings ? "listings" : "users"} found.
-          </div>
-        ) : searchListings ? (
+        {searchListings ? (
           isSearchLoading ? (
             <ListingsGridSkeleton></ListingsGridSkeleton>
+          ) : activePageListing.length == 0 ? (
+            <div>No listings found</div>
           ) : (
             <ListingsGrid ref={scrollRef}>
               {activePageListing.map((listing) => (
                 <ListingCard
                   listingInfo={listing}
-                  key={listing.listingId}
+                  key={listing.listingId + "listing"}
                 ></ListingCard>
               ))}
             </ListingsGrid>
           )
+        ) : isSearchLoading ? (
+          <div>Loading</div>
+        ) : activeUserListings.length == 0 ? (
+          <div>No users found</div>
         ) : (
           <UserGrid ref={scrollRef}>
-            {activePageListing.map((user) => (
-              <UserCard username={user.username} key={user.userId}></UserCard>
+            {activeUserListings.map((user) => (
+              <UserCard
+                username={user.username}
+                key={user.userId + "user"}
+              ></UserCard>
             ))}
           </UserGrid>
         )}

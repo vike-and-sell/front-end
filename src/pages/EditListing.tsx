@@ -10,7 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   Select,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
@@ -42,43 +42,58 @@ export default function Edit() {
 
   const auth = useAuth();
 
-  useEffect(()=>{
-    if (auth){
-        auth.checkUserStatus();
+  useEffect(() => {
+    if (auth) {
+      auth.checkUserStatus();
     }
-    
+
     const fetchChats = async () => {
-    try {
-        const ChatIDResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, {
-            withCredentials: true
-        });
+      try {
+        const ChatIDResponse = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/chats`,
+          {
+            withCredentials: true,
+          }
+        );
 
         const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
 
-        const BuyerInfoArray: User[] = await Promise.all(chatIDs.map(async (chatId: number) => {
-            const chatInfoResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats/${chatId}`, {
-                withCredentials: true
-            });
+        const BuyerInfoArray: User[] = await Promise.all(
+          chatIDs.map(async (chatId: number) => {
+            const chatInfoResponse = await axios.get(
+              `${import.meta.env.VITE_REACT_APP_API_URL}/chats/${chatId}`,
+              {
+                withCredentials: true,
+              }
+            );
 
-            const chatUsers: string[] = chatInfoResponse.data['users'];
-            const interlocutorId = chatUsers.filter((Id: string) => auth?.user && Id !== String(auth.user.userId)).join("");
-            const interlocutorResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/users/${interlocutorId}`, {
-                withCredentials: true
-            });
-
+            const chatUsers: string[] = chatInfoResponse.data["users"];
+            const interlocutorId = chatUsers
+              .filter(
+                (Id: string) => auth?.user && Id !== String(auth.user.userId)
+              )
+              .join("");
+            const interlocutorResponse = await axios.get(
+              `${
+                import.meta.env.VITE_REACT_APP_API_URL
+              }/users/${interlocutorId}`,
+              {
+                withCredentials: true,
+              }
+            );
 
             return interlocutorResponse.data;
-        }));
+          })
+        );
 
         setBuyersArray(BuyerInfoArray);
-    } catch (error) {
+      } catch (error) {
         console.error("Unable to fetch chats:", error);
-    }
-  }
+      }
+    };
 
-  fetchChats();
-  }, [])
-
+    fetchChats();
+  }, []);
 
   const {
     data: listingInfo,
@@ -107,7 +122,10 @@ export default function Edit() {
   }, [listingInfo, userData]);
 
   if (isError) {
-    const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.message : error.message;
+    const errorMessage =
+      axios.isAxiosError(error) && error.response
+        ? error.response.data.message
+        : error.message;
     return (
       <ErrorPage>
         <div>{errorMessage}</div>
@@ -119,9 +137,15 @@ export default function Edit() {
 
   const isInvalidPrice = Number.isNaN(price);
 
-  const getUniqueBuyers = (buyers:User[]) => {
-    return buyers.filter((buyer, index, self) => index === self.findIndex((duplicateBuyer) => ( duplicateBuyer.userId === buyer.userId)))
-  }
+  const getUniqueBuyers = (buyers: User[]) => {
+    return buyers.filter(
+      (buyer, index, self) =>
+        index ===
+        self.findIndex(
+          (duplicateBuyer) => duplicateBuyer.userId === buyer.userId
+        )
+    );
+  };
 
   // Handle edit actually makes the changes
   const handleEdit = async () => {
@@ -159,20 +183,23 @@ export default function Edit() {
 
   return (
     <>
-      <main className='px-4'>
-        <PageHeading data-cy="page-heading" title={"Edit Listing " + listingInfo.title}></PageHeading>
-        <div className=''>
+      <main className="px-4">
+        <PageHeading
+          data-cy="page-heading"
+          title={"Edit Listing " + listingInfo.title}
+        ></PageHeading>
+        <div className="">
           <FormControl isInvalid={isInvalidTitle}>
-            <div className='my-4'>
+            <div className="my-4">
               <FormLabel>Title*</FormLabel>
               <Input
                 data-cy="edit-title-input"
                 onChange={(e) => setTitle(e.target.value)}
-                type='text'
+                type="text"
                 value={title}
               ></Input>
               {isInvalidTitle ? (
-                <FormErrorMessage className='font-semibold'>
+                <FormErrorMessage className="font-semibold">
                   Title is required.
                 </FormErrorMessage>
               ) : (
@@ -182,25 +209,37 @@ export default function Edit() {
           </FormControl>
 
           <FormControl isInvalid={isInvalidPrice}>
-            <div className='my-4'>
+            <div className="my-4">
               <FormLabel>Price*</FormLabel>
               <InputGroup>
                 <InputLeftElement
-                  pointerEvents='none'
-                  color='gray.300'
-                  fontSize='1.2em'
+                  pointerEvents="none"
+                  color="gray.300"
+                  fontSize="1.2em"
                 >
                   $
                 </InputLeftElement>
                 <Input
                   data-cy="edit-price-input"
-                  onChange={(e) => setPrice(parseInt(e.target.value))}
-                  type='number'
+                  onChange={(e) => {
+                    let value = e.target.value;
+
+                    // Allow the value if it's empty or matches the float pattern with up to two decimal places
+                    if (value === "" || /^\d+(\.\d{0,2})?$/.test(value)) {
+                      setPrice(parseFloat(value));
+                    } else {
+                      // If the value does not conform, truncate it to the valid format
+                      value = parseFloat(value).toFixed(2);
+                      setPrice(parseFloat(value));
+                    }
+                  }}
+                  type="number"
+                  step="0.01"
                   value={price}
                 ></Input>
               </InputGroup>
               {isInvalidPrice ? (
-                <FormErrorMessage className='font-semibold'>
+                <FormErrorMessage className="font-semibold">
                   Price is required.
                 </FormErrorMessage>
               ) : (
@@ -210,7 +249,7 @@ export default function Edit() {
           </FormControl>
 
           <FormControl>
-            <div className='my-4'>
+            <div className="my-4">
               <FormLabel>Status*</FormLabel>
               <Select
                 data-cy="edit-status-dropdown"
@@ -223,41 +262,37 @@ export default function Edit() {
                 defaultValue={listingInfo.status}
               >
                 <option
-                  className='text-green-700 font-semibold'
-                  value='AVAILABLE'
+                  className="text-green-700 font-semibold"
+                  value="AVAILABLE"
                 >
                   Available
                 </option>
-                <option className='text-red font-semibold' value='SOLD'>
+                <option className="text-red font-semibold" value="SOLD">
                   Sold
                 </option>
-                <option className='text-red font-semibold' value='REMOVED'>
+                <option className="text-red font-semibold" value="REMOVED">
                   Removed
                 </option>
-                
               </Select>
             </div>
           </FormControl>
 
-          
-          <FormControl 
-            className={`${
-                  status === "SOLD"
-                    ? ""
-                    : "hidden"
-            }`}>
-              <div className="my-4">
-                <FormLabel>Select Buyer</FormLabel>
-                <AutoComplete rollNavigation creatable>
-                  <AutoCompleteInput
-                    data-cy="edit-buyer-autocomplete" 
-                    defaultValue={buyerUsername} 
-                    placeholder="Search..." 
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBuyerUsername(e.target.value)}
-                  />
-                  <AutoCompleteList>
-                    <AutoCompleteGroup title="" showDivider>
-                      {getUniqueBuyers(buyersArray).map((buyer:User, index:number) => (
+          <FormControl className={`${status === "SOLD" ? "" : "hidden"}`}>
+            <div className="my-4">
+              <FormLabel>Select Buyer</FormLabel>
+              <AutoComplete rollNavigation creatable>
+                <AutoCompleteInput
+                  data-cy="edit-buyer-autocomplete"
+                  defaultValue={buyerUsername}
+                  placeholder="Search..."
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setBuyerUsername(e.target.value)
+                  }
+                />
+                <AutoCompleteList>
+                  <AutoCompleteGroup title="" showDivider>
+                    {getUniqueBuyers(buyersArray).map(
+                      (buyer: User, index: number) => (
                         <AutoCompleteItem
                           key={`${index}`}
                           value={buyer.username}
@@ -267,46 +302,47 @@ export default function Edit() {
                           <Avatar size="sm" name={buyer.username} />
                           <Text ml="4">{buyer.username}</Text>
                         </AutoCompleteItem>
-                      ))}
-                    </AutoCompleteGroup>
-                    <AutoCompleteCreatable></AutoCompleteCreatable>
-                  </AutoCompleteList>
-                </AutoComplete>
-              </div>
-              
-          </FormControl>
-          
-
-          <FormControl>
-            <div className="my-4">
-            <FormLabel>Charity</FormLabel>
-              
-              <Checkbox
-                data-cy="edit-charity-checkbox" 
-                isChecked={forCharity}
-                onChange={(e) => setForCharity(e.target.checked)} 
-                size='md' >
-                  I'd like to donate the earnings from this listing to charity {forCharity}
-                </Checkbox>
+                      )
+                    )}
+                  </AutoCompleteGroup>
+                  <AutoCompleteCreatable></AutoCompleteCreatable>
+                </AutoCompleteList>
+              </AutoComplete>
             </div>
           </FormControl>
 
-          <div className='my-5'></div>
+          <FormControl>
+            <div className="my-4">
+              <FormLabel>Charity</FormLabel>
+
+              <Checkbox
+                data-cy="edit-charity-checkbox"
+                isChecked={forCharity}
+                onChange={(e) => setForCharity(e.target.checked)}
+                size="md"
+              >
+                I'd like to donate the earnings from this listing to charity{" "}
+                {forCharity}
+              </Checkbox>
+            </div>
+          </FormControl>
+
+          <div className="my-5"></div>
 
           <FormControl>
-            <div className='my-5 flex'>
+            <div className="my-5 flex">
               <PriBlueButton
                 clickHandle={handleEdit}
-                data-cy="edit-listing-button" 
+                data-cy="edit-listing-button"
                 isDisabled={isInvalidPrice || isInvalidTitle}
-                title='Save Changes'
+                title="Save Changes"
               ></PriBlueButton>
 
               <InverseBlueButton
                 clickHandle={() => navigate(-1)}
-                className='ml-4'
-                data-cy="cancel-button" 
-                title='Cancel'
+                className="ml-4"
+                data-cy="cancel-button"
+                title="Cancel"
               ></InverseBlueButton>
             </div>
           </FormControl>

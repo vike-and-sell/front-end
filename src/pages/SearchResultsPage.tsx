@@ -45,7 +45,6 @@ export default function SearchResultsPage() {
     queryKey: [searchString ? searchString : "", filterOptions],
     queryFn: () =>
       queryListings(searchString ? searchString : "", filterOptions),
-    enabled: searchListings,
   });
 
   function handleNext() {

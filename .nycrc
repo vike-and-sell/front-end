@@ -1,0 +1,13 @@
+{
+  "extends": "@istanbuljs/nyc-config-typescript",
+  "all": true,
+  "include": [
+    "src/**/*.ts"
+  ],
+  "reporter": [
+    "html",
+    "text-summary"
+  ],
+  "sourceMap": false,
+  "instrument": false
+}

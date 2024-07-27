@@ -32,6 +32,7 @@ export default function Chat() {
             const ChatIDResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, {
                 withCredentials: true
             });
+            console.log(ChatIDResponse.data)
 
             const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
 

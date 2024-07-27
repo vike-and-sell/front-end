@@ -27,6 +27,7 @@ const queryClient = new QueryClient();
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./utils/AuthContext";
 import MyListings from "./pages/MyListings";
+import SearchResultsPage from "./pages/SearchResultsPage";
 
 function App() {
   return (
@@ -56,6 +57,10 @@ function App() {
                   <Route path="create" element={<Create />} />
                   <Route path="edit/:listingID" element={<Edit />} />
                   <Route path="chat" element={<Chat />} />
+                  <Route
+                    path="search/:searchString/:page"
+                    element={<SearchResultsPage />}
+                  />
                 </Route>
               </Route>
 

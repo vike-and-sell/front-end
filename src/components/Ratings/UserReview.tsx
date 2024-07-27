@@ -21,6 +21,7 @@ export default function UserReview({ listingId }: UserReview) {
   const mutation = useMutation({
     mutationFn: () => addReview(listingId, textInput, ratingValue),
     onSuccess: () => {
+      console.log("Yay");
       setTextInput("");
       setRatingValue(0);
       queryClient.invalidateQueries({ queryKey: ["reviews", listingId] });
@@ -30,6 +31,7 @@ export default function UserReview({ listingId }: UserReview) {
   function handleSubmit() {
     if (ratingValue !== 0 && textInput !== "") {
       setFormError(false);
+      console.log("Yay");
       mutation.mutate();
     } else {
       setFormError(true);
@@ -43,15 +45,15 @@ export default function UserReview({ listingId }: UserReview) {
 
   return (
     <FormControl isInvalid={formError}>
-      <FormLabel className='text-pri-blue font-semibold m-0'>
+      <FormLabel className="text-pri-blue font-semibold m-0">
         Leave a rating!
       </FormLabel>
       <Textarea
-        placeholder='Leave your comment here!'
-        resize='none'
+        placeholder="Leave your comment here!"
+        resize="none"
         value={textInput}
         onChange={(e) => handleTextChange(e)}
-        aria-label='Text Review Area'
+        aria-label="Text Review Area"
         required
       ></Textarea>
       {formError && textInput === "" ? (
@@ -59,13 +61,13 @@ export default function UserReview({ listingId }: UserReview) {
       ) : (
         ""
       )}
-      <div className='flex items-center justify-between mt-4'>
+      <div className="flex items-center justify-between mt-4">
         <StarRatings
           setValue={setRatingValue}
           defaultValue={ratingValue}
         ></StarRatings>
         <DefaultButton
-          title='Submit'
+          title="Submit"
           clickHandle={handleSubmit}
         ></DefaultButton>
       </div>

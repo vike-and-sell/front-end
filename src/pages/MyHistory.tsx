@@ -65,6 +65,7 @@ export default function MyHistory(){
                             <PaginatedListings
                             listingIds={item.ids}
                             accordionIndex={item.index}
+                            indexTitle={item.title}
                             isOpen={openIndex === item.index}
                             />
                         )}

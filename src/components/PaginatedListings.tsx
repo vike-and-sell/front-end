@@ -14,10 +14,11 @@ import axios from "axios";
 interface PaginatedListingsProps{
     listingIds: number[];
     accordionIndex: number;
+    indexTitle: string;
     isOpen: boolean;
 }
 
-export default function PaginatedListings({ listingIds, accordionIndex, isOpen }:PaginatedListingsProps) {
+export default function PaginatedListings({ listingIds, accordionIndex, indexTitle, isOpen }:PaginatedListingsProps) {
   const MAX_LISTINGS_PAGE = 10;
   const scrollRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -49,13 +50,13 @@ export default function PaginatedListings({ listingIds, accordionIndex, isOpen }
 
   const handleNext = () => {
     setCurrentPage(currentPage + 1);
-    navigate(`/browse/${accordionIndex}/${currentPage + 1}`);
+    navigate(`/myprofile/${indexTitle}/${currentPage + 1}`);
     scrollTop();
   };
 
   const handlePrev = () => {
     setCurrentPage(currentPage - 1);
-    navigate(`/browse/${accordionIndex}/${currentPage - 1}`);
+    navigate(`/myprofile/${indexTitle}/${currentPage - 1}`);
     scrollTop();
   };
 
@@ -65,14 +66,11 @@ export default function PaginatedListings({ listingIds, accordionIndex, isOpen }
     }
   };
 
-  let totalPages = 0;
+  let totalPages = 1;
   let activePageListing: Listing[] = [];
   if (listings) {
-    totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
-    activePageListing = listings.slice(
-      (currentPage - 1) * MAX_LISTINGS_PAGE,
-      currentPage * MAX_LISTINGS_PAGE
-    );
+    totalPages = Math.ceil(listingIds.length / MAX_LISTINGS_PAGE);
+    activePageListing = listings;
   }
 
   if (isError) {

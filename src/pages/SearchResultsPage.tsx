@@ -4,7 +4,7 @@ import { ListingCard } from "../components/ListingCard";
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PaginationBar from "../components/Pagination";
-import { Listing, SearchResults, UserSearchItem } from "../utils/interfaces";
+import { Listing, UserSearchItem } from "../utils/interfaces";
 import { arrayPagination } from "../utils/PaginationUtil";
 import FilterListing from "../components/FilterListings";
 import { FilterOptions } from "../utils/interfaces";

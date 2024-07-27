@@ -15,13 +15,16 @@ export default function RecoverPasswordPage() {
     const [email, setEmail] = useState<string>("");
     const [isValid, setIsValid] = useState(false);
     const [statusBool, setStatusBool] = useState<boolean | null>(null);
-    const { requestReset } = useAuth()
+    const auth = useAuth()
     const navigate = useNavigate();
 
     const handleReset = ()=> {
         if(isValid){
             setStatusBool(null);
-            requestReset(email, "http://localhost:5173/unverified/reset/jwt?=") 
+            if (auth){
+                auth.requestReset(email, `${location.origin}/unverified/reset/jwt?=`) 
+            }
+            
         } else {
             setStatusBool(true);
         } 

@@ -13,6 +13,7 @@ import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { fetchBrowseListings } from "../utils/api";
 import ErrorPage from "./ErrorPage";
+import axios from "axios";
 
 export default function BrowsePage() {
   const MAX_LISTINGS_PAGE = 30;
@@ -72,12 +73,13 @@ export default function BrowsePage() {
   }
 
   if (isError) {
-    return <ErrorPage>{error.response.data.message}</ErrorPage>;
+    const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.message : error.message;
+    return <ErrorPage>{errorMessage}</ErrorPage>;
   }
   return (
     <>
       <main className='px-4'>
-        <PageHeading title='Browse Around'></PageHeading>
+        <PageHeading data-cy="page-heading" title='Browse Around'></PageHeading>
         <div className='flex justify-between'>
           <FilterListing
             filterOptions={filterOptions}

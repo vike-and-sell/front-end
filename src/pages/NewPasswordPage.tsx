@@ -5,7 +5,7 @@ import { Input,
         FormErrorMessage,
         FormHelperText
     } from '@chakra-ui/react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../utils/AuthContext';
 
 export default function NewPasswordPage() {
@@ -20,14 +20,18 @@ export default function NewPasswordPage() {
 
     const location = useLocation();
 
-    const { verifyReset } = useAuth()
+    const auth = useAuth()
 
     const token = new URLSearchParams(location.search).toString().substring(1);
 
     const onReset = ()=> {
         if(isValidPassLen && isValidPassSymbols && isValidConfPassword){
             setStatusBool(null);
-            verifyReset(token, password)
+
+            if (auth){
+                auth.verifyReset(token, password)
+            }
+            
         } else {
             setStatusBool(true);
         }
@@ -71,7 +75,7 @@ export default function NewPasswordPage() {
                 <div className='flex flex-col px-8 gap-6'>    
                     <FormControl isRequired isInvalid={(!isValidPassSymbols || !isValidPassLen) && isPasswordTouched}>
                         <FormLabel fontSize={[16,19,25,27]} textColor='rt-dark-blue'>New Password</FormLabel>
-                        <Input variant='outline' type='password' value={password} onChange={handlePasswordChange} />
+                        <Input variant='outline' type='password' value={password} onChange={handlePasswordChange} data-cy="" />
                         {!isValidPassSymbols && isPasswordTouched ? (
                             <FormErrorMessage>Must contain at least 1 of each character: uppercase, lowercase, number, special</FormErrorMessage>
                         ):!isValidPassLen && isPasswordTouched ? (

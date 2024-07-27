@@ -1,4 +1,3 @@
-import PageHeading from "../components/PageHeading";
 import { FaArrowLeft } from "react-icons/fa6";
 import DefaultButton, {
   InvalidRedButton,
@@ -10,6 +9,7 @@ import { MdDoNotDisturb } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
   Button,
+  Badge,
   Menu,
   MenuButton,
   MenuList,
@@ -26,14 +26,16 @@ import {
 import { useRef } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueries } from "@tanstack/react-query";
 import {
   fetchListingRating,
   fetchListingReviews,
+  fetchOtherUser,
   fetchSingleListing,
   fetchUser,
 } from "../utils/api";
 import ErrorPage from "./ErrorPage";
+import axios from "axios";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
@@ -75,49 +77,44 @@ export default function IndividualListing() {
     queryFn: () => fetchListingRating(listingID),
   });
 
-  // Fetch User Data
-  const { data: userData } = useQuery({
-    queryKey: ["userinfo"],
-    queryFn: fetchUser,
-    enabled: !listingInfo,
+  // Fetch User and Seller Info
+  const [userData, sellerData] = useQueries({
+    queries: [
+      { queryKey: ["userinfo"], queryFn: fetchUser, enabled: !listingInfo },
+      {
+        queryKey: ["sellerData"],
+        queryFn: () => fetchOtherUser(listingInfo.sellerId),
+        enabled: !listingInfo,
+      },
+    ],
   });
 
   // Error Screen for Listing Info
   if (isError) {
+    const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.message : error.message;
     return (
       <ErrorPage>
-        <div>{error.message}</div>
-        <div>{error.response?.data.message}</div>
+        <div>{errorMessage}</div>
       </ErrorPage>
     );
   }
 
   // Error Screen for Review
   if (isReviewError) {
+    const reviewErrorMessage = axios.isAxiosError(reviewError) && reviewError.response ? reviewError.response.data.message : reviewError.message;
     return (
       <ErrorPage>
-        <div>{reviewError.message}</div>
-        <div>{reviewError.response?.data.message}</div>
-      </ErrorPage>
-    );
-  }
-
-  // Error Screen for Review
-  if (isReviewError) {
-    return (
-      <ErrorPage>
-        <div>{reviewError.message}</div>
-        <div>{reviewError.response?.data.message}</div>
+        <div>{reviewErrorMessage}</div>
       </ErrorPage>
     );
   }
 
   // Error Screen for Rating
   if (isRatingError) {
+    const ratingErrorMessage = axios.isAxiosError(ratingError) && ratingError.response ? ratingError.response.data.message : ratingError.message;
     return (
       <ErrorPage>
-        <div>{ratingError.message}</div>
-        <div>{ratingError.response?.data.message}</div>
+        <div>{ratingErrorMessage}</div>
       </ErrorPage>
     );
   }
@@ -126,28 +123,40 @@ export default function IndividualListing() {
   const handleDelete = () => {};
   const handleDoNotRecommend = () => {};
 
+  // Check if all data is loaded
+  if (
+    isListingPending ||
+    isReviewPending ||
+    isRatingPending ||
+    userData.isLoading ||
+    sellerData.isLoading
+  ) {
+    return <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>;
+  }
+
   // Verifies User owns listing
   if (userData && listingInfo) {
-    if (userData.userId == listingInfo.sellerId) {
+    if (userData.data.userId == listingInfo.sellerId) {
       isUser = true;
     }
   }
 
-  return !isListingPending && !isReviewPending && !isRatingPending ? (
+  return (
     <main className='p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
       <div className='flex gap-2 items-center'>
         <button
           className=' p-1 rounded-lg bg-pri-blue'
+          data-cy="back-button" 
           title='Back Button'
           onClick={() => navigate(-1)}
         >
           <FaArrowLeft size={15} color='white' />
         </button>
-        <h1 className='font-semibold text-pri-blue text-3xl p-0'>
+        <h1 className='font-semibold text-pri-blue text-3xl p-0' data-cy="listing-title" >
           {listingInfo.title}
         </h1>
         <Menu>
-          <MenuButton as={Button} width='47px' background='white'>
+          <MenuButton as={Button} width='47px' background='white' data-cy="menu-button">
             <FaEllipsisH color='#166aac'></FaEllipsisH>
           </MenuButton>
           <MenuList>
@@ -191,11 +200,13 @@ export default function IndividualListing() {
             <ModalFooter>
               <InvalidRedButton
                 clickHandle={handleDelete}
+                data-cy="delete-listing"
                 title='Yes'
                 className='mr-3'
               ></InvalidRedButton>
               <InverseBlueButton
                 clickHandle={onClose}
+                data-cy="cancel-delete-listing"
                 title='No'
               ></InverseBlueButton>
             </ModalFooter>
@@ -203,16 +214,34 @@ export default function IndividualListing() {
         </Modal>
       </div>
       <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
-        <div className='text-green-700 font-bold text-2xl'>
-          ${listingInfo.price}
+        <div className='flex items-center gap-3'>
+          <div className='text-green-700 font-bold text-2xl' data-cy="listing-price">
+            ${listingInfo.price}
+          </div>
+          <Badge
+            colorScheme={`${
+              listingInfo.status == "AVAILABLE" ? "green" : "red"
+            }`}
+            data-cy="listing-status-badge"
+          >
+            {listingInfo.status}
+          </Badge>
+          { listingInfo?.forCharity? 
+          <Badge
+            data-cy="listing-charity-badge"
+          >
+            CHARITY
+          </Badge>
+          : ''
+          }
         </div>
-        <div className='text-sm'>
+
+        <div className='text-sm' data-cy="listing-time">
           {timeSincePost(listingInfo.listedAt)}
-          <span className='font-bold'> {listingInfo.sellerId}</span>
+          <span className='font-bold' data-cy="listing-seller"> {sellerData.data.username}</span>
         </div>
         <div className='flex gap-4'>
-          <DefaultButton title='Message Seller'></DefaultButton>
-          <DefaultButton title='View Seller'></DefaultButton>
+          <DefaultButton title='Message Seller' data-cy="message-seller-button"></DefaultButton>
         </div>
       </div>
       <RatingSection
@@ -221,8 +250,6 @@ export default function IndividualListing() {
         ratings={ratings}
       ></RatingSection>
     </main>
-  ) : (
-    <IndividualListingsPageSkeleton></IndividualListingsPageSkeleton>
   );
 }
 

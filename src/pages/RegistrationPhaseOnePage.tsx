@@ -7,37 +7,36 @@ import { Input,
         FormHelperText
     } from '@chakra-ui/react';
 import { useNavigate } from "react-router-dom";
+import { PriBlueButton } from '../components/Button';
 
 export default function RegistrationPhaseOnePage() {
     const [email, setEmail] = useState<string>("");
-    const [isValid, setIsValid] = useState<boolean>(true);
-    const [isEmpty, setIsEmpty] = useState<boolean>(true);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailRegex.test(email) && email.endsWith('@uvic.ca');
+    const isEmpty = email === ""
     const [isTouched, setIsTouched] = useState<boolean>(false);
     const [statusBool, setStatusBool] = useState<boolean | null>(null);
+    const [successBool, setSuccessBool] = useState<boolean>(false);
 
     const navigate = useNavigate();
-    const { requestAccount } = useAuth();
-
-    function validateEmail(email: string): boolean {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email) && email.endsWith('@uvic.ca');
-    }
+    const auth = useAuth();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
-        setIsEmpty(newEmail === '');
         setIsTouched(true);
-        setIsValid(validateEmail(newEmail));
     };
 
     const handleCreate = () =>{
-        if(isValid && !isEmpty){
-            setStatusBool(null);
-            requestAccount(email, "http://localhost:5173/unverified/signup-token/jwt?=");
-        } else {
-            setStatusBool(true);
-        } 
+      try{
+        if (auth){
+          auth.requestAccount(email, `${location.origin}/unverified/signup-token/jwt?=`);
+        }
+        setStatusBool(null);
+        setSuccessBool(true);
+      } catch {
+        setStatusBool(true);
+      }
     }
 
     return (
@@ -52,6 +51,10 @@ export default function RegistrationPhaseOnePage() {
                 {statusBool? (<div className="text-red px-6 text-center">
                                         Invalid email address. Please try again.
                                       </div>) : ("") }
+                
+                {successBool ? (<div className='text-rt-dark-blue px-6 text-center'>
+                                        Success! Check your email for a registration link.
+                                      </div>) : ("")}
 
                 <div className="flex flex-col px-6 pb-5 xl:px-14">
                     <FormControl isRequired isInvalid={(isEmpty || !isValid) && isTouched}>
@@ -87,12 +90,11 @@ export default function RegistrationPhaseOnePage() {
           </div>
 
           <div className='p-5 self-center'>
-            <button
-              className='bg-pri-blue relative px-4 rounded-md text-white text-lg sm:text-xl font-semibold p-3'
-              onClick={handleCreate}
-            >
-              Sign Up
-            </button>
+            <PriBlueButton
+              isDisabled={!isValid || isEmpty}
+              clickHandle={handleCreate}
+              title='Sign Up'>
+            </PriBlueButton>
           </div>
         </div>
       </div>

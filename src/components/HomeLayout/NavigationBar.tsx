@@ -9,8 +9,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -24,22 +22,34 @@ function NavigationBar() {
 
   return (
     <>
-      <nav className='flex flex-col p-4 gap-4'>
-        <CustomNavLink route='/browse/1' title='Browse'>
+      <nav data-cy="nav-bar"className='flex flex-col p-4 gap-4 items-center'>
+        <CustomNavLink data-cy="browse-nav" route='/browse/1' title='Browse'>
           <FaShop></FaShop>
         </CustomNavLink>
-        <CustomNavLink route='/create' title='Create Listing'>
-          <MdSell></MdSell>
-        </CustomNavLink>
-        <CustomNavLink route='/mylistings/1' title='My Listings'>
+        <div data-cy="create-listing-nav">
+          <CustomNavLink data-cy="create-listing-nav" route='/create' title='Create Listing'>
+            <MdSell></MdSell>
+          </CustomNavLink>
+        </div>
+        
+        <CustomNavLink data-cy="my-listings-nav" route='/mylistings/1' title='My Listings'>
           <FaListAlt></FaListAlt>
         </CustomNavLink>
-        <CustomNavLink route='/' title='My Profile'>
+        <CustomNavLink data-cy="my-profile-nav" route='/mylistings/1' title='My Profile'>
           <CgProfile></CgProfile>
         </CustomNavLink>
-        <CustomNavLink route='' title='My Messages' clickHandle={onOpen}>
-          <TbMessageCircle2Filled></TbMessageCircle2Filled>
-        </CustomNavLink>
+        <div className='flex gap-3 items-center'>
+          <TbMessageCircle2Filled color='white'></TbMessageCircle2Filled>
+          <button
+            data-cy="my-messages-nav"
+            onClick={onOpen}
+            className='text-white font-semibold'
+            title='My Messages'
+          >
+            My Messages
+          </button>
+        </div>
+
         <CustomNavLink route='/' title='Settings'>
           <IoSettingsSharp></IoSettingsSharp>
         </CustomNavLink>

@@ -9,9 +9,9 @@ export interface User {
 }
 
 export interface MessageType {
-  messageID: string;
-  messageContent: string;
-  senderID: string;
+  messageId: string;
+  content: string;
+  senderId: string;
   receiverID: string;
   timestamp: number;
 }
@@ -33,6 +33,7 @@ export interface FilterOptions {
   isDescending?: boolean;
   status?: "SOLD" | "AVAILABLE" | "";
   sortBy?: "price" | "created_on" | "location" | "";
+  [key: string]: string | boolean | undefined;
 }
 
 export interface LoginCredentials {
@@ -59,6 +60,7 @@ export interface AuthContextType {
   requestReset: (email: string, callback: string) => Promise<void>;
   verifyReset: (jwt: string, password: string) => Promise<void>;
   checkUserStatus: () => Promise<void>;
+  isLoading: boolean;
 }
 
 export interface SessionType {
@@ -75,3 +77,13 @@ export interface SearchResults {
   listings: Listing[];
   users: UserSearchItem[];
 }
+
+export interface ChatType {
+  chatId: string
+  users: string[]
+  listingId: string
+  listingInfo: Listing
+  lastMessageTime: string
+  interlocutor: User
+}
+

@@ -29,7 +29,7 @@ export default function Messages({allMessages, user}:MessageProps){
         <div id = "messages" className="flex h-full flex-1 flex-col gap-4 p-3 overflowy-auto">
             
             {allMessages.map((message:MessageType, index) =>{
-                const isUser = message.senderID === user.userID
+                const isUser = parseInt(message.senderId) === parseInt(user.userId)
                 
                 var isSameMessageDate = false
                 if(index > 0){
@@ -39,14 +39,14 @@ export default function Messages({allMessages, user}:MessageProps){
                 }
                 
                 return(
-                    <div key={`${message.messageID}-${message.timestamp}`}>
-                        <div className={`flex font-bold place-content-center`}>
+                    <div key={`${message.messageId}-${message.timestamp}`}>
+                        <div className={`flex font-bold place-content-center mb-1`}>
                             {isSameMessageDate === true? '' : formatDate(message.timestamp)}
                         </div>
                         <div className={`flex items-end ${isUser === true? 'justify-end' : ''}`} >
                             <div className={`flex flex-col-space-y-2 text-base max-w-xs -mx-2 ${isUser === true? 'order-1 items-end' : 'order-2 items-start'}`}>
                                 <span className={`px-4 py-2 rounded-lg inline-block ${isUser === true? 'bg-pri-blue text-white' : ' bg-stone-200 text-gray-700'}`}>
-                                    {message.messageContent}{' '}
+                                    {`${message.content}`}{' '}
                                     <span className={`ml-2 text-xs text-gray-400`}>
                                         {formatTimestamp(message.timestamp)}
                                     </span>

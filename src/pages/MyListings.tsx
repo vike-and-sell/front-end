@@ -11,6 +11,7 @@ import ListingsGrid from "../components/ListingsGrid";
 import PaginationBar from "../components/Pagination";
 import { ListingsGridSkeleton } from "../components/Skeletons/ListingGridSkeleton";
 import PaginationBarSkeleton from "../components/Skeletons/PaginationSkeleton";
+import axios from "axios";
 
 export default function MyListings() {
   const MAX_LISTINGS_PAGE = 30;
@@ -63,13 +64,14 @@ export default function MyListings() {
   }
 
   if (isError) {
-    return <ErrorPage>{error.response.data.message}</ErrorPage>;
+    const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.message : error.message;
+    return <ErrorPage>{errorMessage}</ErrorPage>;
   }
 
   return (
     <>
       <main className='px-4'>
-        <PageHeading title='My Listings'></PageHeading>
+        <PageHeading data-cy="page-heading" title='My Listings'></PageHeading>
         <div className='flex justify-end'>
           {isListingPending ? (
             <PaginationBarSkeleton></PaginationBarSkeleton>

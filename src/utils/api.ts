@@ -16,12 +16,28 @@ const fetchUser = async () => {
   return response.data;
 };
 
+const fetchOtherUser = async (userId: string) => {
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/users/${userId}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  if (response.status !== 200) {
+    throw new Error("Fetching user data failed");
+  }
+
+  return response.data;
+};
+
 const fetchBrowseListings = async (filterOptions: FilterOptions) => {
   let paramsString = "";
   Object.keys(filterOptions).forEach((key) => {
-    if (filterOptions[key] != "") {
+    const filter = filterOptions[key];
+    if (filter !== undefined && filter !== "") {
       paramsString += `${encodeURIComponent(key)}=${encodeURIComponent(
-        filterOptions[key]
+        String(filter)
       )}&`;
     }
   });
@@ -180,6 +196,7 @@ const queryListings = async function (
 export {
   queryListings,
   fetchUser,
+  fetchOtherUser,
   fetchBrowseListings,
   fetchSingleListing,
   fetchMyListings,

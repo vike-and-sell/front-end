@@ -1,8 +1,8 @@
-import { Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContextType, SessionType, User } from "./interfaces";
+import { AuthContextType, User } from "./interfaces";
+import LoadingPage from "../pages/LoadingPage";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -72,6 +72,7 @@ export const AuthProvider = ({ children }: any) => {
         });
     } catch (error) {
       console.log(error);
+      throw new Error("Unable to request new account");
     }
   };
 
@@ -111,6 +112,7 @@ export const AuthProvider = ({ children }: any) => {
         });
     } catch (error) {
       console.log(error);
+      throw new Error("Unable to fetch user");
     }
   };
 
@@ -211,7 +213,7 @@ export const AuthProvider = ({ children }: any) => {
 
   return (
     <AuthContext.Provider value={authData}>
-      {isLoading ? <div>Loading</div> : children}
+      {isLoading ? <LoadingPage></LoadingPage> : children}
     </AuthContext.Provider>
   );
 };

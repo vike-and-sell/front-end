@@ -35,7 +35,6 @@ import {
   fetchUser,
 } from "../utils/api";
 import ErrorPage from "./ErrorPage";
-import axios from "axios";
 import Chat from "./chat";
 
 export default function IndividualListing() {

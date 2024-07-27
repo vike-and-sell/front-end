@@ -161,28 +161,20 @@ const queryListings = async function (
     }
   });
 
-  console.log(
-    `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${
-      encodeURIComponent(query) + paramsString
-    }`
+  const searchResponse = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(
+      query
+    )}${"&" + paramsString}`,
+    {
+      withCredentials: true,
+    }
   );
 
-  return "";
-
-  // const searchResponse = await axios.get(
-  //   `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(
-  //     query
-  //   )}`,
-  //   {
-  //     withCredentials: true,
-  //   }
-  // );
-
-  // if (searchResponse.status !== 200) {
-  //   throw new Error("Failed to search for items or users");
-  // }
-
-  // return searchResponse.data;
+  if (searchResponse.status !== 200) {
+    throw new Error("Failed to search for items or users");
+  }
+  console.log(searchResponse.data);
+  return searchResponse.data;
 };
 
 export {

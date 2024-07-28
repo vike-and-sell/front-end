@@ -3,6 +3,7 @@ import { Charity } from "../utils/interfaces";
 
 import PageHeading from "../components/PageHeading";
 import CharityCard from "../components/CharityCard";
+import { getCharities } from "../utils/api";
 
 export default function CharityPage() {
   const charityInfo: Charity = {
@@ -27,20 +28,22 @@ export default function CharityPage() {
     numListings: 69,
   };
 
+  getCharities();
+
   return (
-    <main className='px-4'>
-      <PageHeading title='Charities'></PageHeading>
-      <h2 className='font-semibold text-pri-blue text-xl p-0'>
+    <main className="px-4">
+      <PageHeading title="Charities"></PageHeading>
+      <h2 className="font-semibold text-pri-blue text-xl p-0">
         Active Charity
       </h2>
-      <div className='flex flex-col p-4'>
+      <div className="flex flex-col p-4">
         <CharityCard charityInfo={charityInfo}></CharityCard>
       </div>
-      <Divider mb='4px'></Divider>
-      <h2 className='font-semibold text-pri-blue text-xl p-0'>
+      <Divider mb="4px"></Divider>
+      <h2 className="font-semibold text-pri-blue text-xl p-0">
         Past Charities
       </h2>
-      <div className='flex flex-col p-4'>
+      <div className="flex flex-col p-4">
         <CharityCard charityInfo={charityInfo2}></CharityCard>
       </div>
     </main>

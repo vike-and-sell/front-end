@@ -186,7 +186,23 @@ const queryListings = async function (
   return searchResponse.data;
 };
 
+const getCharities = async function () {
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/charity`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  if (response.status !== 200) {
+    throw new Error("Failed get charities");
+  }
+
+  console.log(response.data);
+  return response.data;
+};
 export {
+  getCharities,
   queryListings,
   fetchUser,
   fetchOtherUser,

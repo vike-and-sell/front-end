@@ -3,7 +3,7 @@ import LoginHeading from "../components/LoginHeading";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
-import { InverseBlueButton, PriBlueButton } from "../components/Button";
+import { InverseBlueButton } from "../components/Button";
 
 export default function LoginPage() {
   const [username, setUsername] = useState<string>("");

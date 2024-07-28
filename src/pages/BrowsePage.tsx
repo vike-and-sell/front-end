@@ -85,6 +85,7 @@ export default function BrowsePage() {
         <PageHeading data-cy="page-heading" title="Browse Around"></PageHeading>
         <div className="flex justify-between">
           <FilterListing
+            disableLocation={false}
             filterOptions={filterOptions}
             setFilterOptions={setFilterOptions}
           ></FilterListing>

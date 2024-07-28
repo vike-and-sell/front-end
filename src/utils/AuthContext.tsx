@@ -3,12 +3,13 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContextType, User } from "./interfaces";
 import LoadingPage from "../pages/LoadingPage";
+import { useToast } from "@chakra-ui/react";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: any) => {
   const navigate = useNavigate();
-
+  const toast = useToast();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setLoading] = useState(true);
 
@@ -19,6 +20,12 @@ export const AuthProvider = ({ children }: any) => {
 
   const loginUser = async (username: string, password: string) => {
     try {
+      toast({
+        title: "Logging in...",
+        status: "loading",
+        duration: 10000,
+        isClosable: true,
+      });
       await axios
         .post(
           `${import.meta.env.VITE_REACT_APP_API_URL}/login`,
@@ -32,23 +39,37 @@ export const AuthProvider = ({ children }: any) => {
         )
         .then((response) => {
           if (response.status !== 200) {
+            toast.closeAll();
             setUser(null);
             throw new Error(
               `Unable to login. Please try again later ${response.status}`
             );
           }
           checkUserStatus();
-          console.log("refresh + forced login");
+          toast.closeAll();
+          toast({
+            title: "Logged in",
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
           navigate("/");
         });
     } catch (error) {
       setUser(null);
+      toast.closeAll();
       throw new Error("Unable to login. Please try again later");
     }
   };
 
   const logoutUser = async () => {
     try {
+      toast({
+        title: "Logging out...",
+        status: "loading",
+        duration: 10000,
+        isClosable: true,
+      });
       await axios
         .get(`${import.meta.env.VITE_REACT_APP_API_URL}/logout`, {
           withCredentials: true,
@@ -56,10 +77,24 @@ export const AuthProvider = ({ children }: any) => {
         .then((response) => {
           if (response.status == 200) {
             setUser(null);
+            toast.closeAll();
+            toast({
+              title: "Logged out",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
             navigate("/");
           }
         });
     } catch (error) {
+      toast.closeAll();
+      toast({
+        title: "Error logging out",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       setUser(null);
     }
   };

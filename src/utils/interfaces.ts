@@ -25,6 +25,7 @@ export interface Listing {
   status: string; // assuming there could be other statuses
   listedAt: string; // ISO 8601 date string
   lastUpdatedAt: string; // ISO 8601 date string
+  forCharity: boolean;
 }
 
 export interface FilterOptions {
@@ -87,3 +88,14 @@ export interface ChatType {
   lastMessageTime: string;
   interlocutor: User;
 }
+
+export interface Charity {
+  name: string;
+  status: "AVAILABLE" | "CLOSED";
+  fund: number;
+  logoUrl: string;
+  startDate: string;
+  endDate: string;
+  numListings: number;
+}
+

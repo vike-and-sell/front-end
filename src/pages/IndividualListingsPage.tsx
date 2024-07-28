@@ -243,8 +243,13 @@ export default function IndividualListing() {
           >
             {listingInfo.status}
           </Badge>
-          {listingInfo?.forCharity ? (
-            <Badge data-cy="listing-charity-badge">CHARITY</Badge>
+          {listingInfo?.forCharity? (
+            <Badge 
+              colorScheme="purple"
+              data-cy="listing-charity-badge" 
+            >
+              CHARITY
+            </Badge>
           ) : (
             ""
           )}

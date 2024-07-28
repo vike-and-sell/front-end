@@ -11,6 +11,7 @@ import {
   InputLeftElement,
   Select,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
@@ -32,6 +33,7 @@ import { User } from "../utils/interfaces";
 
 export default function Edit() {
   const navigate = useNavigate();
+  const toast = useToast();
   const { listingID } = useParams();
   const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
@@ -39,7 +41,7 @@ export default function Edit() {
   const [forCharity, setForCharity] = useState<boolean>(false);
   const [buyersArray, setBuyersArray] = useState<User[]>([]);
   const [buyerUsername, setBuyerUsername] = useState<string>("");
-
+  const [isEditLoading, setIsEditLoading] = useState<boolean>(false);
   const auth = useAuth();
 
   useEffect(() => {
@@ -150,6 +152,13 @@ export default function Edit() {
 
   // Handle edit actually makes the changes
   const handleEdit = async () => {
+    setIsEditLoading(true);
+    toast({
+      title: "Updating listing...",
+      status: "loading",
+      duration: 10000,
+      isClosable: true,
+    });
     axios
       .patch(
         `${import.meta.env.VITE_REACT_APP_API_URL}/listings/${listingID}`,
@@ -164,11 +173,28 @@ export default function Edit() {
         }
       )
       .then((response) => {
+        setIsEditLoading(false);
         if (response.status == 200) {
+          toast.closeAll();
+          toast({
+            title: "Listing updated",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
           navigate(`/listing/${listingID}`);
         }
       })
-      .catch((error) => console.error(error));
+      .catch(() => {
+        setIsEditLoading(false);
+        toast.closeAll();
+        toast({
+          title: "Failed to update",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      });
   };
 
   if (isLoading || isUserDataLoading) {
@@ -338,7 +364,7 @@ export default function Edit() {
               <PriBlueButton
                 clickHandle={handleEdit}
                 data-cy="edit-listing-button"
-                isDisabled={isInvalidPrice || isInvalidTitle}
+                isDisabled={isInvalidPrice || isInvalidTitle || isEditLoading}
                 title="Save Changes"
               ></PriBlueButton>
 

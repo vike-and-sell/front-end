@@ -8,6 +8,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  useToast,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { InverseBlueButton, PriBlueButton } from "../components/Button";
@@ -15,7 +16,7 @@ import axios from "axios";
 
 export default function Edit() {
   const navigate = useNavigate();
-
+  const toast = useToast();
   const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
   const [ID, setID] = useState<number>(0);
@@ -24,6 +25,7 @@ export default function Edit() {
   const [isError, setIsError] = useState<boolean>(false);
   const [isInvalidTitle, setIsInvalidTitle] = useState<boolean>(true);
   const [forCharity, setForCharity] = useState<boolean>(false);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const listingPayload = {
     sellerId: ID,
@@ -58,6 +60,13 @@ export default function Edit() {
 
   const createListing = async () => {
     setIsError(false);
+    setIsCreating(true);
+    toast({
+      title: "Creating Listing...",
+      status: "loading",
+      duration: 10000,
+      isClosable: true,
+    });
     try {
       await axios
         .post(
@@ -68,19 +77,26 @@ export default function Edit() {
           }
         )
         .then(function (response) {
-          console.log(
-            "response " +
-              response.status +
-              " " +
-              response.data +
-              " " +
-              response.statusText
-          );
+          if (response.status == 201) {
+            toast.closeAll();
+            toast({
+              title: "Listing created",
+              status: "success",
+              duration: 5000,
+              isClosable: true,
+            });
+          }
           navigate(`/listing/${response.data.listingId}`);
         });
     } catch (error) {
       setIsError(true);
-      console.log(error);
+      toast.closeAll();
+      toast({
+        title: "Failed to create listing",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -192,7 +208,9 @@ export default function Edit() {
               <PriBlueButton
                 data-cy="create-listing-button"
                 isDisabled={
-                  isInvalidPrice || (isInvalidTitle && isTitleTouched)
+                  isInvalidPrice ||
+                  (isInvalidTitle && isTitleTouched) ||
+                  isCreating
                 }
                 clickHandle={handleCreate}
                 title="Create Listing"

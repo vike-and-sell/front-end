@@ -58,7 +58,7 @@ export interface AuthContextType {
     username: string,
     password: string,
     location: string
-  ) => Promise<void>;
+  ) => Promise<string>;
   requestReset: (email: string, callback: string) => Promise<void>;
   verifyReset: (jwt: string, password: string) => Promise<void>;
   checkUserStatus: () => Promise<void>;
@@ -98,4 +98,3 @@ export interface Charity {
   endDate: string;
   numListings: number;
 }
-

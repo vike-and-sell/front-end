@@ -291,7 +291,7 @@ export default function Edit() {
                     : "text-red font-semibold"
                 }`}
                 onChange={(e) => setStatus(e.target.value)}
-                defaultValue={listingInfo.status}
+                value={status}
               >
                 <option
                   className="text-green-700 font-semibold"
@@ -312,7 +312,14 @@ export default function Edit() {
           <FormControl className={`${status === "SOLD" ? "" : "hidden"}`}>
             <div className="my-4">
               <FormLabel>Select Buyer</FormLabel>
-              <AutoComplete rollNavigation creatable>
+              <AutoComplete 
+                creatable
+                openOnFocus={true}
+                onSelectOption={(item) =>{
+                  setBuyerUsername(item.item.value)
+                }}
+                rollNavigation 
+                >
                 <AutoCompleteInput
                   data-cy="edit-buyer-autocomplete"
                   defaultValue={buyerUsername}

@@ -5,6 +5,7 @@ import CharityCard from "../components/CharityCard";
 import { getCharities } from "../utils/api";
 import { useQuery } from "@tanstack/react-query";
 import ErrorPage from "./ErrorPage";
+import CharityPageSkeleton from "../components/Skeletons/CharityPageSkeleton";
 
 export default function CharityPage() {
   const {
@@ -16,15 +17,13 @@ export default function CharityPage() {
 
   // Loading Page here
   if (isLoading) {
-    return <div>Loading</div>;
+    return <CharityPageSkeleton></CharityPageSkeleton>;
   }
 
   // Error Message
   if (isError) {
     return <ErrorPage>{error.message}</ErrorPage>;
   }
-
-  console.log(charities);
 
   const activeCharities = charities.filter(
     (charity: Charity) => charity.status == "AVAILABLE"

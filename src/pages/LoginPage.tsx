@@ -45,6 +45,12 @@ export default function LoginPage() {
     setPassword(newPassword);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      onSignIn();
+    }
+  };
+
   return (
     <>
       <main className="flex flex-col sm:flex-row h-screen">
@@ -80,6 +86,7 @@ export default function LoginPage() {
                 type="text"
                 value={username}
                 onChange={handleUsernameChange}
+                onKeyDown={handleKeyDown}
               />
             </FormControl>
 
@@ -94,6 +101,7 @@ export default function LoginPage() {
                 type="password"
                 value={password}
                 onChange={handlePasswordChange}
+                onKeyDown={handleKeyDown}
               />
             </FormControl>
           </div>
@@ -103,6 +111,7 @@ export default function LoginPage() {
               data-cy="signin-button"
               clickHandle={onSignIn}
               isDisabled={isLoading}
+              onKeyDown={handleKeyDown}
               title="Sign In"
             ></InverseBlueButton>
           </div>

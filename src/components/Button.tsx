@@ -5,6 +5,7 @@ interface DefaultButtonProps {
   clickHandle?: () => void;
   className?: string;
   isDisabled?: boolean;
+  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>
 }
 
 export default function DefaultButton({
@@ -66,6 +67,7 @@ export function InverseBlueButton({
   clickHandle,
   className,
   isDisabled,
+  onKeyDown
 }: DefaultButtonProps) {
   return (
     <Button
@@ -84,6 +86,7 @@ export function InverseBlueButton({
       _hover={{ bg: "#ccdde9" }}
       isDisabled={isDisabled}
       onClick={clickHandle}
+      onKeyDown={onKeyDown}
       transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
     >
       {title}

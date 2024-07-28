@@ -15,6 +15,7 @@ import { queryListings } from "../utils/api";
 import ErrorPage from "./ErrorPage";
 import UserGrid from "../components/UserGrid";
 import UserCard from "../components/UserCard";
+import { UserListingSkeleton } from "../components/Skeletons/UserListingsSkeleton";
 
 export default function SearchResultsPage() {
   const MAX_LISTINGS_PAGE = 30;
@@ -115,6 +116,7 @@ export default function SearchResultsPage() {
         <div className="flex justify-between">
           <div className="flex items-center gap-4 mb-4" id="search-tool-bar">
             <FilterListing
+              disableLocation={true}
               filterOptions={filterOptions}
               setFilterOptions={setFilterOptions}
             ></FilterListing>
@@ -166,7 +168,7 @@ export default function SearchResultsPage() {
           isSearchLoading ? (
             <ListingsGridSkeleton></ListingsGridSkeleton>
           ) : activePageListing.length == 0 ? (
-            <div>No listings found</div>
+            <div className="h-[400px]">No listings found</div>
           ) : (
             <ListingsGrid ref={scrollRef}>
               {activePageListing.map((listing) => (
@@ -178,9 +180,9 @@ export default function SearchResultsPage() {
             </ListingsGrid>
           )
         ) : isSearchLoading ? (
-          <div>Loading</div>
+          <UserListingSkeleton></UserListingSkeleton>
         ) : activeUserListings.length == 0 ? (
-          <div>No users found</div>
+          <div className="h-[400px]">No users found</div>
         ) : (
           <UserGrid ref={scrollRef}>
             {activeUserListings.map((user) => (

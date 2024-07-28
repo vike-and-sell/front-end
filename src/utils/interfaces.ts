@@ -33,7 +33,7 @@ export interface FilterOptions {
   minPrice?: string;
   isDescending?: boolean;
   status?: "SOLD" | "AVAILABLE" | "";
-  sortBy?: "price" | "created_on" | "location" | "";
+  sortBy?: "price" | "created_on" | "distance" | "";
   [key: string]: string | boolean | undefined;
 }
 
@@ -98,4 +98,3 @@ export interface Charity {
   endDate: string;
   numListings: number;
 }
-

@@ -6,6 +6,7 @@ export const mockChatPaneItems: ChatType[] = [
       users: ["1", "2"],
       listingId: "1",
       listingInfo: {
+        forCharity:true,
         sellerId: "1",
         listingId: "1",
         title: "Vintage Chair",
@@ -31,6 +32,7 @@ export const mockChatPaneItems: ChatType[] = [
       users: ["3", "4"],
       listingId: "2",
       listingInfo: {
+        forCharity:true,
         sellerId: "3",
         listingId: "2",
         title: "Antique Table",
@@ -56,6 +58,7 @@ export const mockChatPaneItems: ChatType[] = [
       users: ["5", "6"],
       listingId: "3",
       listingInfo: {
+        forCharity:true,
         sellerId: "5",
         listingId: "3",
         title: "Handmade Rug",
@@ -81,6 +84,7 @@ export const mockChatPaneItems: ChatType[] = [
       users: ["7", "8"],
       listingId: "4",
       listingInfo: {
+        forCharity:true,
         sellerId: "7",
         listingId: "4",
         title: "Painting",

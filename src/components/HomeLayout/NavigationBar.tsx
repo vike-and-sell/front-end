@@ -3,7 +3,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { FaListAlt } from "react-icons/fa";
 import { TbMessageCircle2Filled } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
-import { MdSell } from "react-icons/md";
+import { MdSell, MdOutlineHandshake } from "react-icons/md";
 import { FaShop } from "react-icons/fa6";
 import {
   Modal,
@@ -22,35 +22,39 @@ function NavigationBar() {
 
   return (
     <>
-      <nav data-cy="nav-bar"className='flex flex-col p-4 gap-4 items-center'>
-        <CustomNavLink data-cy="browse-nav" route='/browse/1' title='Browse'>
+      <nav data-cy="nav-bar" className="flex flex-col p-4 gap-4 items-center">
+        <CustomNavLink data-cy="browse-nav" route="/browse/1" title="Browse">
           <FaShop></FaShop>
         </CustomNavLink>
-        <div data-cy="create-listing-nav">
-          <CustomNavLink data-cy="create-listing-nav" route='/create' title='Create Listing'>
-            <MdSell></MdSell>
-          </CustomNavLink>
-        </div>
-        
-        <CustomNavLink data-cy="my-listings-nav" route='/mylistings/1' title='My Listings'>
+        <CustomNavLink route="/charity" title="Charities">
+          <MdOutlineHandshake></MdOutlineHandshake>
+        </CustomNavLink>
+        <CustomNavLink route="/create" title="Create Listing">
+          <MdSell></MdSell>
+        </CustomNavLink>
+        <CustomNavLink route="/mylistings/1" title="My Listings">
           <FaListAlt></FaListAlt>
         </CustomNavLink>
-        <CustomNavLink data-cy="my-profile-nav" route='/mylistings/1' title='My Profile'>
+        <CustomNavLink
+          data-cy="my-profile-nav"
+          route="/mylistings/1"
+          title="My Profile"
+        >
           <CgProfile></CgProfile>
         </CustomNavLink>
-        <div className='flex gap-3 items-center'>
-          <TbMessageCircle2Filled color='white'></TbMessageCircle2Filled>
+        <div className="flex gap-3 items-center">
+          <TbMessageCircle2Filled color="white"></TbMessageCircle2Filled>
           <button
             data-cy="my-messages-nav"
             onClick={onOpen}
-            className='text-white font-semibold'
-            title='My Messages'
+            className="text-white font-semibold"
+            title="My Messages"
           >
             My Messages
           </button>
         </div>
 
-        <CustomNavLink route='/' title='Settings'>
+        <CustomNavLink route="/" title="Settings">
           <IoSettingsSharp></IoSettingsSharp>
         </CustomNavLink>
       </nav>
@@ -59,7 +63,7 @@ function NavigationBar() {
         finalFocusRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
-        size='full'
+        size="full"
       >
         <ModalOverlay />
         <ModalContent m={10}>
@@ -89,7 +93,7 @@ function CustomNavLink({
   return (
     <NavLink
       to={route}
-      className='text-white py-2 flex items-center gap-3 justify-center font-semibold'
+      className="text-white py-2 flex items-center gap-3 justify-center font-semibold"
       onClick={clickHandle}
     >
       {children} {title}

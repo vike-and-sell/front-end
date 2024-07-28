@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }: any) => {
     username: string,
     password: string,
     location: string
-  ) => {
+  ): Promise<string> => {
     try {
       await axios
         .post(
@@ -117,6 +117,11 @@ export const AuthProvider = ({ children }: any) => {
           console.log(response.status);
           if (response.status == 201) {
             navigate("/unverified/success");
+            return new Promise((resolve) =>
+              resolve("Account creation successful. Redirecting you!")
+            );
+          }
+          if (response.status == 400) {
           }
           console.log(
             "response " +
@@ -127,10 +132,15 @@ export const AuthProvider = ({ children }: any) => {
               response.statusText
           );
         });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (error.response) {
+        if (error.response.status == 400) {
+          return new Promise((resolve) => resolve(error.response.data.message));
+        }
+      }
       throw new Error("Unable to fetch user");
     }
+    return new Promise<string>((resolve) => resolve(""));
   };
 
   const requestReset = async (email: string, callback: string) => {

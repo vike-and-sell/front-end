@@ -55,10 +55,10 @@ export default function FilterListing({
 
   return (
     <>
-      <div className='relative z-20'>
+      <div className="relative z-20">
         <div ref={toggleButtonRef}>
           <DefaultButton
-            title='Filter'
+            title="Filter"
             clickHandle={toggleFilter}
           ></DefaultButton>
         </div>
@@ -96,7 +96,7 @@ function FilterMenu({
   const [status, setStatus] = useState(filterOptions.status);
 
   function handleSortBy(nextValue: string) {
-    type SortBy = "price" | "created_on" | "location" | "";
+    type SortBy = "price" | "created_on" | "distance" | "";
     setSortBy(nextValue as SortBy);
   }
 
@@ -134,32 +134,32 @@ function FilterMenu({
   }
 
   return (
-    <div className='absolute bg-white shadow rounded-xl p-4 top-[110%]'>
+    <div className="absolute bg-white shadow rounded-xl p-4 top-[110%]">
       <FormControl>
-        <div className='flex flex-col gap-2'>
+        <div className="flex flex-col gap-2">
           <FormLabel>Sort by</FormLabel>
           <div>
             <RadioGroup
-              name='sort-by'
+              name="sort-by"
               onChange={handleSortBy}
               defaultValue={filterOptions.sortBy}
             >
-              <HStack spacing='24px'>
-                <Radio value='created_on'>Date</Radio>
-                <Radio value='location'>Distance</Radio>
-                <Radio value='price'>Price</Radio>
+              <HStack spacing="24px">
+                <Radio value="created_on">Date</Radio>
+                <Radio value="distance">Distance</Radio>
+                <Radio value="price">Price</Radio>
               </HStack>
             </RadioGroup>
           </div>
           <Divider></Divider>
-          <div className='flex gap-4'>
+          <div className="flex gap-4">
             <div>
               <FormLabel>Min Price:</FormLabel>
               <InputGroup onChange={handleMinPrice}>
                 <InputLeftAddon>$</InputLeftAddon>
                 <Input
-                  type='number'
-                  placeholder='0'
+                  type="number"
+                  placeholder="0"
                   defaultValue={filterOptions.minPrice}
                 />
               </InputGroup>
@@ -169,8 +169,8 @@ function FilterMenu({
               <InputGroup onChange={handleMaxPrice}>
                 <InputLeftAddon>$</InputLeftAddon>
                 <Input
-                  type='number'
-                  placeholder='0'
+                  type="number"
+                  placeholder="0"
                   defaultValue={filterOptions.maxPrice}
                 />
               </InputGroup>
@@ -183,29 +183,29 @@ function FilterMenu({
               defaultValue={filterOptions.isDescending ? "desc" : "asc"}
               onChange={handleOrderBy}
             >
-              <HStack spacing='24px'>
-                <Radio value='asc'>Ascending</Radio>
-                <Radio value='desc'>Descending</Radio>
+              <HStack spacing="24px">
+                <Radio value="asc">Ascending</Radio>
+                <Radio value="desc">Descending</Radio>
               </HStack>
             </RadioGroup>
           </div>
           <Divider></Divider>
           <div>
             <FormLabel>Listing Status</FormLabel>
-            <RadioGroup defaultValue='AVAILABLE' onChange={handleStatus}>
-              <HStack spacing='24px'>
-                <Radio value='AVAILABLE'>Available</Radio>
-                <Radio value='SOLD'>Sold</Radio>
+            <RadioGroup defaultValue="AVAILABLE" onChange={handleStatus}>
+              <HStack spacing="24px">
+                <Radio value="AVAILABLE">Available</Radio>
+                <Radio value="SOLD">Sold</Radio>
               </HStack>
             </RadioGroup>
           </div>
-          <div className='flex gap-4'>
+          <div className="flex gap-4">
             <DefaultFillButton
-              title='Clear'
+              title="Clear"
               clickHandle={clearFilterOptions}
             ></DefaultFillButton>
             <DefaultFillButton
-              title='Apply'
+              title="Apply"
               clickHandle={submitFilterOptions}
             ></DefaultFillButton>
           </div>

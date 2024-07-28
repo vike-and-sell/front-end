@@ -12,9 +12,11 @@ export default function CharityCard({ charityInfo }: CharityCardProps) {
         <div>
           <Image
             borderRadius='20%'
-            boxSize='100px'
+            maxHeight='100px'
+            width='auto'
             src={`${charityInfo.logoUrl}`}
             alt={`${charityInfo.name} logo`}
+            objectFit='cover'
           />
         </div>
         <div className='flex flex-col  justify-center'>

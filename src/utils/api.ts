@@ -197,8 +197,7 @@ const getCharities = async function () {
   if (response.status !== 200) {
     throw new Error("Failed get charities");
   }
-
-  console.log(response.data);
+  
   return response.data;
 };
 export {

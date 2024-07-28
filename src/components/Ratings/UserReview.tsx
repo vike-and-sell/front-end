@@ -1,7 +1,7 @@
 // This will probably take a function from the parent containing logged in User ID and other information needed to post?
 // Depends how we are storing the username of the logged in user (Props, context, local storage, etc?)
 // Consider implement form elements / Formik Library?
-import DefaultButton from "../Button";
+import { PriBlueButton } from "../Button";
 import { Textarea } from "@chakra-ui/react";
 import StarRatings from "./StarRatings";
 import { useState } from "react";
@@ -21,7 +21,6 @@ export default function UserReview({ listingId }: UserReview) {
   const mutation = useMutation({
     mutationFn: () => addReview(listingId, textInput, ratingValue),
     onSuccess: () => {
-      console.log("Yay");
       setTextInput("");
       setRatingValue(0);
       queryClient.invalidateQueries({ queryKey: ["reviews", listingId] });
@@ -45,15 +44,15 @@ export default function UserReview({ listingId }: UserReview) {
 
   return (
     <FormControl isInvalid={formError}>
-      <FormLabel className="text-pri-blue font-semibold m-0">
+      <FormLabel className='text-pri-blue font-semibold m-0'>
         Leave a rating!
       </FormLabel>
       <Textarea
-        placeholder="Leave your comment here!"
-        resize="none"
+        placeholder='Leave your comment here!'
+        resize='none'
         value={textInput}
         onChange={(e) => handleTextChange(e)}
-        aria-label="Text Review Area"
+        aria-label='Text Review Area'
         required
       ></Textarea>
       {formError && textInput === "" ? (
@@ -61,15 +60,18 @@ export default function UserReview({ listingId }: UserReview) {
       ) : (
         ""
       )}
-      <div className="flex items-center justify-between mt-4">
+      <div className='flex items-center justify-between mt-4'>
         <StarRatings
           setValue={setRatingValue}
           defaultValue={ratingValue}
         ></StarRatings>
-        <DefaultButton
-          title="Submit"
+
+        <PriBlueButton
+          data-cy='submit-review'
           clickHandle={handleSubmit}
-        ></DefaultButton>
+          isDisabled={mutation.isPending}
+          title='Submit Review'
+        ></PriBlueButton>
       </div>
       {formError && ratingValue === 0 ? (
         <FormErrorMessage>Please enter in a rating.</FormErrorMessage>

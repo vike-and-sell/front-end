@@ -116,6 +116,7 @@ export default function SearchResultsPage() {
         <div className="flex justify-between">
           <div className="flex items-center gap-4 mb-4" id="search-tool-bar">
             <FilterListing
+              disableLocation={true}
               filterOptions={filterOptions}
               setFilterOptions={setFilterOptions}
             ></FilterListing>

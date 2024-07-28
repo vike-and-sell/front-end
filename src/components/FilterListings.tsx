@@ -15,11 +15,13 @@ import { useState, useEffect, useRef } from "react";
 
 interface FilterListingProps {
   filterOptions: FilterOptions;
+  disableLocation: boolean;
   setFilterOptions: (updatedFilterOptions: FilterOptions) => void;
 }
 
 export default function FilterListing({
   filterOptions,
+  disableLocation,
   setFilterOptions,
 }: FilterListingProps) {
   const [active, setActive] = useState(false);
@@ -66,6 +68,7 @@ export default function FilterListing({
           <div ref={filterMenuRef}>
             <FilterMenu
               filterOptions={filterOptions}
+              disableLocation={disableLocation}
               setFilterOptions={setFilterOptions}
               setActive={setActive}
             ></FilterMenu>
@@ -80,12 +83,14 @@ export default function FilterListing({
 
 interface FilterMenuProps {
   filterOptions: FilterOptions;
+  disableLocation: boolean;
   setFilterOptions: (updatedFilterOptions: FilterOptions) => void;
   setActive: (isActive: boolean) => void;
 }
 
 function FilterMenu({
   filterOptions,
+  disableLocation,
   setFilterOptions,
   setActive,
 }: FilterMenuProps) {
@@ -146,7 +151,11 @@ function FilterMenu({
             >
               <HStack spacing="24px">
                 <Radio value="created_on">Date</Radio>
-                <Radio value="distance">Distance</Radio>
+                {disableLocation ? (
+                  ""
+                ) : (
+                  <Radio value="distance">Distance</Radio>
+                )}
                 <Radio value="price">Price</Radio>
               </HStack>
             </RadioGroup>

@@ -22,6 +22,7 @@ export default function Edit() {
   const [location, setLocation] = useState<string>("");
   const [isTitleTouched, setIsTitleTouched] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [isInvalidTitle, setIsInvalidTitle] = useState<boolean>(true);
   const [forCharity, setForCharity] = useState<boolean>(false);
 
   const listingPayload = {
@@ -32,8 +33,6 @@ export default function Edit() {
     status: "AVAILABLE",
     forCharity,
   };
-
-  const isInvalidTitle = isTitleTouched && title === "";
 
   const isInvalidPrice = Number.isNaN(price);
 
@@ -58,6 +57,7 @@ export default function Edit() {
   }, []);
 
   const createListing = async () => {
+    setIsError(false);
     try {
       await axios
         .post(
@@ -85,6 +85,12 @@ export default function Edit() {
   };
 
   const handleCreate = () => {
+    setIsInvalidTitle(title === "");
+    setIsTitleTouched(true);
+    if (title === "") {
+      setIsError(true);
+      return;
+    }
     setIsError(false);
     createListing();
   };
@@ -97,19 +103,20 @@ export default function Edit() {
           title={"Create Listing"}
         ></PageHeading>
         <div className="">
-          <FormControl isRequired isInvalid={isInvalidTitle}>
+          <FormControl isRequired isInvalid={isInvalidTitle && isTitleTouched}>
             <div className="my-4 md:mr-80">
               <FormLabel>Title</FormLabel>
               <Input
                 data-cy="create-title-input"
                 value={title}
                 onChange={(e) => {
+                  setIsInvalidTitle(false);
                   setTitle(e.target.value);
                   setIsTitleTouched(true);
                 }}
                 type="text"
               ></Input>
-              {isInvalidTitle ? (
+              {isInvalidTitle && isTitleTouched ? (
                 <FormErrorMessage className="font-semibold">
                   Title is required.
                 </FormErrorMessage>
@@ -136,11 +143,11 @@ export default function Edit() {
                   min="0"
                   max="999999999.99"
                   onChange={(e) => {
-                    let value = e.target.value;
+                    const value = e.target.value;
 
                     // Allow the value if it's empty or matches the float pattern with up to two decimal places
                     if (value === "" || /^\d+(\.\d{0,2})?$/.test(value)) {
-                      let numericValue = parseFloat(value);
+                      const numericValue = parseFloat(value);
 
                       // Check if the value is within the range of 9 to 999999999.99
                       if (

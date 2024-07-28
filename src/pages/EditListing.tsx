@@ -116,8 +116,9 @@ export default function Edit() {
   useEffect(() => {
     if (listingInfo && userData) {
       setTitle(listingInfo.title);
-      setPrice(listingInfo.price);
+      setPrice(parseFloat(listingInfo.price));
       setStatus(listingInfo.status);
+      setForCharity(listingInfo.forCharity);
     }
   }, [listingInfo, userData]);
 
@@ -156,6 +157,7 @@ export default function Edit() {
           title,
           price,
           status,
+          forCharity,
         },
         {
           withCredentials: true,
@@ -183,23 +185,23 @@ export default function Edit() {
 
   return (
     <>
-      <main className="px-4">
+      <main className='px-4'>
         <PageHeading
-          data-cy="page-heading"
+          data-cy='page-heading'
           title={"Edit Listing " + listingInfo.title}
         ></PageHeading>
-        <div className="">
+        <div className=''>
           <FormControl isInvalid={isInvalidTitle}>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Title*</FormLabel>
               <Input
-                data-cy="edit-title-input"
+                data-cy='edit-title-input'
                 onChange={(e) => setTitle(e.target.value)}
-                type="text"
+                type='text'
                 value={title}
               ></Input>
               {isInvalidTitle ? (
-                <FormErrorMessage className="font-semibold">
+                <FormErrorMessage className='font-semibold'>
                   Title is required.
                 </FormErrorMessage>
               ) : (
@@ -209,39 +211,40 @@ export default function Edit() {
           </FormControl>
 
           <FormControl isInvalid={isInvalidPrice}>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Price*</FormLabel>
               <InputGroup>
                 <InputLeftElement
-                  pointerEvents="none"
-                  color="gray.300"
-                  fontSize="1.2em"
+                  pointerEvents='none'
+                  color='gray.300'
+                  fontSize='1.2em'
                 >
                   $
                 </InputLeftElement>
                 <Input
-                  data-cy="edit-price-input"
-
+                  data-cy='edit-price-input'
                   onChange={(e) => {
                     let value = e.target.value;
 
                     // Allow the value if it's empty or matches the float pattern with up to two decimal places
                     if (value === "" || /^\d+(\.\d{0,2})?$/.test(value)) {
-                      setPrice(parseFloat(value));
-                    } else {
-                      // If the value does not conform, truncate it to the valid format
-                      value = parseFloat(value).toFixed(2);
-                      setPrice(parseFloat(value));
+                      let numericValue = parseFloat(value);
+
+                      // Check if the value is within the range of 9 to 999999999.99
+                      if (
+                        (numericValue >= 0 && numericValue <= 99999999.99) ||
+                        value === ""
+                      ) {
+                        setPrice(numericValue);
+                      }
                     }
                   }}
-                  type="number"
-
-
+                  type='number'
                   value={price}
                 ></Input>
               </InputGroup>
               {isInvalidPrice ? (
-                <FormErrorMessage className="font-semibold">
+                <FormErrorMessage className='font-semibold'>
                   Price is required.
                 </FormErrorMessage>
               ) : (
@@ -251,10 +254,10 @@ export default function Edit() {
           </FormControl>
 
           <FormControl>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Status*</FormLabel>
               <Select
-                data-cy="edit-status-dropdown"
+                data-cy='edit-status-dropdown'
                 className={`${
                   status === "AVAILABLE"
                     ? "text-green-700 font-semibold"
@@ -264,15 +267,15 @@ export default function Edit() {
                 defaultValue={listingInfo.status}
               >
                 <option
-                  className="text-green-700 font-semibold"
-                  value="AVAILABLE"
+                  className='text-green-700 font-semibold'
+                  value='AVAILABLE'
                 >
                   Available
                 </option>
-                <option className="text-red font-semibold" value="SOLD">
+                <option className='text-red font-semibold' value='SOLD'>
                   Sold
                 </option>
-                <option className="text-red font-semibold" value="REMOVED">
+                <option className='text-red font-semibold' value='REMOVED'>
                   Removed
                 </option>
               </Select>
@@ -280,29 +283,29 @@ export default function Edit() {
           </FormControl>
 
           <FormControl className={`${status === "SOLD" ? "" : "hidden"}`}>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Select Buyer</FormLabel>
               <AutoComplete rollNavigation creatable>
                 <AutoCompleteInput
-                  data-cy="edit-buyer-autocomplete"
+                  data-cy='edit-buyer-autocomplete'
                   defaultValue={buyerUsername}
-                  placeholder="Search..."
+                  placeholder='Search...'
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setBuyerUsername(e.target.value)
                   }
                 />
                 <AutoCompleteList>
-                  <AutoCompleteGroup title="" showDivider>
+                  <AutoCompleteGroup title='' showDivider>
                     {getUniqueBuyers(buyersArray).map(
                       (buyer: User, index: number) => (
                         <AutoCompleteItem
                           key={`${index}`}
                           value={buyer.username}
-                          textTransform="capitalize"
-                          align="center"
+                          textTransform='capitalize'
+                          align='center'
                         >
-                          <Avatar size="sm" name={buyer.username} />
-                          <Text ml="4">{buyer.username}</Text>
+                          <Avatar size='sm' name={buyer.username} />
+                          <Text ml='4'>{buyer.username}</Text>
                         </AutoCompleteItem>
                       )
                     )}
@@ -314,38 +317,36 @@ export default function Edit() {
           </FormControl>
 
           <FormControl>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Charity</FormLabel>
 
               <Checkbox
-                data-cy="edit-charity-checkbox"
+                data-cy='edit-charity-checkbox'
                 isChecked={forCharity}
                 onChange={(e) => setForCharity(e.target.checked)}
-                size="md"
+                size='md'
               >
-
                 I'd like to donate the earnings from this listing to charity
-
               </Checkbox>
             </div>
           </FormControl>
 
-          <div className="my-5"></div>
+          <div className='my-5'></div>
 
           <FormControl>
-            <div className="my-5 flex">
+            <div className='my-5 flex'>
               <PriBlueButton
                 clickHandle={handleEdit}
-                data-cy="edit-listing-button"
+                data-cy='edit-listing-button'
                 isDisabled={isInvalidPrice || isInvalidTitle}
-                title="Save Changes"
+                title='Save Changes'
               ></PriBlueButton>
 
               <InverseBlueButton
                 clickHandle={() => navigate(-1)}
-                className="ml-4"
-                data-cy="cancel-button"
-                title="Cancel"
+                className='ml-4'
+                data-cy='cancel-button'
+                title='Cancel'
               ></InverseBlueButton>
             </div>
           </FormControl>

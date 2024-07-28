@@ -15,11 +15,8 @@ export default function SearchBar() {
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
-  
 
-  useEffect(() => {
-    
-    const fetchSearchHistory = async () => {
+  const fetchSearchHistory = async () => {
       try {
         const searchHistoryResponse = await axios.get(
           `${import.meta.env.VITE_REACT_APP_API_URL}/users/me/searches`,
@@ -36,6 +33,7 @@ export default function SearchBar() {
       }
     };
 
+  useEffect(() => {
     fetchSearchHistory();
   }, []);
 
@@ -48,7 +46,6 @@ export default function SearchBar() {
 
   }, [location])
 
-  console.log
   const filteredSearchHistory = searchHistory.filter((searchItem:string) => searchItem.toLowerCase().includes(searchString))
 
   const getUniqueSearches = (searchHistory: string[]) => {
@@ -65,10 +62,16 @@ export default function SearchBar() {
     <div className='flex items-center flex-grow gap-2 p-4 z-50'>
       <AutoComplete
         listAllValuesOnFocus={true}
-        restoreOnBlurIfEmpty={false}
         maxSuggestions={10}
         openOnFocus={true}
-        onSelectOption={(item) => {navigate(`/search/${item.item.value}/1`); setSearchString(item.item.value)}}
+        onSelectOption={(item) => {
+          setSearchString(item.item.value); 
+          navigate(`/search/${item.item.value}/1`); 
+          fetchSearchHistory();
+          
+        }}
+        restoreOnBlurIfEmpty={false}
+        suggestWhenEmpty={true}
       >
         <AutoCompleteInput
           placeholder='Search for used...'
@@ -79,6 +82,7 @@ export default function SearchBar() {
           onKeyDown={(e) => {
             if (e.key == "Enter") {
               navigate(`/search/${searchString}/1`);
+              fetchSearchHistory();
             }
           }}
         />
@@ -103,6 +107,7 @@ export default function SearchBar() {
         onClick={() => {
           if (searchString !== "") {
             navigate(`/search/${searchString}/1`);
+            fetchSearchHistory();
           }
         }}
       >

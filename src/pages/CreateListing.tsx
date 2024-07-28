@@ -89,6 +89,7 @@ export default function Edit() {
           navigate(`/listing/${response.data.listingId}`);
         });
     } catch (error) {
+      setIsCreating(false);
       setIsError(true);
       toast.closeAll();
       toast({

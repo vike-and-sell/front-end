@@ -6,17 +6,20 @@ interface CharityCardProps {
 
 export default function CharityCard({ charityInfo }: CharityCardProps) {
   const dateString = daysUntil(charityInfo.endDate);
+  const isActive = charityInfo.status == "AVAILABLE" ? true : false;
   return (
-    <div className='flex justify-between items-center border-slate-300 border-[1.5px] rounded-2xl py-4 px-5'>
+    <div
+      className={`flex justify-between items-center border-slate-300 border-[1.5px] rounded-2xl py-4 px-5 ${
+        isActive ? "" : "grayscale"
+      }`}
+    >
       <div className='flex gap-4'>
         <div>
           <Image
             borderRadius='20%'
-            maxHeight='100px'
-            width='auto'
+            boxSize='100px'
             src={`${charityInfo.logoUrl}`}
             alt={`${charityInfo.name} logo`}
-            objectFit='cover'
           />
         </div>
         <div className='flex flex-col  justify-center'>
@@ -26,11 +29,12 @@ export default function CharityCard({ charityInfo }: CharityCardProps) {
           <div className=' text-pri-blue p-0 text-sm'>
             Total Raised :{" "}
             <span className='text-green-700 font-bold'>
-              {" "}
               $ {charityInfo.fund}
             </span>
           </div>
-          <div className=' text-slate-500 p-0 text-xs'>{dateString}</div>
+          <div className=' text-slate-500 p-0 text-xs'>
+            {isActive ? dateString : "Ended"}
+          </div>
         </div>
       </div>
     </div>

@@ -251,7 +251,10 @@ export default function IndividualListing() {
               placement='auto-end'
             >
               <span>
-                <MdOutlineHandshake color='#166aac'></MdOutlineHandshake>
+                <MdOutlineHandshake
+                  color='#166aac'
+                  size='18px'
+                ></MdOutlineHandshake>
               </span>
             </Tooltip>
           ) : (

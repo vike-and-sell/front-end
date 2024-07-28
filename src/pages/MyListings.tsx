@@ -38,13 +38,13 @@ export default function MyListings() {
 
   function handleNext() {
     setCurrentPage(currentPage + 1);
-    navigate(`/browse/${currentPage + 1}`);
+    navigate(`/mylistings/${currentPage + 1}`);
     scrollTop();
   }
 
   function handlePrev() {
     setCurrentPage(currentPage - 1);
-    navigate(`/browse/${currentPage - 1}`);
+    navigate(`/mylistings/${currentPage - 1}`);
     scrollTop();
   }
 
@@ -64,14 +64,17 @@ export default function MyListings() {
   }
 
   if (isError) {
-    const errorMessage = axios.isAxiosError(error) && error.response ? error.response.data.message : error.message;
+    const errorMessage =
+      axios.isAxiosError(error) && error.response
+        ? error.response.data.message
+        : error.message;
     return <ErrorPage>{errorMessage}</ErrorPage>;
   }
 
   return (
     <>
       <main className='px-4'>
-        <PageHeading data-cy="page-heading" title='My Listings'></PageHeading>
+        <PageHeading data-cy='page-heading' title='My Listings'></PageHeading>
         <div className='flex justify-end'>
           {isListingPending ? (
             <PaginationBarSkeleton></PaginationBarSkeleton>

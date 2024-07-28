@@ -70,7 +70,7 @@ export default function UserReview({ listingId }: UserReview) {
           data-cy='submit-review'
           clickHandle={handleSubmit}
           isDisabled={mutation.isPending}
-          title='Submit Review'
+          title='Submit'
         ></PriBlueButton>
       </div>
       {formError && ratingValue === 0 ? (

@@ -5,7 +5,7 @@ import DefaultButton, {
 } from "../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaEllipsisH, FaRegEdit } from "react-icons/fa";
-import { MdDoNotDisturb } from "react-icons/md";
+import { MdDoNotDisturb, MdOutlineHandshake } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
   Button,
@@ -22,6 +22,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
@@ -40,16 +41,16 @@ import Chat from "./chat";
 export default function IndividualListing() {
   const { listingID } = useParams();
   const navigate = useNavigate();
-  const { 
-    isOpen: isDeleteOpen, 
-    onOpen: onDeleteOpen, 
-    onClose: onDeleteClose 
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
   } = useDisclosure();
-  
-  const { 
-    isOpen: isChatOpen, 
-    onOpen: onChatOpen, 
-    onClose: onChatClose 
+
+  const {
+    isOpen: isChatOpen,
+    onOpen: onChatOpen,
+    onClose: onChatClose,
   } = useDisclosure();
   const finalRef = useRef(null);
   let isUser = false;
@@ -129,30 +130,30 @@ export default function IndividualListing() {
   }
 
   return (
-    <main className="p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
-      <div className="flex gap-2 items-center">
+    <main className='p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
+      <div className='flex gap-2 items-center'>
         <button
-          className=" p-1 rounded-lg bg-pri-blue"
-          data-cy="back-button"
-          title="Back Button"
+          className=' p-1 rounded-lg bg-pri-blue'
+          data-cy='back-button'
+          title='Back Button'
           onClick={() => navigate(-1)}
         >
-          <FaArrowLeft size={15} color="white" />
+          <FaArrowLeft size={15} color='white' />
         </button>
         <h1
-          className="font-semibold text-pri-blue text-3xl p-0"
-          data-cy="listing-title"
+          className='font-semibold text-pri-blue text-3xl p-0'
+          data-cy='listing-title'
         >
           {listingInfo.title}
         </h1>
         <Menu>
           <MenuButton
             as={Button}
-            width="47px"
-            background="white"
-            data-cy="menu-button"
+            width='47px'
+            background='white'
+            data-cy='menu-button'
           >
-            <FaEllipsisH color="#166aac"></FaEllipsisH>
+            <FaEllipsisH color='#166aac'></FaEllipsisH>
           </MenuButton>
           <MenuList>
             {isUser ? (
@@ -195,31 +196,31 @@ export default function IndividualListing() {
             <ModalFooter>
               <InvalidRedButton
                 clickHandle={handleDelete}
-                data-cy="delete-listing"
-                title="Yes"
-                className="mr-3"
+                data-cy='delete-listing'
+                title='Yes'
+                className='mr-3'
               ></InvalidRedButton>
               <InverseBlueButton
                 clickHandle={onDeleteClose}
-                data-cy="cancel-delete-listing"
-                title="No"
+                data-cy='cancel-delete-listing'
+                title='No'
               ></InverseBlueButton>
             </ModalFooter>
           </ModalContent>
         </Modal>
       </div>
-      
+
       <div>
         <Modal
           finalFocusRef={finalRef}
           isOpen={isChatOpen}
           onClose={onChatClose}
-          scrollBehavior="outside"
+          scrollBehavior='outside'
           size='full'
           isCentered
         >
           <ModalOverlay />
-          <ModalContent m={10} >
+          <ModalContent m={10}>
             <ModalCloseButton ml={5} />
             <ModalBody my={3} mr={4}>
               <Chat></Chat>
@@ -227,11 +228,11 @@ export default function IndividualListing() {
           </ModalContent>
         </Modal>
       </div>
-      <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
-        <div className="flex items-center gap-3">
+      <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
+        <div className='flex items-center gap-3'>
           <div
-            className="text-green-700 font-bold text-2xl"
-            data-cy="listing-price"
+            className='text-green-700 font-bold text-2xl'
+            data-cy='listing-price'
           >
             ${listingInfo.price}
           </div>
@@ -239,28 +240,39 @@ export default function IndividualListing() {
             colorScheme={`${
               listingInfo.status == "AVAILABLE" ? "green" : "red"
             }`}
-            data-cy="listing-status-badge"
+            data-cy='listing-status-badge'
           >
             {listingInfo.status}
           </Badge>
           {listingInfo?.forCharity ? (
-            <Badge data-cy="listing-charity-badge">CHARITY</Badge>
+            <Tooltip
+              label='All profits from this item go to charity!'
+              aria-label='Marked for charity'
+              placement='auto-end'
+            >
+              <span>
+                <MdOutlineHandshake
+                  color='#166aac'
+                  size='18px'
+                ></MdOutlineHandshake>
+              </span>
+            </Tooltip>
           ) : (
             ""
           )}
         </div>
 
-        <div className="text-sm" data-cy="listing-time">
+        <div className='text-sm' data-cy='listing-time'>
           {timeSincePost(listingInfo.listedAt)}
-          <span className="font-bold" data-cy="listing-seller">
+          <span className='font-bold' data-cy='listing-seller'>
             {" "}
             {sellerData.data.username}
           </span>
         </div>
-        <div className="flex gap-4">
+        <div className='flex gap-4'>
           <DefaultButton
-            title="Message Seller"
-            data-cy="message-seller-button"
+            title='Message Seller'
+            data-cy='message-seller-button'
             clickHandle={onChatOpen}
           ></DefaultButton>
         </div>

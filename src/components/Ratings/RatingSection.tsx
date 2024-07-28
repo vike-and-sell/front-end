@@ -16,18 +16,22 @@ export default function RatingSection({
   const isReviews =
     reviews === undefined || reviews.length === 0 ? true : false;
   const averageRating = calculateAverageRating(ratings);
+
   return (
     <div>
-      <hr className="mb-7"></hr>
+      <hr className='mb-7'></hr>
       <UserReview listingId={listingId}></UserReview>
       <Reviews averageRating={averageRating}>
         {isReviews ? (
-          <div className="text-slate-400">Nothing here...</div>
+          <div className='text-slate-400'>Nothing here...</div>
         ) : (
-          reviews.map((review: ReviewInfo, index) => {
-            const reviewString = review.review;
-            return <Review key={index} review={reviewString}></Review>;
-          })
+          reviews
+            .slice() // create a copy of the reviews array
+            .reverse() // reverse the copied array
+            .map((review: ReviewInfo, index) => {
+              const reviewString = review.review;
+              return <Review key={index} review={reviewString}></Review>;
+            })
         )}
       </Reviews>
     </div>

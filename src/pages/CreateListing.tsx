@@ -70,7 +70,7 @@ export default function Edit() {
     try {
       await axios
         .post(
-          `${import.meta.env.VITE_REACT_APP_API_URL}/listings/`,
+          `${import.meta.env.VITE_REACT_APP_API_URL}/listings`,
           listingPayload,
           {
             withCredentials: true,

@@ -51,6 +51,7 @@ export interface ReviewInfo {
 export interface AuthContextType {
   user: User | null;
   loginUser: (username: string, password: string) => Promise<any>;
+  logoutUser: () => Promise<any>;
   requestAccount: (email: string, callback: string) => Promise<void>;
   verifyAccount: (
     jwt: string,
@@ -97,3 +98,4 @@ export interface Charity {
   endDate: string;
   numListings: number;
 }
+

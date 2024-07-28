@@ -13,26 +13,33 @@ export default function CharityCard({ charityInfo }: CharityCardProps) {
         isActive ? "" : "grayscale"
       }`}
     >
-      <div className='flex gap-4'>
+      <div className="flex gap-4">
         <div>
           <Image
-            borderRadius='20%'
-            boxSize='100px'
+            borderRadius="20%"
+            boxSize="100px"
             src={`${charityInfo.logoUrl}`}
             alt={`${charityInfo.name} logo`}
           />
         </div>
-        <div className='flex flex-col  justify-center'>
-          <h3 className='font-semibold text-pri-blue p-0'>
+        <div className="flex flex-col  justify-center">
+          <h3 className="font-semibold text-pri-blue p-0">
             {charityInfo.name}
           </h3>
-          <div className=' text-pri-blue p-0 text-sm'>
+          <div className=" text-pri-blue p-0 text-sm">
             Total Raised :{" "}
-            <span className='text-green-700 font-bold'>
+            <span className="text-green-700 font-bold">
               $ {charityInfo.fund}
             </span>
           </div>
-          <div className=' text-slate-500 p-0 text-xs'>
+          {isActive ? (
+            <div className=" text-slate-500 p-0 text-xs">
+              Active Listings : {charityInfo.numListings}
+            </div>
+          ) : (
+            ""
+          )}
+          <div className=" text-slate-500 p-0 text-xs">
             {isActive ? dateString : "Ended"}
           </div>
         </div>

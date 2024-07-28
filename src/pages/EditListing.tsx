@@ -167,6 +167,7 @@ export default function Edit() {
           price,
           status,
           forCharity,
+          buyerUsername,
         },
         {
           withCredentials: true,

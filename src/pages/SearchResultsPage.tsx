@@ -168,7 +168,7 @@ export default function SearchResultsPage() {
           isSearchLoading ? (
             <ListingsGridSkeleton></ListingsGridSkeleton>
           ) : activePageListing.length == 0 ? (
-            <div>No listings found</div>
+            <div className="h-[400px]">No listings found</div>
           ) : (
             <ListingsGrid ref={scrollRef}>
               {activePageListing.map((listing) => (
@@ -182,7 +182,7 @@ export default function SearchResultsPage() {
         ) : isSearchLoading ? (
           <UserListingSkeleton></UserListingSkeleton>
         ) : activeUserListings.length == 0 ? (
-          <div>No users found</div>
+          <div className="h-[400px]">No users found</div>
         ) : (
           <UserGrid ref={scrollRef}>
             {activeUserListings.map((user) => (

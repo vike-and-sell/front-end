@@ -201,7 +201,10 @@ function FilterMenu({
           <Divider></Divider>
           <div>
             <FormLabel>Listing Status</FormLabel>
-            <RadioGroup defaultValue="AVAILABLE" onChange={handleStatus}>
+            <RadioGroup
+              defaultValue={filterOptions.status}
+              onChange={handleStatus}
+            >
               <HStack spacing="24px">
                 <Radio value="AVAILABLE">Available</Radio>
                 <Radio value="SOLD">Sold</Radio>

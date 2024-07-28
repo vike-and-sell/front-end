@@ -48,6 +48,7 @@ export default function SearchBar() {
 
   }, [location])
 
+  console.log
   const filteredSearchHistory = searchHistory.filter((searchItem:string) => searchItem.toLowerCase().includes(searchString))
 
   const getUniqueSearches = (searchHistory: string[]) => {
@@ -63,8 +64,10 @@ export default function SearchBar() {
   return (
     <div className='flex items-center flex-grow gap-2 p-4 z-50'>
       <AutoComplete
+        listAllValuesOnFocus={true}
+        restoreOnBlurIfEmpty={false}
         maxSuggestions={10}
-        openOnFocus 
+        openOnFocus={true}
         onSelectOption={(item) => {navigate(`/search/${item.item.value}/1`); setSearchString(item.item.value)}}
       >
         <AutoCompleteInput
@@ -80,11 +83,11 @@ export default function SearchBar() {
           }}
         />
         {filteredSearchHistory.length > 0 && (
-        <AutoCompleteList>
+        <AutoCompleteList >
           { searchHistory.map(
-            (search:string) => (
+            (search:string, index:number) => (
               <AutoCompleteItem
-                key={`${search}`}
+                key={`${index + search}`}
                 value={search}
                 align="center"
               >

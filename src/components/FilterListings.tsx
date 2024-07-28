@@ -55,7 +55,7 @@ export default function FilterListing({
 
   return (
     <>
-      <div className='relative z-20'>
+      <div className='relative z-0'>
         <div ref={toggleButtonRef}>
           <DefaultButton
             title='Filter'
@@ -134,7 +134,7 @@ function FilterMenu({
   }
 
   return (
-    <div className='absolute bg-white shadow rounded-xl p-4 top-[110%]'>
+    <div className='absolute bg-white shadow rounded-xl p-4 top-[110%] '>
       <FormControl>
         <div className='flex flex-col gap-2'>
           <FormLabel>Sort by</FormLabel>

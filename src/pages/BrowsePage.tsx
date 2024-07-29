@@ -19,11 +19,10 @@ export default function BrowsePage() {
   listingsRef.current = listings;
   const filterRef = useRef<FilterOptions>();
   filterRef.current = filterOptions;
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const filterOptionsHash = (fo: FilterOptions) =>
     `${fo.isDescending}${fo.maxPrice}${fo.minPrice}${fo.sortBy}${fo.status}`;
-
-  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
   const resetListings = (fo: FilterOptions) => {
     fetchBrowseListings(fo).then((l) => {
@@ -34,33 +33,37 @@ export default function BrowsePage() {
   const updateFilterOptions = (newFilterOptions: FilterOptions) => {
     resetListings(newFilterOptions);
     setFilterOptions(newFilterOptions);
+    scrollRef.current?.scrollTo({
+      top: 0,
+    });
   };
 
   useEffect(() => {
     resetListings(filterOptions);
   }, []);
 
-  const loadMore = (hash: string) => {
-    if (
-      filterRef.current &&
-      listingsRef.current &&
-      hash === filterOptionsHash(filterRef.current)
-    ) {
-      setIsLoadingMore(true);
-      fetchBrowseListings(filterRef.current, listingsRef.current.length).then(
-        (newListings) => {
-          setIsLoadingMore(false);
-          setListings((oldListings) => {
-            return [...oldListings, ...newListings];
-          });
-        }
-      );
-    }
+  const loadMore = async (hash: string): Promise<void> => {
+    return new Promise<void>(async (resolve) => {
+      if (
+        filterRef.current &&
+        listingsRef.current &&
+        hash === filterOptionsHash(filterRef.current)
+      ) {
+        const newListings = await fetchBrowseListings(
+          filterRef.current,
+          listingsRef.current.length
+        );
+        setListings((oldListings) => {
+          return [...oldListings, ...newListings];
+        });
+        resolve();
+      }
+    });
   };
 
   return (
     <>
-      <main className="px-4">
+      <main className="px-4 overflow-y-hidden flex flex-col">
         <PageHeading data-cy="page-heading" title="Browse Around"></PageHeading>
         <div className="flex justify-between">
           <FilterListing
@@ -70,15 +73,11 @@ export default function BrowsePage() {
           ></FilterListing>
         </div>
         <InfiniteScrollingListingView
+          scrollRef={scrollRef}
           listings={listings}
           loadMore={loadMore}
           hash={filterOptionsHash(filterOptions)}
         />
-        {isLoadingMore && (
-          <div className="flex justify-center">
-            <Spinner />
-          </div>
-        )}
       </main>
     </>
   );

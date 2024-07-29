@@ -1,18 +1,20 @@
-import { useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { Listing } from "../utils/interfaces";
 import { ListingCard } from "./ListingCard";
 import ListingsGrid from "./ListingsGrid";
+import { Spinner } from "@chakra-ui/react";
 
 interface InfiniteScrollingListingViewProps {
   loadMore: (hash: string) => void;
   listings: Listing[];
   hash: string;
+  scrollRef: RefObject<HTMLDivElement>;
 }
 
 export default function InfiniteScrollingListingView(
   props: InfiniteScrollingListingViewProps
 ) {
-  const ref = useRef<HTMLDivElement>(null);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
 
   const unique: Set<string> = new Set();
   const uniqueListings = props.listings.filter((l) => {
@@ -23,7 +25,7 @@ export default function InfiniteScrollingListingView(
     return false;
   });
 
-  const oneTimeScrollListener = (e: Event) => {
+  const oneTimeScrollListener = async (e: Event) => {
     // console.log(e);
     // console.log(e.target);
     const t = e.target as HTMLDivElement;
@@ -38,23 +40,34 @@ export default function InfiniteScrollingListingView(
     // console.log(bottom);
     if (bottom) {
       t.removeEventListener("scroll", oneTimeScrollListener);
-      props.loadMore(props.hash);
+      setIsLoadingMore(true);
+      await props.loadMore(props.hash);
+      setIsLoadingMore(false);
     }
   };
 
   useEffect(() => {
     const l = props.listings.length;
-    ref.current?.removeEventListener("scroll", oneTimeScrollListener);
+    props.scrollRef.current?.removeEventListener(
+      "scroll",
+      oneTimeScrollListener
+    );
     document?.removeEventListener("scroll", oneTimeScrollListener);
     if (l > 0) {
-      ref.current?.addEventListener("scroll", oneTimeScrollListener);
+      props.scrollRef.current?.addEventListener(
+        "scroll",
+        oneTimeScrollListener
+      );
       document?.addEventListener("scroll", oneTimeScrollListener);
     }
   }, [props.listings]);
 
   return (
-    <>
-      <ListingsGrid ref={ref}>
+    <div
+      className="w-full lg:max-h-[calc(100vh-250px)] lg:overflow-y-scroll"
+      ref={props.scrollRef}
+    >
+      <ListingsGrid isLoading={isLoadingMore}>
         {uniqueListings.map((listing) => (
           <ListingCard
             listingInfo={listing}
@@ -62,6 +75,6 @@ export default function InfiniteScrollingListingView(
           ></ListingCard>
         ))}
       </ListingsGrid>
-    </>
+    </div>
   );
 }

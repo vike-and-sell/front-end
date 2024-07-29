@@ -9,6 +9,14 @@ export interface ChatPaneProps {
     ChatPaneDisplayToggle: (status: boolean) => void;
 }
 
+const truncateString = (input: string, cutoff: number) => {
+    if (input.length > cutoff) {
+      return input.slice(0, cutoff) + "...";
+    } else {
+      return input;
+    }
+}
+
 export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayToggle}:ChatPaneProps) {
 
     const [searchQuery, setSearchQuery] = useState<string>("")
@@ -64,7 +72,7 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                                 </div>
 
                                 <div className="mx-auto">
-                                    {chat.interlocutor.username}
+                                    {truncateString(chat.interlocutor.username, 15)}
                                 </div>
                         </Button>
                     )}          

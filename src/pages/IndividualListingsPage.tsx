@@ -37,6 +37,7 @@ import {
 } from "../utils/api";
 import ErrorPage from "./ErrorPage";
 import Chat from "./chat";
+import axios from "axios";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
@@ -127,6 +128,24 @@ export default function IndividualListing() {
     if (userData.data.userId == listingInfo.sellerId) {
       isUser = true;
     }
+  }
+
+  const produceChat = async ()=> {
+    try{
+      const ChatResponse = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, 
+        {
+          listingId: Number(listingID)
+        },
+        {
+          withCredentials:true
+        })
+
+      console.log(ChatResponse.data)
+
+    } catch (error){
+      console.log(error) 
+    }
+
   }
 
   return (
@@ -273,7 +292,10 @@ export default function IndividualListing() {
           <DefaultButton
             title='Message Seller'
             data-cy='message-seller-button'
-            clickHandle={onChatOpen}
+            clickHandle={ () =>{
+              produceChat();
+              onChatOpen()
+            }}
           ></DefaultButton>
         </div>
       </div>

@@ -10,12 +10,12 @@ export interface MessageProps {
 export default function Messages({allMessages, user}:MessageProps){
     const scrollRef = useRef<HTMLDivElement|null>(null)
 
-    const formatTimestamp = (unixNum:number) => {
-        return format(unixNum, "hh:mm aaa")
+    const formatTimestamp = (ISOString:string) => {
+        return format(ISOString, "hh:mm aaa")
     }
 
-    const formatDate = (unixNum:number) => {
-        return format(unixNum, "eeee',' MMMM d yyyy")
+    const formatDate = (ISOString:string) => {
+        return format(ISOString, "eeee',' MMMM d yyyy")
     }
 
     useEffect(() => {

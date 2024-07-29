@@ -4,8 +4,7 @@ import { Input,
         InputRightAddon,
         FormControl,
         FormLabel,
-        FormErrorMessage,
-        FormHelperText
+        FormErrorMessage
     } from '@chakra-ui/react';
 import LoginHeading from "../components/LoginHeading";
 import { useAuth } from '../utils/AuthContext';
@@ -13,7 +12,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function RecoverPasswordPage() {
     const [email, setEmail] = useState<string>("");
-    const [isValid, setIsValid] = useState<boolean>(false);
+    const emailRegex = /^(?!.*\.\.)[^\s@]+$/;
+    const isValid = emailRegex.test(email) && !email.endsWith("@uvic.ca");
+    const isEmpty = email === "";
+    const hasAtSymbol = /@/.test(email);
     const [isEmailTouched, setIsEmailTouched] = useState<boolean>(false);
     const [statusBool, setStatusBool] = useState<boolean | null>(null);
     const auth = useAuth()
@@ -32,15 +34,9 @@ export default function RecoverPasswordPage() {
         } 
     }
 
-    function validateEmail(email: string): boolean {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email) && !email.endsWith("@uvic.ca");
-    }
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const email = e.target.value;
         setEmail(email);
-        setIsValid(validateEmail(email));
         setIsEmailTouched(true);
     };
 
@@ -58,10 +54,10 @@ export default function RecoverPasswordPage() {
                         <span className="text-white text-md md:text-xl font-semibold pb-3">Please enter your email address to receive instructions on how to reset your password</span>
 
                         {statusBool? (<div className="text-white px-6 text-center">
-                                        This Email is Not Linked to an Account. Please enter a valid email try again.
+                                        This email is not linked to an account. Please enter a valid email and try again.
                                       </div>) : ("") }
 
-                        <FormControl isRequired isInvalid={!isValid && isEmailTouched}>
+                        <FormControl isRequired isInvalid={(!isValid || isEmpty || hasAtSymbol) && isEmailTouched}>
                             <FormLabel fontSize={[19,19,25,27]} textColor='white'>Email Address</FormLabel>
                             <InputGroup>
                                 <Input 
@@ -72,10 +68,14 @@ export default function RecoverPasswordPage() {
                                 />
                                 <InputRightAddon className='text-pri-blue font-semibold'>@uvic.ca</InputRightAddon>
                             </InputGroup>
-                            {!isValid && isEmailTouched ? (
-                                <FormErrorMessage textColor='white'>Must Be a Valid UVic Email</FormErrorMessage>
+                            {hasAtSymbol ? (
+                                <FormErrorMessage textColor='white'>Please only enter your Netlink ID</FormErrorMessage>
+                            ): isEmpty ? (
+                                <FormErrorMessage textColor='white'>Please enter your Netlink ID</FormErrorMessage>
+                            ): !isValid ? (
+                                <FormErrorMessage textColor='white'>Please ensure you have entered your Netlink ID correctly</FormErrorMessage>
                             ):(
-                                <FormHelperText></FormHelperText>
+                                ("")
                             )}
                         </FormControl>  
                     </div>

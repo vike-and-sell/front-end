@@ -89,6 +89,8 @@ export default function MyListings() {
         </div>
         {isListingPending ? (
           <ListingsGridSkeleton></ListingsGridSkeleton>
+        ) : activePageListing.length == 0 ? (
+          <div>No listings</div>
         ) : (
           <ListingsGrid ref={scrollRef}>
             {activePageListing.map((listing) => (

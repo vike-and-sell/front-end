@@ -17,58 +17,58 @@ export default function SearchBar() {
   const location = useLocation();
 
   const fetchSearchHistory = async () => {
-      try {
-        const searchHistoryResponse = await axios.get(
-          `${import.meta.env.VITE_REACT_APP_API_URL}/users/me/searches`,
-          {
-            withCredentials: true,
-          }
-        );
+    try {
+      const searchHistoryResponse = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/users/me/searches`,
+        {
+          withCredentials: true,
+        }
+      );
 
-        const allSearchHistory:string[] = searchHistoryResponse.data
-        setSearchHistory(getUniqueSearches(allSearchHistory.reverse()))
-
-      } catch (error) {
-        console.error("Unable to fetch search history:", error);
-      }
-    };
+      const allSearchHistory: string[] = searchHistoryResponse.data;
+      setSearchHistory(getUniqueSearches(allSearchHistory.reverse()));
+    } catch (error) {
+      console.error("Unable to fetch search history:", error);
+    }
+  };
 
   useEffect(() => {
     fetchSearchHistory();
   }, []);
 
   useEffect(() => {
-    if(location.pathname.includes(`/search/${searchString}`)){
-
-    }else{
-      setSearchString("")
+    if (location.pathname.includes(`/search/${searchString}`)) {
+    } else {
+      setSearchString("");
     }
+  }, [location]);
 
-  }, [location])
-
-  const filteredSearchHistory = searchHistory.filter((searchItem:string) => searchItem.toLowerCase().includes(searchString))
+  const filteredSearchHistory = searchHistory.filter((searchItem: string) =>
+    searchItem.toLowerCase().includes(searchString)
+  );
 
   const getUniqueSearches = (searchHistory: string[]) => {
-    return searchHistory.filter(
-      (searchItem, index, self) =>
-        index ===
-        self.findIndex(
-          (duplicateSearchItem) => duplicateSearchItem === searchItem
-        )
-    ).filter(searchItem => searchItem.trim() !== '');
+    return searchHistory
+      .filter(
+        (searchItem, index, self) =>
+          index ===
+          self.findIndex(
+            (duplicateSearchItem) => duplicateSearchItem === searchItem
+          )
+      )
+      .filter((searchItem) => searchItem.trim() !== "");
   };
 
   return (
-    <div className='flex items-center flex-grow gap-2 p-4 z-50'>
+    <div className='flex items-center flex-grow gap-2 p-4 z-10'>
       <AutoComplete
         listAllValuesOnFocus={true}
         maxSuggestions={10}
         openOnFocus={true}
         onSelectOption={(item) => {
-          setSearchString(item.item.value); 
-          navigate(`/search/${item.item.value}/1`); 
+          setSearchString(item.item.value);
+          navigate(`/search/${item.item.value}/1`);
           fetchSearchHistory();
-          
         }}
         restoreOnBlurIfEmpty={false}
         suggestWhenEmpty={true}
@@ -87,19 +87,18 @@ export default function SearchBar() {
           }}
         />
         {filteredSearchHistory.length > 0 && (
-        <AutoCompleteList >
-          { searchHistory.map(
-            (search:string, index:number) => (
+          <AutoCompleteList>
+            {searchHistory.map((search: string, index: number) => (
               <AutoCompleteItem
                 key={`${index + search}`}
                 value={search}
-                align="center"
+                align='center'
               >
-                <Text ml="4">{search}</Text>
+                <Text ml='4'>{search}</Text>
               </AutoCompleteItem>
-            )
-          )}
-        </AutoCompleteList>)}
+            ))}
+          </AutoCompleteList>
+        )}
       </AutoComplete>
       <button
         title='Search Button'

@@ -24,9 +24,18 @@ export default function InfiniteScrollingListingView(
   });
 
   const oneTimeScrollListener = (e: Event) => {
+    // console.log(e);
+    // console.log(e.target);
     const t = e.target as HTMLDivElement;
 
-    const bottom = t.scrollHeight - t.scrollTop <= t.clientHeight + 100;
+    const sh = t.scrollHeight ?? document.body.scrollHeight;
+    const st = t.scrollTop ?? window.scrollY;
+    const ch = t.clientHeight ?? window.outerHeight;
+
+    const bottom = sh - st <= ch + 100;
+    // console.log(`${sh}, ${st}, ${ch + 100}`);
+    // console.log(`${sh - st} <= ${ch + 100}`);
+    // console.log(bottom);
     if (bottom) {
       t.removeEventListener("scroll", oneTimeScrollListener);
       props.loadMore(props.hash);
@@ -35,10 +44,11 @@ export default function InfiniteScrollingListingView(
 
   useEffect(() => {
     const l = props.listings.length;
-    console.log("useEffect called");
     ref.current?.removeEventListener("scroll", oneTimeScrollListener);
+    document?.removeEventListener("scroll", oneTimeScrollListener);
     if (l > 0) {
       ref.current?.addEventListener("scroll", oneTimeScrollListener);
+      document?.addEventListener("scroll", oneTimeScrollListener);
     }
   }, [props.listings]);
 

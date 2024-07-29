@@ -15,7 +15,7 @@ export function ListingCard({ listingInfo }: ListingIDProps) {
   return (
     <div
       onClick={() => navigate(`/listing/${listingInfo.listingId}`)}
-      className="flex flex-col shadow border-solid border-2 border-slate-300 aspect-square rounded-3xl p-4 justify-between overflow-y-auto hover:scale-105 transition-all cursor-pointer"
+      className="flex flex-col shadow border-solid border-2 border-slate-300 aspect-square rounded-3xl p-4 justify-between overflow-y-auto transition-all cursor-pointer"
     >
       <div className="font-semibold text-lg lg:text-xl">{title}</div>
       <div className="flex flex-col">

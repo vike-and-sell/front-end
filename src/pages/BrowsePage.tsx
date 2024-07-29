@@ -1,4 +1,3 @@
-import { Spinner } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import FilterListing from "../components/FilterListings";
 import InfiniteScrollingListingView from "../components/InfiniteScrollingListingView";

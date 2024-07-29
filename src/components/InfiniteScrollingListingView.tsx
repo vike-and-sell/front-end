@@ -1,8 +1,7 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { Listing } from "../utils/interfaces";
 import { ListingCard } from "./ListingCard";
 import ListingsGrid from "./ListingsGrid";
-import { Spinner } from "@chakra-ui/react";
 
 interface InfiniteScrollingListingViewProps {
   loadMore: (hash: string) => void;

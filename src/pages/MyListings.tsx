@@ -73,9 +73,9 @@ export default function MyListings() {
 
   return (
     <>
-      <main className='px-4'>
-        <PageHeading data-cy='page-heading' title='My Listings'></PageHeading>
-        <div className='flex justify-end'>
+      <main className="px-4">
+        <PageHeading data-cy="page-heading" title="My Listings"></PageHeading>
+        <div className="flex justify-end">
           {isListingPending ? (
             <PaginationBarSkeleton></PaginationBarSkeleton>
           ) : (
@@ -87,18 +87,20 @@ export default function MyListings() {
             ></PaginationBar>
           )}
         </div>
-        {isListingPending ? (
-          <ListingsGridSkeleton></ListingsGridSkeleton>
-        ) : (
-          <ListingsGrid ref={scrollRef}>
-            {activePageListing.map((listing) => (
-              <ListingCard
-                listingInfo={listing}
-                key={listing.listingId}
-              ></ListingCard>
-            ))}
-          </ListingsGrid>
-        )}
+        <div className="w-full lg:max-h-[calc(100vh-250px)] lg:overflow-y-scroll">
+          {isListingPending ? (
+            <ListingsGridSkeleton></ListingsGridSkeleton>
+          ) : (
+            <ListingsGrid ref={scrollRef}>
+              {activePageListing.map((listing) => (
+                <ListingCard
+                  listingInfo={listing}
+                  key={listing.listingId}
+                ></ListingCard>
+              ))}
+            </ListingsGrid>
+          )}
+        </div>
       </main>
     </>
   );

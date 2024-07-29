@@ -13,7 +13,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function RecoverPasswordPage() {
     const [email, setEmail] = useState<string>("");
-    const [isValid, setIsValid] = useState(false);
+    const [isValid, setIsValid] = useState<boolean>(false);
+    const [isEmailTouched, setIsEmailTouched] = useState<boolean>(false);
     const [statusBool, setStatusBool] = useState<boolean | null>(null);
     const auth = useAuth()
     const navigate = useNavigate();
@@ -40,6 +41,7 @@ export default function RecoverPasswordPage() {
         const email = e.target.value;
         setEmail(email);
         setIsValid(validateEmail(email));
+        setIsEmailTouched(true);
     };
 
     return (
@@ -59,7 +61,7 @@ export default function RecoverPasswordPage() {
                                         This Email is Not Linked to an Account. Please enter a valid email try again.
                                       </div>) : ("") }
 
-                        <FormControl isRequired isInvalid={!isValid}>
+                        <FormControl isRequired isInvalid={!isValid && isEmailTouched}>
                             <FormLabel fontSize={[19,19,25,27]} textColor='white'>Email Address</FormLabel>
                             <InputGroup>
                                 <Input 
@@ -70,7 +72,7 @@ export default function RecoverPasswordPage() {
                                 />
                                 <InputRightAddon className='text-pri-blue font-semibold'>@uvic.ca</InputRightAddon>
                             </InputGroup>
-                            {!isValid ? (
+                            {!isValid && isEmailTouched ? (
                                 <FormErrorMessage textColor='white'>Must Be a Valid UVic Email</FormErrorMessage>
                             ):(
                                 <FormHelperText></FormHelperText>

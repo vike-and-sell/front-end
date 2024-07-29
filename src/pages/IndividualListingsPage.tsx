@@ -37,6 +37,7 @@ import {
 } from "../utils/api";
 import ErrorPage from "./ErrorPage";
 import Chat from "./chat";
+import axios from "axios";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
@@ -108,7 +109,20 @@ export default function IndividualListing() {
   }
 
   // Still need to be implemented
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/listings/${listingID}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to delete listing");
+      }
+      navigate("/myListings");
+    } catch {}
+  };
   const handleDoNotRecommend = () => {};
 
   // Check if all data is loaded

@@ -3,7 +3,7 @@ import React, { forwardRef } from "react";
 
 interface ListingGridProps {
   children: React.ReactNode;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 // Using forwardRef to allow ref to be passed to the main element

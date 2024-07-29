@@ -43,7 +43,7 @@ export default function CharityPage() {
           <div>No Active Charities</div>
         ) : (
           activeCharities.map((charity: Charity) => (
-            <CharityCard charityInfo={charity}></CharityCard>
+            <CharityCard charityInfo={charity} key={charity.name}></CharityCard>
           ))
         )}
       </div>
@@ -56,7 +56,7 @@ export default function CharityPage() {
           <div>Nothing here yet...</div>
         ) : (
           pastCharities.map((charity: Charity) => (
-            <CharityCard charityInfo={charity}></CharityCard>
+            <CharityCard charityInfo={charity} key={charity.name}></CharityCard>
           ))
         )}
       </div>

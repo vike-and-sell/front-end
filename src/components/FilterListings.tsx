@@ -30,7 +30,6 @@ export default function FilterListing({
 
   function toggleFilter() {
     setActive((prevActive) => !prevActive);
-    console.log(active);
   }
 
   // Sets up event listener to toggle on / off the filter menu
@@ -57,8 +56,7 @@ export default function FilterListing({
 
   return (
     <>
-      <div className='relative z-0'>
-
+      <div className="relative z-0">
         <div ref={toggleButtonRef}>
           <DefaultButton
             title="Filter"
@@ -140,7 +138,6 @@ function FilterMenu({
   }
 
   return (
-
     <div className="absolute bg-white shadow rounded-xl p-4 top-[110%]">
       <FormControl>
         <div className="flex flex-col gap-2">

@@ -44,7 +44,9 @@ export default function Chat() {
                 });
 
                 const chatUsers: string[] = chatInfoResponse.data['users'];
-                const interlocutorId = chatUsers.filter((Id: string) => auth?.user && Id !== String(auth.user.userId)).join("");
+                const interlocutorId = chatUsers.filter((Id: string) => auth?.user && Id !== auth.user.userId).join("");
+
+                console.log(interlocutorId)
                 const interlocutorResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/users/${interlocutorId}`, {
                     withCredentials: true
                 });
@@ -150,7 +152,13 @@ export default function Chat() {
             <div className={`${ChatPaneHidden === false? 'max-sm:hidden' : ''} flex flex-col flex-grow h-screen p-3 `}> 
                 <Box className=" bg-rt-dark-blue rounded-md p-3 flex">
 
-                { isChatLoading? (<Skeleton height="20px" width="100%"></Skeleton>) : (
+                { isChatLoading? 
+                    (<Skeleton 
+                        borderRadius="md"
+                        height="20px" 
+                        width="100%"
+                    />
+                    ) : (
                     
                     <>
                      <IconButton
@@ -173,7 +181,8 @@ export default function Chat() {
                 <div className="bg-whitw=e flex-grow my-5 overflow-y-auto flex-wrap container mx-auto">
                 { isMessageLoading ? (
                         <div className="w-full h-full flex flex-col">
-                            <Skeleton 
+                            <Skeleton
+                                borderRadius="lg" 
                                 height="100%" 
                                 width="100%"
                             />
@@ -209,7 +218,10 @@ export default function Chat() {
                                 _hover={{ bg: '#0f4a79' }}
                                 icon={<ArrowUpIcon color='white' />}
                                 isRound ={true} 
-                                onClick ={() => {sendMessage(input); forceUpdate}} 
+                                onClick ={() => {
+                                    sendMessage(input); 
+                                    forceUpdate()
+                                }} 
                                 size="sm"  
                             />
                         </InputRightElement>

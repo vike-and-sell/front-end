@@ -294,7 +294,7 @@ export default function IndividualListing() {
             data-cy='message-seller-button'
             clickHandle={ () =>{
               produceChat();
-              onChatOpen()
+              onChatOpen();
             }}
           ></DefaultButton>
         </div>

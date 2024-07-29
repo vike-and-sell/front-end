@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ChatPane from "../components/ChatPane";
 import { ChatType, MessageType } from "../utils/interfaces";
 import {
@@ -24,7 +24,7 @@ export default function Chat() {
   const [isChatLoading, setIsChatLoading] = useState<boolean>(true);
   const [isMessageLoading, setIsMessageLoading] = useState<boolean>(true);
   const [currentMessages, setCurrentMessages] = useState<MessageType[]>([]);
-  const [messageError, setMessageError] = useState<string | null>(null);
+  const [messageError,] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const auth = useAuth();

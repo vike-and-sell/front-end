@@ -17,7 +17,22 @@ export default function ChatPaneSkeleton() {
                 </Input>
 
                 <>
-                <Skeleton 
+                    <Skeleton 
+                        borderRadius="lg"
+                        height="60px" 
+                        width="100%"
+                    />
+                    <Skeleton 
+                        borderRadius="lg"
+                        height="60px" 
+                        width="100%"
+                    />
+                    <Skeleton 
+                        borderRadius="lg"
+                        height="60px" 
+                        width="100%"
+                    />
+                    <Skeleton 
                         borderRadius="lg"
                         height="60px" 
                         width="100%"

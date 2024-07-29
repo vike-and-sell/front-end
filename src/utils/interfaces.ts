@@ -13,7 +13,7 @@ export interface MessageType {
   content: string;
   senderId: string;
   receiverID: string;
-  timestamp: number;
+  timestamp: string;
 }
 
 export interface Listing {

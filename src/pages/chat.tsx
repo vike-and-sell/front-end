@@ -15,8 +15,10 @@ export default function Chat() {
     const [currentChat, setCurrentChat] = useState<ChatType | null>(null);
     const [ChatPaneHidden, setChatPaneHidden] = useState<boolean>(false);
     const [input, setInput] = useState<string>("");
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isChatLoading, setIsChatLoading] = useState<boolean>(true);
+    const [isMessageLoading, setIsMessageLoading] = useState<boolean>(true);
     const [currentMessages, setCurrentMessages] = useState<MessageType[]>([]);
+    const [messageError, setMessageError] = useState<string | null>(null);
     const [, updateState ] = useState({})
     const forceUpdate = useCallback(() => updateState({}), []);
     const navigate = useNavigate();
@@ -32,7 +34,7 @@ export default function Chat() {
             const ChatIDResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, {
                 withCredentials: true
             });
-            console.log(ChatIDResponse.data)
+            //console.log(ChatIDResponse.data)
 
             const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
 
@@ -68,26 +70,39 @@ export default function Chat() {
         } catch (error) {
             console.error("Unable to fetch chats:", error);
         } finally {
-            setIsLoading(false); // Set loading state to false after fetch is complete
+            setIsChatLoading(false); // Set loading state to false after fetch is complete
         }
     }
 
     fetchChats();
     }, [])
 
+    const truncateString = (input: string, cutoff: number) => {
+        if (input.length > cutoff) {
+          return input.slice(0, cutoff) + "...";
+        } else {
+          return input;
+        }
+    }
+
     const PfromChatPane = async (clickedChat:ChatType) => {
         setCurrentChat(clickedChat)
-
+        setIsMessageLoading(true)
         try {
+
             const messageResponse= await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/messages/${clickedChat.chatId}`, {
                 withCredentials: true
             });
 
             const myMessages:MessageType[] = messageResponse.data.messages 
-
+            myMessages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
             setCurrentMessages(myMessages)
+            setMessageError(null)
         }catch (error){
+            setMessageError("No Messages between you and ");
             console.error("Unable to fetch messages:", error);
+        }finally {
+            setIsMessageLoading(false)
         }
     }
 
@@ -124,7 +139,7 @@ export default function Chat() {
             
             <div className={`${ChatPaneHidden === true? 'max-sm:hidden' : ''} w-full sm:max-w-max sm:basis-1/5 h-screen `}>
 
-                { isLoading? (<ChatPaneSkeleton/>) : (
+                { isChatLoading? (<ChatPaneSkeleton/>) : (
                 <ChatPane 
                     ChatPaneDisplayToggle={ChatPaneDisplayToggle}
                     ChatPaneItems={chatsArray} 
@@ -136,7 +151,7 @@ export default function Chat() {
             <div className={`${ChatPaneHidden === false? 'max-sm:hidden' : ''} flex flex-col flex-grow h-screen p-3 `}> 
                 <Box className=" bg-rt-dark-blue rounded-md p-3 flex">
 
-                { isLoading? (<Skeleton height="20px" width="100%"></Skeleton>) : (
+                { isChatLoading? (<Skeleton height="20px" width="100%"></Skeleton>) : (
                     
                     <>
                      <IconButton
@@ -151,13 +166,31 @@ export default function Chat() {
                         size='sm'
                         variant='ghost' />
 
-                    <span className=" text-white font-bold justify-center">{currentChat ? `${currentChat.interlocutor.username} - ${currentChat.listingInfo.title}` : ''}</span>
+                    <span className=" text-white font-bold justify-center">{currentChat ? `${currentChat.interlocutor.username} - ${truncateString(currentChat.listingInfo.title, 129)}` : ''}</span>
                     </>
                    ) }
                 </Box>
 
                 <div className="bg-whitw=e flex-grow my-5 overflow-y-auto flex-wrap container mx-auto">
-                    {auth && auth.user && <Messages allMessages={currentMessages} user={auth.user}/>}
+                    { isMessageLoading ? (
+                        <div className="w-full h-full flex flex-col">
+                            <Skeleton 
+                                height="100%" 
+                                width="100%"
+                            />
+                        </div>
+                    ) : (
+                    
+                    messageError? (
+                        <div className="text-center text-red-500">{messageError + currentChat?.interlocutor.username}</div>
+                    ):(
+                        currentMessages.length === 0? (
+                            <div className="text-center text-gray-500">No messages between you and {currentChat?.interlocutor.username}</div>
+                        ):(
+                            auth && auth.user && <Messages allMessages={currentMessages} user={auth.user}/>
+                        )
+                    ))}
+                    
                 </div>
 
                 <div className="flex flex-wrap">

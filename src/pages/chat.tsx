@@ -24,6 +24,7 @@ export default function Chat() {
     const navigate = useNavigate();
 
     const auth = useAuth();
+
     useEffect(()=>{
         if (auth){
             auth.checkUserStatus();
@@ -89,7 +90,7 @@ export default function Chat() {
 
     const PfromChatPane = async (clickedChat:ChatType) => {
         setCurrentChat(clickedChat)
-
+        setIsMessageLoading(true)
         try {
             const messageResponse= await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/messages/${clickedChat.chatId}`, {
                 withCredentials: true

@@ -90,25 +90,29 @@ export default function PaginatedListings({ listingIds, accordionIndex, indexTit
         </>
       ) : (
         <>
-          <PaginationBar
-            currentPage={currentPage}
-            totalPages={totalPages}
-            handleNext={handleNext}
-            handlePrev={handlePrev}
-          />
           {
            activePageListing.length > 0 ? (
-            <ListingsGrid ref={scrollRef}>
-              {activePageListing.map((listing) => (
-                <ListingCard
-                  listingInfo={listing}
-                  key={listing.listingId}
-                ></ListingCard>
-              ))}
-            </ListingsGrid>
+            <div>
+              <PaginationBar
+                currentPage={currentPage}
+                totalPages={totalPages}
+                handleNext={handleNext}
+                handlePrev={handlePrev}
+              />
+
+              <ListingsGrid ref={scrollRef}>
+                {activePageListing.map((listing) => (
+                  <ListingCard
+                    listingInfo={listing}
+                    key={listing.listingId}
+                  ></ListingCard>
+                ))}
+              </ListingsGrid>
+            </div>
+            
            ):(
-            <div className="font-bold text-center">
-              The credentials you entered do not match our records.
+            <div className="text-center">
+              No listings {indexTitle}
             </div>
            )
           }

@@ -74,6 +74,7 @@ export default function SearchBar() {
         suggestWhenEmpty={true}
       >
         <AutoCompleteInput
+          className='search-bar'
           placeholder='Search for used...'
           onChange={(e) => {
             setSearchString(e.target.value);

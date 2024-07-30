@@ -45,15 +45,16 @@ export default function Chat({ chatID }: ChatProps) {
         //console.log(ChatIDResponse.data)
 
       const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
-
+      const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
       const chatInfoArray: ChatType[] = await Promise.all(
-        chatIDs.map(async (chatId: number) => {
+        chatIDs.map(async (chatId: number, index:number) => {
+          await delay(500 * index); // Introduce a delay for each chat request
           const chatInfoResponse = await axios.get(
             `${import.meta.env.VITE_REACT_APP_API_URL}/chats/${chatId}`,
             {
               withCredentials: true,
             }
-          );
+          )
 
         const chatUsers: string[] = chatInfoResponse.data["users"];
         const interlocutorId = chatUsers
@@ -130,7 +131,7 @@ export default function Chat({ chatID }: ChatProps) {
   }
 
   const getMessages = async (chatId: string | undefined) => {
-    setIsMessageLoading(true)
+    
     try {
       const messageResponse= await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/messages/${chatId}`, 
         {
@@ -149,6 +150,8 @@ export default function Chat({ chatID }: ChatProps) {
   };
 
   const PfromChatPane = async (clickedChat: ChatType ) => {
+    setIsMessageLoading(true)
+    setMessageError(null)
     setCurrentChat(clickedChat);
     getMessages(clickedChat.chatId);
   };
@@ -159,6 +162,7 @@ export default function Chat({ chatID }: ChatProps) {
 
   const sendMessage = async (text: string) => {
     try {
+      setMessageError(null)
       const sendResponse = await axios.post(
         `${import.meta.env.VITE_REACT_APP_API_URL}/messages/${
           currentChat?.chatId
@@ -178,6 +182,8 @@ export default function Chat({ chatID }: ChatProps) {
       setInput("");
     } catch (error) {
       console.error("Unable to send message. Please try again later:", error);
+    } finally {
+      setIsMessageLoading(false);
     }
   };
 

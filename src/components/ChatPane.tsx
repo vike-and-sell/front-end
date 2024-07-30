@@ -30,8 +30,8 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
 
 
     return(
-        <div className="bg-pri-blue h-screen rounded-lg" data-cy="chat-pane">
-            <Stack direction='column' spacing={3} className="mx-3" >
+        <div className="bg-pri-blue h-screen rounded-lg flex flex-col" data-cy="chat-pane">
+            <div className="sticky top-0 z-10 bg-pri-blue p-3">
                 <Input
                     background='white' 
                     borderRadius='full'
@@ -43,8 +43,10 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                     _placeholder={{ opacity: 1, color: 'gray.500', fontFamily:'Inter'}}>
                         
                 </Input>
+            </div>
 
-                <>
+            <div className="flex-grow overflow-y-scroll p-3">
+                <Stack direction="column" spacing={3}>
                 {filterByUsername(ChatPaneItems, searchQuery).map((chat:ChatType, index:number) => {
                     return(
                         <Button
@@ -77,10 +79,11 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                         </Button>
                     )}          
                 )}
-                </>
+                </Stack>
+            </div>
                 
 
-            </Stack>
+            
         </div>
     )
     

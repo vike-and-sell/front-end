@@ -65,7 +65,7 @@ const fetchSingleListing = async (listingID: string | undefined) => {
       withCredentials: true,
     }
   );
-  console.log("fetch single listing");
+ 
   if (response.status !== 200) {
     throw new Error(
       response.data?.message || "Fetching single listing data failed..."

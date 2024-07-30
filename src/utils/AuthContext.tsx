@@ -170,27 +170,17 @@ export const AuthProvider = ({ children }: any) => {
 
   const requestReset = async (email: string, callback: string) => {
     try {
-      await axios
-        .post(
-          `${import.meta.env.VITE_REACT_APP_API_URL}/request_reset`,
-          {
-            email: email,
-            callback: callback,
-          },
-          {
-            withCredentials: false,
-          }
-        )
-        .then(function (response) {
-          console.log(
-            "response " +
-              response.status +
-              " " +
-              response.data +
-              " " +
-              response.statusText
-          );
-        });
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/request_reset`,
+        {
+          email: email,
+          callback: callback,
+        },
+        {
+          withCredentials: false,
+        }
+      );
+      return response;
     } catch (error) {
       console.log(error);
     }

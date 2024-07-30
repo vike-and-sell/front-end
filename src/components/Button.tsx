@@ -12,9 +12,11 @@ interface DefaultButtonProps {
 export default function DefaultButton({
   title,
   clickHandle,
+  datacy = "default",
 }: DefaultButtonProps) {
   return (
     <button
+      data-cy={datacy}
       className='bg-pri-blue text-white px-4 py-2 rounded-lg'
       onClick={clickHandle}
     >
@@ -23,9 +25,14 @@ export default function DefaultButton({
   );
 }
 
-export function DefaultFillButton({ title, clickHandle }: DefaultButtonProps) {
+export function DefaultFillButton({
+  title,
+  clickHandle,
+  datacy = "default",
+}: DefaultButtonProps) {
   return (
     <button
+      data-cy={datacy}
       className='bg-pri-blue text-white px-4 py-2 rounded-lg w-full'
       onClick={clickHandle}
     >
@@ -39,7 +46,7 @@ export function PriBlueButton({
   clickHandle,
   className,
   isDisabled,
-  datacy,
+  datacy = "default",
 }: DefaultButtonProps) {
   return (
     <Button

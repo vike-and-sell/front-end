@@ -58,10 +58,9 @@ export default function FilterListing({
   return (
     <>
       <div className='relative z-0'>
-
-        <div ref={toggleButtonRef}>
+        <div ref={toggleButtonRef} className='filter-button'>
           <DefaultButton
-            title="Filter"
+            title='Filter'
             clickHandle={toggleFilter}
           ></DefaultButton>
         </div>
@@ -140,37 +139,43 @@ function FilterMenu({
   }
 
   return (
-
-    <div className="absolute bg-white shadow rounded-xl p-4 top-[110%]">
+    <div className='absolute bg-white shadow rounded-xl p-4 top-[110%] filter-component'>
       <FormControl>
-        <div className="flex flex-col gap-2">
+        <div className='flex flex-col gap-2'>
           <FormLabel>Sort by</FormLabel>
           <div>
             <RadioGroup
-              name="sort-by"
+              name='sort-by'
               onChange={handleSortBy}
               defaultValue={filterOptions.sortBy}
             >
-              <HStack spacing="24px">
-                <Radio value="created_on">Date</Radio>
+              <HStack spacing='24px'>
+                <Radio value='created_on' className='date-toggle'>
+                  Date
+                </Radio>
                 {disableLocation ? (
                   ""
                 ) : (
-                  <Radio value="distance">Distance</Radio>
+                  <Radio value='distance' className='distance-toggle'>
+                    Distance
+                  </Radio>
                 )}
-                <Radio value="price">Price</Radio>
+                <Radio value='price' className='price-toggle'>
+                  Price
+                </Radio>
               </HStack>
             </RadioGroup>
           </div>
           <Divider></Divider>
-          <div className="flex gap-4">
+          <div className='flex gap-4'>
             <div>
               <FormLabel>Min Price:</FormLabel>
               <InputGroup onChange={handleMinPrice}>
                 <InputLeftAddon>$</InputLeftAddon>
                 <Input
-                  type="number"
-                  placeholder="0"
+                  className='min-price-input'
+                  type='number'
+                  placeholder='0'
                   defaultValue={filterOptions.minPrice}
                 />
               </InputGroup>
@@ -180,8 +185,9 @@ function FilterMenu({
               <InputGroup onChange={handleMaxPrice}>
                 <InputLeftAddon>$</InputLeftAddon>
                 <Input
-                  type="number"
-                  placeholder="0"
+                  className='max-price-input'
+                  type='number'
+                  placeholder='0'
                   defaultValue={filterOptions.maxPrice}
                 />
               </InputGroup>
@@ -194,9 +200,13 @@ function FilterMenu({
               defaultValue={filterOptions.isDescending ? "desc" : "asc"}
               onChange={handleOrderBy}
             >
-              <HStack spacing="24px">
-                <Radio value="asc">Ascending</Radio>
-                <Radio value="desc">Descending</Radio>
+              <HStack spacing='24px'>
+                <Radio value='asc' className='asc-toggle'>
+                  Ascending
+                </Radio>
+                <Radio value='desc' className='desc-toggle'>
+                  Descending
+                </Radio>
               </HStack>
             </RadioGroup>
           </div>
@@ -207,19 +217,25 @@ function FilterMenu({
               defaultValue={filterOptions.status}
               onChange={handleStatus}
             >
-              <HStack spacing="24px">
-                <Radio value="AVAILABLE">Available</Radio>
-                <Radio value="SOLD">Sold</Radio>
+              <HStack spacing='24px'>
+                <Radio value='AVAILABLE' className='available-toggle'>
+                  Available
+                </Radio>
+                <Radio value='SOLD' className='sold-toggle'>
+                  Sold
+                </Radio>
               </HStack>
             </RadioGroup>
           </div>
-          <div className="flex gap-4">
+          <div className='flex gap-4'>
             <DefaultFillButton
-              title="Clear"
+              title='Clear'
+              datacy='clear-button'
               clickHandle={clearFilterOptions}
             ></DefaultFillButton>
             <DefaultFillButton
-              title="Apply"
+              datacy='apply-button'
+              title='Apply'
               clickHandle={submitFilterOptions}
             ></DefaultFillButton>
           </div>

@@ -8,7 +8,7 @@ import {
 
 import HomeLayout from "./layout/HomeLayout";
 import RegistrationLayout from "./layout/RegistrationLayout";
-import RecomendationsPage from "./pages/RecomendationsPage";
+import RecommendationsPage from "./pages/RecommendationsPage";
 import IndividualListingPage from "./pages/IndividualListingsPage";
 import Chat from "./pages/chat";
 import Settings from "./pages/SettingsPage";
@@ -44,10 +44,10 @@ function App() {
                     path="*"
                     element={<ErrorPage> Page Not Found</ErrorPage>}
                   />
-                  <Route index element={<Navigate to="/browse/1" />} />
+                  <Route index element={<Navigate to="/recommendations/1" />} />
                   <Route
-                    path="recomendations/:page"
-                    element={<RecomendationsPage />}
+                    path="recommendations/:page"
+                    element={<RecommendationsPage />}
                   />
                   <Route path="browse/:page" element={<BrowsePage />} />
                   <Route

@@ -77,17 +77,21 @@ export default function RecommendationsPage() {
         <PageHeading title='Your Recommendations'></PageHeading>
         {isListingPending ? (
           <>
-            <PaginationBarSkeleton></PaginationBarSkeleton>
+            <div className="flex justify-end">
+              <PaginationBarSkeleton></PaginationBarSkeleton>
+            </div>
             <ListingsGridSkeleton></ListingsGridSkeleton>
           </>
         ) : (
           <>
-            <PaginationBar
-              currentPage={currentPage}
-              totalPages={totalPages}
-              handleNext={handleNext}
-              handlePrev={handlePrev}
-            ></PaginationBar>
+            <div className="flex justify-end">
+              <PaginationBar
+                currentPage={currentPage}
+                totalPages={totalPages}
+                handleNext={handleNext}
+                handlePrev={handlePrev}
+              ></PaginationBar>
+            </div>
             <ListingsGrid ref={scrollRef}>
               {activePageListing.map((listing) => {
                 return (

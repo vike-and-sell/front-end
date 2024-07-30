@@ -1,5 +1,6 @@
 import PageHeading from "../components/PageHeading";
 import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchUser } from '../utils/api';
 import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from '@chakra-ui/react'
 import PaginatedListings from '../components/PaginatedListings';
@@ -9,18 +10,37 @@ import axios from "axios";
 
 export default function MyHistory(){
     const [openIndex, setOpenIndex] = useState<number | null>(null);
-    const [purchasedIds, setPurchasedIds] = useState<number[]>([]);
-    const [soldIds, setSoldIds] = useState<number[]>([]);
     const [isInit, setIsInit] = useState<boolean>(false);
+    const [accordionItems, setAccordionItems] = useState([
+        { title: 'Purchased', index: 0, ids: [], page: 1 },
+        { title: 'Sold', index: 1, ids: [], page: 1 }
+    ]);
+    const navigate = useNavigate();
+    const { option, page } = useParams();
 
     const handleToggle = (index: number) => {
         setOpenIndex(index === openIndex ? null : index);
     };
 
-    const accordionItems = [
-        { title: 'Purchased', index: 1, ids: purchasedIds },
-        { title: 'Sold', index: 2, ids: soldIds }
-    ];
+    useEffect(() => {
+        if(openIndex != null){
+            console.log("opening pg, openIndex: " + openIndex)
+            navigate(`/myprofile/${accordionItems[openIndex].title}/${accordionItems[openIndex].page}`)
+        }
+    }, [openIndex]);
+
+    useEffect(() => {
+        if (!page || page === null) {
+            setAccordionItems(prevItems => prevItems.map(item => ({ ...item, page: 1 })));
+            setOpenIndex(null);
+        } else {
+            setAccordionItems(prevItems => prevItems.map(item => 
+                item.title === option ? { ...item, page: +page } : item
+            ));
+        }
+
+        console.log("rerender")
+    }, [page]);
 
     const { 
         data: userInfo, 
@@ -35,8 +55,10 @@ export default function MyHistory(){
 
     useEffect(() => {
         if (userInfo) {
-          setPurchasedIds(userInfo.itemsPurchased);
-          setSoldIds(userInfo.itemsSold);
+            setAccordionItems(prevItems => [
+                { ...prevItems[0], ids: userInfo.itemsPurchased },
+                { ...prevItems[1], ids: userInfo.itemsSold }
+            ]);
           setIsInit(true);
         }
     }, [userInfo]);
@@ -63,10 +85,10 @@ export default function MyHistory(){
                             <div>Loading...</div>
                         ):(
                             <PaginatedListings
-                            listingIds={item.ids}
-                            accordionIndex={item.index}
-                            indexTitle={item.title}
-                            isOpen={openIndex === item.index}
+                                listingIds={item.ids}
+                                accordionIndex={item.index}
+                                indexTitle={item.title}
+                                isOpen={openIndex === item.index}
                             />
                         )}
                         

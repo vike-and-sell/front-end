@@ -57,8 +57,7 @@ function App() {
                   />
                   <Route path="chat" element={<Chat />} />
                   <Route path="mylistings/:page" element={<MyListings />} />
-                  <Route path="myprofile/" element={<MyHistory/>} />
-                  <Route path="myprofile/:option/:page" element={<MyHistory/>} />
+                  <Route path="myprofile/:option?/:page?" element={<MyHistory/>} />
                   <Route path="create" element={<Create />} />
                   <Route path="edit/:listingID" element={<Edit />} />
                   <Route path="charity" element={<CharityPage />} />

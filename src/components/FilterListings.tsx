@@ -230,12 +230,12 @@ function FilterMenu({
           <div className='flex gap-4'>
             <DefaultFillButton
               title='Clear'
+              datacy='clear-button'
               clickHandle={clearFilterOptions}
-              className='clear-button'
             ></DefaultFillButton>
             <DefaultFillButton
+              datacy='apply-button'
               title='Apply'
-              className='apply-button'
               clickHandle={submitFilterOptions}
             ></DefaultFillButton>
           </div>

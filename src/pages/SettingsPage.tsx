@@ -58,7 +58,7 @@ export default function Settings () {
             <main className='px-4'>
                 <PageHeading title={"Settings"}></PageHeading>
 
-                <Accordion>
+                <Accordion allowToggle>
                     <AccordionItem>
                         <AccordionButton>
                             <Box as='button' borderRadius='md' px={4} py={2} className='bg-pri-blue text-white'>

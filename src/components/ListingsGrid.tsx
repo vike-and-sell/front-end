@@ -13,7 +13,7 @@ const ListingsGrid = forwardRef<HTMLDivElement, ListingGridProps>(
       <>
         <main
           ref={ref}
-          className="w-full grid px-4 pb-4 pt-2 grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 lg:overflow-y-scroll min-h-[400px]"
+          className="w-full grid px-4 pb-4 pt-2 grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 min-h-[400px]"
         >
           {children}
         </main>

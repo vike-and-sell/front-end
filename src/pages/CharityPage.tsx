@@ -35,7 +35,7 @@ export default function CharityPage() {
   return (
     <main className='px-4'>
       <PageHeading title='Charities'></PageHeading>
-      <h2 className='font-semibold text-pri-blue text-xl p-0'>
+      <h2 className='font-semibold text-pri-blue text-xl p-0 active-charities-title'>
         Active Charity
       </h2>
       <div className='flex flex-col p-4 gap-3'>
@@ -48,7 +48,7 @@ export default function CharityPage() {
         )}
       </div>
       <Divider mb='4px'></Divider>
-      <h2 className='font-semibold text-pri-blue text-xl p-0'>
+      <h2 className='font-semibold text-pri-blue text-xl p-0 past-charities-title'>
         Past Charities
       </h2>
       <div className='flex flex-col p-4'>

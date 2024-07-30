@@ -5,7 +5,8 @@ interface DefaultButtonProps {
   clickHandle?: () => void;
   className?: string;
   isDisabled?: boolean;
-  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>
+  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
+  datacy?: string;
 }
 
 export default function DefaultButton({
@@ -38,6 +39,7 @@ export function PriBlueButton({
   clickHandle,
   className,
   isDisabled,
+  datacy,
 }: DefaultButtonProps) {
   return (
     <Button
@@ -49,6 +51,7 @@ export function PriBlueButton({
       bg='#166aac'
       borderColor='#ccd0d5'
       className={className}
+      data-cy={datacy}
       color='#ffffff'
       _focus={{}}
       fontWeight='semibold'
@@ -67,8 +70,10 @@ export function InverseBlueButton({
   clickHandle,
   className,
   isDisabled,
-  onKeyDown
+  onKeyDown,
+  datacy,
 }: DefaultButtonProps) {
+  console.log(datacy);
   return (
     <Button
       _active={{
@@ -76,6 +81,7 @@ export function InverseBlueButton({
         transform: "scale(0.98)",
         borderColor: "#bec3c9",
       }}
+      data-cy={datacy}
       bg='#ffffff'
       border='1px'
       borderColor='#166aac'

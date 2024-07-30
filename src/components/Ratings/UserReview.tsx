@@ -66,37 +66,42 @@ export default function UserReview({ listingId }: UserReview) {
 
   return (
     <FormControl isInvalid={formError}>
-      <FormLabel className="text-pri-blue font-semibold m-0">
+      <FormLabel className='text-pri-blue font-semibold m-0'>
         Leave a rating!
       </FormLabel>
       <Textarea
-        placeholder="Leave your comment here!"
-        resize="none"
+        className='review-textbox'
+        placeholder='Leave your comment here!'
+        resize='none'
         value={textInput}
         onChange={(e) => handleTextChange(e)}
-        aria-label="Text Review Area"
+        aria-label='Text Review Area'
         required
       ></Textarea>
       {formError && textInput === "" ? (
-        <FormErrorMessage>Please enter in a review message.</FormErrorMessage>
+        <FormErrorMessage className='textbox-error'>
+          Please enter in a review message.
+        </FormErrorMessage>
       ) : (
         ""
       )}
-      <div className="flex items-center justify-between mt-4">
+      <div className='flex items-center justify-between mt-4'>
         <StarRatings
           setValue={setRatingValue}
           defaultValue={ratingValue}
         ></StarRatings>
 
         <PriBlueButton
-          data-cy="submit-review"
+          datacy='submit-review'
           clickHandle={handleSubmit}
           isDisabled={mutation.isPending}
-          title="Submit"
+          title='Submit'
         ></PriBlueButton>
       </div>
       {formError && ratingValue === 0 ? (
-        <FormErrorMessage>Please enter in a rating.</FormErrorMessage>
+        <FormErrorMessage className='rating-error'>
+          Please enter in a rating.
+        </FormErrorMessage>
       ) : (
         ""
       )}

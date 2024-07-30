@@ -77,6 +77,21 @@ export default function Edit() {
     }
   }, [listingInfo, userData]);
 
+  useEffect(() => {
+    const dbFn = setTimeout(() => {
+      axios
+        .get(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${buyerUsername}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((r) => setBuyersArray(r.data.users));
+    }, 500);
+
+    return () => clearTimeout(dbFn);
+  }, [buyerUsername]);
+
   if (isError) {
     const errorMessage =
       axios.isAxiosError(error) && error.response
@@ -152,17 +167,6 @@ export default function Edit() {
       </ErrorPage>
     );
   }
-
-  const findBuyer = async (username: string) => {
-    const res = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${username}`,
-      {
-        withCredentials: true,
-      }
-    );
-    console.log(res.data.users);
-    setBuyersArray(res.data.users);
-  };
 
   return (
     <>
@@ -280,7 +284,6 @@ export default function Edit() {
                   placeholder="Search..."
                   onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
                     setBuyerUsername(e.target.value);
-                    findBuyer(e.target.value);
                   }}
                 />
                 <AutoCompleteList>

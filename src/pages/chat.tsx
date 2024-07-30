@@ -27,32 +27,29 @@ export default function Chat() {
   const [messageError,] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const auth = useAuth();
-  useEffect(() => {
-    if (auth) {
-      auth.checkUserStatus();
-    }
+    const auth = useAuth();
+    useEffect(()=>{
+        if (auth){
+            auth.checkUserStatus();
+        }
+        
+        const fetchChats = async () => {
+        try {
+          const ChatIDResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, {
+              withCredentials: true
+          });
+            //console.log(ChatIDResponse.data)
 
-    const fetchChats = async () => {
-      try {
-        const ChatIDResponse = await axios.get(
-          `${import.meta.env.VITE_REACT_APP_API_URL}/chats`,
-          {
-            withCredentials: true,
-          }
-        );
-        //console.log(ChatIDResponse.data)
+          const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
 
-        const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
-
-        const chatInfoArray: ChatType[] = await Promise.all(
-          chatIDs.map(async (chatId: number) => {
-            const chatInfoResponse = await axios.get(
-              `${import.meta.env.VITE_REACT_APP_API_URL}/chats/${chatId}`,
-              {
-                withCredentials: true,
-              }
-            );
+          const chatInfoArray: ChatType[] = await Promise.all(
+            chatIDs.map(async (chatId: number) => {
+              const chatInfoResponse = await axios.get(
+                `${import.meta.env.VITE_REACT_APP_API_URL}/chats/${chatId}`,
+                {
+                  withCredentials: true,
+                }
+              );
 
             const chatUsers: string[] = chatInfoResponse.data["users"];
             const interlocutorId = chatUsers
@@ -102,26 +99,24 @@ export default function Chat() {
     fetchChats();
   }, []);
 
-  const truncateString = (input: string, cutoff: number) => {
-    if (input.length > cutoff) {
-      return input.slice(0, cutoff) + "...";
-    } else {
-      return input;
-    }
-  };
-
-  const getMessages = async (chatId: string | undefined) => {
-    try {
-      const messageResponse = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_API_URL}/messages/${chatId}`,
-        {
-          withCredentials: true,
+    const truncateString = (input: string, cutoff: number) => {
+        if (input.length > cutoff) {
+          return input.slice(0, cutoff) + "...";
+        } else {
+          return input;
         }
-      );
+    }
 
-      const myMessages: MessageType[] = messageResponse.data.messages;
+    const getMessages = async (chatId: string | undefined) => {
+      try {
+        const messageResponse= await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/messages/${chatId}`, 
+          {
+            withCredentials: true
+          });
 
-      setCurrentMessages(myMessages);
+        const myMessages: MessageType[] = messageResponse.data.messages;
+
+        setCurrentMessages(myMessages);
     } catch (error) {
       console.error("Unable to fetch messages:", error);
     } finally {

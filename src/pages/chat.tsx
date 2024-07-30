@@ -16,9 +16,13 @@ import ChatPaneSkeleton from "../components/Skeletons/ChatPaneSkeleton";
 import { useAuth } from "../utils/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export default function Chat() {
+export interface ChatProps {
+  chatID?:string
+}
+
+export default function Chat({ chatID }: ChatProps) {
   const [chatsArray, setChatsArray] = useState<ChatType[]>([]);
-  const [currentChat, setCurrentChat] = useState<ChatType | null>(null);
+  const [currentChat, setCurrentChat] = useState<ChatType | undefined>();
   const [ChatPaneHidden, setChatPaneHidden] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
   const [isChatLoading, setIsChatLoading] = useState<boolean>(true);
@@ -56,7 +60,7 @@ export default function Chat() {
           .filter((Id: string) => auth?.user && Id !== auth.user.userId)
           .join("");
 
-        console.log(interlocutorId);
+        //console.log(interlocutorId);
         const interlocutorResponse = await axios.get(
           `${
             import.meta.env.VITE_REACT_APP_API_URL
@@ -85,10 +89,24 @@ export default function Chat() {
     );
 
       setChatsArray(chatInfoArray);
-      if (chatInfoArray.length > 0) {
-        setCurrentChat(chatInfoArray[0]);
-        PfromChatPane(chatInfoArray[0]);
+      
+      if(chatID){
+        
+        const foundChat = findChatById(chatInfoArray, chatID);
+        
+        if (foundChat){
+          setCurrentChat(foundChat);
+          PfromChatPane(foundChat);
+        }
+        
+      }else {
+        if (chatInfoArray.length > 0) {
+          setCurrentChat(chatInfoArray[0]);
+          PfromChatPane(chatInfoArray[0]);
+        }
       }
+
+      
     } catch (error) {
       console.error("Unable to fetch chats:", error);
     } finally {
@@ -98,6 +116,10 @@ export default function Chat() {
 
     fetchChats();
   }, []);
+
+  const findChatById = (chats: ChatType[], chatId: string): ChatType | undefined => {
+    return chats.find(chat => Number(chat.chatId) === Number(chatId));
+  }
 
   const truncateString = (input: string, cutoff: number) => {
       if (input.length > cutoff) {
@@ -126,7 +148,7 @@ export default function Chat() {
     }
   };
 
-  const PfromChatPane = async (clickedChat: ChatType) => {
+  const PfromChatPane = async (clickedChat: ChatType ) => {
     setCurrentChat(clickedChat);
     getMessages(clickedChat.chatId);
   };

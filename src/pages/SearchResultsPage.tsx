@@ -84,6 +84,11 @@ export default function SearchResultsPage() {
       1
     );
 
+    const urlPage = page ? +page : 1;
+    if (urlPage > totalPages) {
+      navigate(`/search/${searchString}/1`);
+    }
+
     if (searchListings) {
       activePageListing = arrayPagination(
         subSearchResult,

@@ -4,7 +4,6 @@ import { ChatType, MessageType } from "../utils/interfaces";
 import {
   Box,
   IconButton,
-  Input,
   InputGroup,
   InputRightElement,
   Skeleton,

@@ -24,100 +24,102 @@ export default function Chat() {
   const [isChatLoading, setIsChatLoading] = useState<boolean>(true);
   const [isMessageLoading, setIsMessageLoading] = useState<boolean>(true);
   const [currentMessages, setCurrentMessages] = useState<MessageType[]>([]);
-  const [messageError,] = useState<string | null>(null);
+  const [messageError, setMessageError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-    const auth = useAuth();
-    useEffect(()=>{
-        if (auth){
-            auth.checkUserStatus();
-        }
+  const auth = useAuth();
+  useEffect(()=>{
+    if (auth){
+        auth.checkUserStatus();
+    }
         
-        const fetchChats = async () => {
-        try {
-          const ChatIDResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, {
-              withCredentials: true
-          });
-            //console.log(ChatIDResponse.data)
+    const fetchChats = async () => {
+    try {
+      const ChatIDResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, {
+          withCredentials: true
+      });
+        //console.log(ChatIDResponse.data)
 
-          const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
+      const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
 
-          const chatInfoArray: ChatType[] = await Promise.all(
-            chatIDs.map(async (chatId: number) => {
-              const chatInfoResponse = await axios.get(
-                `${import.meta.env.VITE_REACT_APP_API_URL}/chats/${chatId}`,
-                {
-                  withCredentials: true,
-                }
-              );
+      const chatInfoArray: ChatType[] = await Promise.all(
+        chatIDs.map(async (chatId: number) => {
+          const chatInfoResponse = await axios.get(
+            `${import.meta.env.VITE_REACT_APP_API_URL}/chats/${chatId}`,
+            {
+              withCredentials: true,
+            }
+          );
 
-            const chatUsers: string[] = chatInfoResponse.data["users"];
-            const interlocutorId = chatUsers
-              .filter((Id: string) => auth?.user && Id !== auth.user.userId)
-              .join("");
+        const chatUsers: string[] = chatInfoResponse.data["users"];
+        const interlocutorId = chatUsers
+          .filter((Id: string) => auth?.user && Id !== auth.user.userId)
+          .join("");
 
-            console.log(interlocutorId);
-            const interlocutorResponse = await axios.get(
-              `${
-                import.meta.env.VITE_REACT_APP_API_URL
-              }/users/${interlocutorId}`,
-              {
-                withCredentials: true,
-              }
-            );
-
-            const listingInfoResponse = await axios.get(
-              `${import.meta.env.VITE_REACT_APP_API_URL}/listings/${
-                chatInfoResponse.data.listingId
-              }`,
-              {
-                withCredentials: true,
-              }
-            );
-
-            return {
-              chatId: String(chatId),
-              ...chatInfoResponse.data,
-              listingInfo: listingInfoResponse.data,
-              interlocutor: interlocutorResponse.data,
-            };
-          })
+        console.log(interlocutorId);
+        const interlocutorResponse = await axios.get(
+          `${
+            import.meta.env.VITE_REACT_APP_API_URL
+          }/users/${interlocutorId}`,
+          {
+            withCredentials: true,
+          }
         );
 
-        setChatsArray(chatInfoArray);
-        if (chatInfoArray.length > 0) {
-          setCurrentChat(chatInfoArray[0]);
-          PfromChatPane(chatInfoArray[0]);
-        }
-      } catch (error) {
-        console.error("Unable to fetch chats:", error);
-      } finally {
-        setIsChatLoading(false); // Set loading state to false after fetch is complete
+        const listingInfoResponse = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/listings/${
+            chatInfoResponse.data.listingId
+          }`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        return {
+          chatId: String(chatId),
+          ...chatInfoResponse.data,
+          listingInfo: listingInfoResponse.data,
+          interlocutor: interlocutorResponse.data,
+        };
+      })
+    );
+
+      setChatsArray(chatInfoArray);
+      if (chatInfoArray.length > 0) {
+        setCurrentChat(chatInfoArray[0]);
+        PfromChatPane(chatInfoArray[0]);
       }
-    };
+    } catch (error) {
+      console.error("Unable to fetch chats:", error);
+    } finally {
+      setIsChatLoading(false); // Set loading state to false after fetch is complete
+    }
+  };
 
     fetchChats();
   }, []);
 
-    const truncateString = (input: string, cutoff: number) => {
-        if (input.length > cutoff) {
-          return input.slice(0, cutoff) + "...";
-        } else {
-          return input;
-        }
-    }
+  const truncateString = (input: string, cutoff: number) => {
+      if (input.length > cutoff) {
+        return input.slice(0, cutoff) + "...";
+      } else {
+        return input;
+      }
+  }
 
-    const getMessages = async (chatId: string | undefined) => {
-      try {
-        const messageResponse= await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/messages/${chatId}`, 
-          {
-            withCredentials: true
-          });
+  const getMessages = async (chatId: string | undefined) => {
+    setIsMessageLoading(true)
+    try {
+      const messageResponse= await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/messages/${chatId}`, 
+        {
+          withCredentials: true
+        });
 
-        const myMessages: MessageType[] = messageResponse.data.messages;
+      const myMessages: MessageType[] = messageResponse.data.messages;
 
-        setCurrentMessages(myMessages);
+      setCurrentMessages(myMessages);
     } catch (error) {
+      setMessageError("true")
       console.error("Unable to fetch messages:", error);
     } finally {
       setIsMessageLoading(false);
@@ -217,7 +219,7 @@ export default function Chat() {
             </div>
           ) : messageError ? (
             <div className='text-center text-red-500'>
-              {messageError + currentChat?.interlocutor.username}
+              No messages between you and {currentChat?.interlocutor.username}
             </div>
           ) : currentMessages.length === 0 ? (
             <div className='text-center text-gray-500'>

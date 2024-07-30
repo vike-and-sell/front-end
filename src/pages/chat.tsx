@@ -4,6 +4,7 @@ import { ChatType, MessageType } from "../utils/interfaces";
 import {
   Box,
   IconButton,
+  Input,
   InputGroup,
   InputRightElement,
   Skeleton,
@@ -29,6 +30,7 @@ export default function Chat({ chatID }: ChatProps) {
   const [isMessageLoading, setIsMessageLoading] = useState<boolean>(true);
   const [currentMessages, setCurrentMessages] = useState<MessageType[]>([]);
   const [messageError, setMessageError] = useState<string | null>(null);
+  const [isStringInvalid, setIsStringInvalid] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const auth = useAuth();
@@ -163,6 +165,10 @@ export default function Chat({ chatID }: ChatProps) {
   const sendMessage = async (text: string) => {
     try {
       setMessageError(null)
+      if(text === ""){
+        setIsStringInvalid(true)
+        return
+      }
       const sendResponse = await axios.post(
         `${import.meta.env.VITE_REACT_APP_API_URL}/messages/${
           currentChat?.chatId
@@ -186,6 +192,8 @@ export default function Chat({ chatID }: ChatProps) {
       setIsMessageLoading(false);
     }
   };
+
+  
 
   return (
     <div className='flex flex-row h-screen'>
@@ -225,6 +233,7 @@ export default function Chat({ chatID }: ChatProps) {
                 isRound={true}
                 onClick={() => ChatPaneDisplayToggle(false)}
                 size='sm'
+                pb={1}
                 variant='ghost'
               />
 
@@ -265,7 +274,17 @@ export default function Chat({ chatID }: ChatProps) {
           <InputGroup>
             <Textarea
               colorScheme='teal'
-              onChange={(e) => setInput(e.target.value)}
+              isInvalid={isStringInvalid}
+              onChange={(e) => {
+                setInput(e.target.value);
+                setIsStringInvalid(false)
+              }}
+              onKeyDown={(e)=> {
+                if (e.key == "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessage(input);
+                }
+              }}
               placeholder={
                 currentChat
                   ? `Message ${currentChat.interlocutor.username}`
@@ -274,8 +293,9 @@ export default function Chat({ chatID }: ChatProps) {
               resize='none'
               size='md'
               value={input}
+
             />
-            <InputRightElement width='4rem'>
+            <InputRightElement pt={8} width='4rem'>
               <IconButton
                 aria-label='Search database'
                 bg='#166aac'
@@ -285,6 +305,7 @@ export default function Chat({ chatID }: ChatProps) {
                 onClick={() => {
                   sendMessage(input);
                 }}
+                
                 size='sm'
               />
             </InputRightElement>

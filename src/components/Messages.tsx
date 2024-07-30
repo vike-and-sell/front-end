@@ -24,11 +24,12 @@ export default function Messages({allMessages, user}:MessageProps){
         }
     }, [allMessages]);
     
+    const sortedMessages: MessageType[] = allMessages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
 
     return(
         <div id = "messages" className="flex h-full flex-1 flex-col gap-4 p-3 overflowy-auto">
             
-            {allMessages.map((message:MessageType, index) =>{
+            {sortedMessages.map((message:MessageType, index) =>{
                 const isUser = parseInt(message.senderId) === parseInt(user.userId)
                 
                 var isSameMessageDate = false

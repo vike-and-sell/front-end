@@ -45,7 +45,7 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                 </Input>
             </div>
 
-            <div className="flex-grow overflow-y-scroll p-3">
+            <div className="flex-grow overflow-y-auto p-3">
                 <Stack direction="column" spacing={3}>
                 {filterByUsername(ChatPaneItems, searchQuery).map((chat:ChatType, index:number) => {
                     return(

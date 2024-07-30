@@ -277,6 +277,7 @@ export default function Edit() {
                   setBuyerUsername(item.item.value);
                 }}
                 rollNavigation
+                placement="top"
               >
                 <AutoCompleteInput
                   data-cy="edit-buyer-autocomplete"

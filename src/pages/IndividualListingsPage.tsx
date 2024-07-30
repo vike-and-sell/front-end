@@ -131,7 +131,7 @@ export default function IndividualListing() {
   }
 
   return (
-    <main className="p-4 flex flex-col lg:flex-row gap-4 lg:overflow-y-hidden lg:max-h-[calc(100vh-150px)]">
+    <main className="p-4 flex flex-col lg:flex-row gap-4 lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
       <div className="flex flex-col grow">
         <div className="flex gap-2 items-center">
           <button

@@ -1,5 +1,5 @@
 import { FaArrowLeft } from "react-icons/fa6";
-import DefaultButton, {
+import {
   InvalidRedButton,
   InverseBlueButton,
   PriBlueButton,

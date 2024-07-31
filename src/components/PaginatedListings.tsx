@@ -71,6 +71,10 @@ export default function PaginatedListings({ listingIds, accordionIndex, indexTit
   let activePageListing: Listing[] = [];
   if (listings) {
     totalPages = Math.ceil(listingIds.length / MAX_LISTINGS_PAGE);
+    const urlPage = page ? +page : 1;
+    if (urlPage > totalPages && isOpen) {
+      navigate(`/myprofile/${indexTitle}/1`);
+    }
     activePageListing = listings;
   }
 

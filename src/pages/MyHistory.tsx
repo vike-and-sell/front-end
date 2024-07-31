@@ -74,25 +74,25 @@ export default function MyHistory(){
             <Accordion allowToggle>
                 {accordionItems.map((item) => (
                     <AccordionItem key={item.index}>
-                    <AccordionButton onClick={() => handleToggle(item.index)}>
-                        <Box borderRadius='md' className='text-white bg-pri-blue py-2 w-28'>
-                            {item.title}
-                            <AccordionIcon />
-                        </Box>
-                    </AccordionButton>
-                    <AccordionPanel>
-                        {isFetching ? (
-                            <div>Loading...</div>
-                        ):(
-                            <PaginatedListings
-                                listingIds={item.ids}
-                                accordionIndex={item.index}
-                                indexTitle={item.title}
-                                isOpen={openIndex === item.index}
-                            />
-                        )}
-                        
-                    </AccordionPanel>
+                        <AccordionButton onClick={() => handleToggle(item.index)}>
+                            <Box borderRadius='md' className='text-white bg-pri-blue py-2 w-28'>
+                                {item.title}
+                                <AccordionIcon />
+                            </Box>
+                        </AccordionButton>
+                        <AccordionPanel>
+                            {isFetching ? (
+                                <div>Loading...</div>
+                            ):(
+                                <PaginatedListings
+                                    listingIds={item.ids}
+                                    accordionIndex={item.index}
+                                    indexTitle={item.title}
+                                    isOpen={openIndex === item.index}
+                                />
+                            )}
+                            
+                        </AccordionPanel>
                     </AccordionItem>
                 ))}
             </Accordion>

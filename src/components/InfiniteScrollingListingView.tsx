@@ -25,8 +25,6 @@ export default function InfiniteScrollingListingView(
   });
 
   const oneTimeScrollListener = async (e: Event) => {
-    // console.log(e);
-    // console.log(e.target);
     const t = e.target as HTMLDivElement;
 
     const sh = t.scrollHeight ?? document.body.scrollHeight;
@@ -34,9 +32,7 @@ export default function InfiniteScrollingListingView(
     const ch = t.clientHeight ?? window.outerHeight;
 
     const bottom = sh - st <= ch + 100;
-    // console.log(`${sh}, ${st}, ${ch + 100}`);
-    // console.log(`${sh - st} <= ${ch + 100}`);
-    // console.log(bottom);
+    
     if (bottom) {
       t.removeEventListener("scroll", oneTimeScrollListener);
       setIsLoadingMore(true);

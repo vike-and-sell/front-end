@@ -50,7 +50,7 @@ export default function Edit() {
           setLocation(response.data.location);
         });
     } catch (error) {
-      console.log(error);
+      console.error("Unable to fetch user:", error);
     }
   };
 

@@ -52,7 +52,6 @@ export default function RegistrationPhaseTwoPage() {
                 }
               
             setStatusBool(null);
-            console.log('Sign up successful');
         } else {
             setStatusBool(true);
         }

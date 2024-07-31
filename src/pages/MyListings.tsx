@@ -56,6 +56,10 @@ export default function MyListings() {
 
   if (listings) {
     totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
+    const urlPage = page ? +page : 1;
+    if (urlPage > totalPages) {
+      navigate(`/mylistings/1`);
+    }
     activePageListing = arrayPagination(
       listings,
       currentPage,
@@ -87,20 +91,20 @@ export default function MyListings() {
             ></PaginationBar>
           )}
         </div>
-        <div className="w-full lg:max-h-[calc(100vh-250px)] lg:overflow-y-scroll">
-          {isListingPending ? (
-            <ListingsGridSkeleton></ListingsGridSkeleton>
-          ) : (
-            <ListingsGrid ref={scrollRef}>
-              {activePageListing.map((listing) => (
-                <ListingCard
-                  listingInfo={listing}
-                  key={listing.listingId}
-                ></ListingCard>
-              ))}
-            </ListingsGrid>
-          )}
-        </div>
+        {isListingPending ? (
+          <ListingsGridSkeleton></ListingsGridSkeleton>
+        ) : activePageListing.length == 0 ? (
+          <div>No listings</div>
+        ) : (
+          <ListingsGrid ref={scrollRef}>
+            {activePageListing.map((listing) => (
+              <ListingCard
+                listingInfo={listing}
+                key={listing.listingId}
+              ></ListingCard>
+            ))}
+          </ListingsGrid>
+        )}
       </main>
     </>
   );

@@ -11,6 +11,8 @@ export default defineConfig({
       registerCodeCoverageTasks(on, config);
       return config;
     },
+    baseUrl:"https://localhost:5173",
+    experimentalRunAllSpecs:true
   },
 
   component: {

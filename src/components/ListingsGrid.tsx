@@ -10,19 +10,12 @@ interface ListingGridProps {
 const ListingsGrid = forwardRef<HTMLDivElement, ListingGridProps>(
   ({ children, isLoading }, ref) => {
     return (
-      <>
-        <main
-          ref={ref}
-          className="w-full grid px-4 pb-4 pt-2 grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 min-h-[400px]"
-        >
-          {children}
-        </main>
-        {isLoading && (
-          <div className="flex justify-center">
-            <Spinner />
-          </div>
-        )}
-      </>
+      <main
+        ref={ref}
+        className='grid px-4 pb-4 pt-2 grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 lg:overflow-y-scroll lg:max-h-[calc(100vh-250px)] min-h-[400px]'
+      >
+        {children}
+      </main>
     );
   }
 );

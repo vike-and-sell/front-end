@@ -11,6 +11,7 @@ import RegistrationLayout from "./layout/RegistrationLayout";
 import RecomendationsPage from "./pages/RecomendationsPage";
 import IndividualListingPage from "./pages/IndividualListingsPage";
 import Chat from "./pages/chat";
+import Settings from "./pages/SettingsPage";
 import BrowsePage from "./pages/BrowsePage";
 import Create from "./pages/CreateListing";
 import Edit from "./pages/EditListing";
@@ -66,6 +67,7 @@ function App() {
                     path="search/:searchString/:page"
                     element={<SearchResultsPage />}
                   />
+                  <Route path="settings" element={<Settings/>} />
                 </Route>
               </Route>
 

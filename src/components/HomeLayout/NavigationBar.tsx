@@ -54,7 +54,7 @@ function NavigationBar() {
           </button>
         </div>
 
-        <CustomNavLink route="/" title="Settings">
+        <CustomNavLink route='/settings' title='Settings'>
           <IoSettingsSharp></IoSettingsSharp>
         </CustomNavLink>
       </nav>

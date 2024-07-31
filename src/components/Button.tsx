@@ -5,16 +5,19 @@ interface DefaultButtonProps {
   clickHandle?: () => void;
   className?: string;
   isDisabled?: boolean;
-  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>
   isLoading?:boolean
+  onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
+  datacy?: string;
 }
 
 export default function DefaultButton({
   title,
   clickHandle,
+  datacy = "default",
 }: DefaultButtonProps) {
   return (
     <button
+      data-cy={datacy}
       className='bg-pri-blue text-white px-4 py-2 rounded-lg'
       onClick={clickHandle}
     >
@@ -23,9 +26,14 @@ export default function DefaultButton({
   );
 }
 
-export function DefaultFillButton({ title, clickHandle }: DefaultButtonProps) {
+export function DefaultFillButton({
+  title,
+  clickHandle,
+  datacy = "default",
+}: DefaultButtonProps) {
   return (
     <button
+      data-cy={datacy}
       className='bg-pri-blue text-white px-4 py-2 rounded-lg w-full'
       onClick={clickHandle}
     >
@@ -39,7 +47,8 @@ export function PriBlueButton({
   clickHandle,
   className,
   isDisabled,
-  isLoading
+  isLoading,
+  datacy = "default"
 }: DefaultButtonProps) {
   return (
     <Button
@@ -51,6 +60,7 @@ export function PriBlueButton({
       bg='#166aac'
       borderColor='#ccd0d5'
       className={className}
+      data-cy={datacy}
       color='#ffffff'
       _focus={{}}
       fontWeight='semibold'
@@ -70,8 +80,10 @@ export function InverseBlueButton({
   clickHandle,
   className,
   isDisabled,
-  onKeyDown
+  onKeyDown,
+  datacy,
 }: DefaultButtonProps) {
+  console.log(datacy);
   return (
     <Button
       _active={{
@@ -79,6 +91,7 @@ export function InverseBlueButton({
         transform: "scale(0.98)",
         borderColor: "#bec3c9",
       }}
+      data-cy={datacy}
       bg='#ffffff'
       border='1px'
       borderColor='#166aac'

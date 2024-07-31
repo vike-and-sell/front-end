@@ -56,6 +56,10 @@ export default function MyListings() {
 
   if (listings) {
     totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
+    const urlPage = page ? +page : 1;
+    if (urlPage > totalPages) {
+      navigate(`/mylistings/1`);
+    }
     activePageListing = arrayPagination(
       listings,
       currentPage,
@@ -73,9 +77,9 @@ export default function MyListings() {
 
   return (
     <>
-      <main className='px-4'>
-        <PageHeading data-cy='page-heading' title='My Listings'></PageHeading>
-        <div className='flex justify-end'>
+      <main className="px-4">
+        <PageHeading data-cy="page-heading" title="My Listings"></PageHeading>
+        <div className="flex justify-end">
           {isListingPending ? (
             <PaginationBarSkeleton></PaginationBarSkeleton>
           ) : (

@@ -36,14 +36,19 @@ export default function RegistrationPhaseTwoPage() {
     const auth = useAuth();
     const location = useLocation();
 
+    const [apiResponseMessage, setApiResponseMessage] = useState<string>("");
+
     const token = new URLSearchParams(location.search).toString().substring(1);
 
     const onSignUp = async() =>{
         if(isValidPassLen && isValidPassSymbols && 
             isValidUserLen && isValidUserSymbols &&
             isValidConfPassword && isValidLocation){
-                if (auth){
+                if (auth) {
                     auth.verifyAccount(token, username, password , userLocation.substring(0,3))
+                    .then(msg => {
+                        setApiResponseMessage(msg);
+                    });
                 }
               
             setStatusBool(null);
@@ -164,13 +169,19 @@ export default function RegistrationPhaseTwoPage() {
                         </button> 
                     </div>
 
-                    <div className='py-2 pb-5 sm:p-5 lg:p-2 xl:p-4 self-center'>
+                    <div className='py-2 lg:p-2 xl:p-4 self-center'>
                         <button
                           className='bg-pri-blue relative px-4 rounded-md text-white text-lg font-semibold p-3'
                           onClick={onSignUp}
                         >
                             Sign Up
                         </button>
+                    </div>
+
+                    <div className="py-2 pb-5 sm:pb-5 lg:p-2 xl:p-4 self-center">
+        <span className="text-rt-dark-blue font-semibold md:font-bold text-[13px] md:text-lg lg:text-[16px]">
+                            {apiResponseMessage}
+                        </span>
                     </div>
                 </div>                    
             </div>

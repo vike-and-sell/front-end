@@ -29,7 +29,7 @@ import {
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
 import { useAuth } from "../utils/AuthContext";
-import { User } from "../utils/interfaces";
+import { UserSearchItem } from "../utils/interfaces";
 
 export default function Edit() {
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ export default function Edit() {
   const [price, setPrice] = useState<number>(0);
   const [status, setStatus] = useState<string>("");
   const [forCharity, setForCharity] = useState<boolean>(false);
-  const [buyersArray, setBuyersArray] = useState<User[]>([]);
+  const [buyersArray, setBuyersArray] = useState<UserSearchItem[]>([]);
   const [buyerUsername, setBuyerUsername] = useState<string>("");
   const [isEditLoading, setIsEditLoading] = useState<boolean>(false);
   const auth = useAuth();
@@ -48,53 +48,6 @@ export default function Edit() {
     if (auth) {
       auth.checkUserStatus();
     }
-
-    const fetchChats = async () => {
-      try {
-        const ChatIDResponse = await axios.get(
-          `${import.meta.env.VITE_REACT_APP_API_URL}/chats`,
-          {
-            withCredentials: true,
-          }
-        );
-
-        const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
-
-        const BuyerInfoArray: User[] = await Promise.all(
-          chatIDs.map(async (chatId: number) => {
-            const chatInfoResponse = await axios.get(
-              `${import.meta.env.VITE_REACT_APP_API_URL}/chats/${chatId}`,
-              {
-                withCredentials: true,
-              }
-            );
-
-            const chatUsers: string[] = chatInfoResponse.data["users"];
-            const interlocutorId = chatUsers
-              .filter(
-                (Id: string) => auth?.user && Id !== String(auth.user.userId)
-              )
-              .join("");
-            const interlocutorResponse = await axios.get(
-              `${
-                import.meta.env.VITE_REACT_APP_API_URL
-              }/users/${interlocutorId}`,
-              {
-                withCredentials: true,
-              }
-            );
-
-            return interlocutorResponse.data;
-          })
-        );
-
-        setBuyersArray(BuyerInfoArray);
-      } catch (error) {
-        console.error("Unable to fetch chats:", error);
-      }
-    };
-
-    fetchChats();
   }, []);
 
   const {
@@ -124,6 +77,21 @@ export default function Edit() {
     }
   }, [listingInfo, userData]);
 
+  useEffect(() => {
+    const dbFn = setTimeout(() => {
+      axios
+        .get(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${buyerUsername}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((r) => setBuyersArray(r.data.users));
+    }, 500);
+
+    return () => clearTimeout(dbFn);
+  }, [buyerUsername]);
+
   if (isError) {
     const errorMessage =
       axios.isAxiosError(error) && error.response
@@ -140,18 +108,8 @@ export default function Edit() {
 
   const isInvalidPrice = Number.isNaN(price);
 
-  const getUniqueBuyers = (buyers: User[]) => {
-    return buyers.filter(
-      (buyer, index, self) =>
-        index ===
-        self.findIndex(
-          (duplicateBuyer) => duplicateBuyer.userId === buyer.userId
-        )
-    );
-  };
-
   // Handle edit actually makes the changes
-  const handleEdit = async () => {
+  const handleEdit = async (): Promise<any> => {
     setIsEditLoading(true);
     toast({
       title: "Updating listing...",
@@ -198,6 +156,8 @@ export default function Edit() {
       });
   };
 
+  
+
   if (isLoading || isUserDataLoading) {
     return <EditCreateSkeleton></EditCreateSkeleton>;
   }
@@ -212,23 +172,23 @@ export default function Edit() {
 
   return (
     <>
-      <main className="px-4">
+      <main className='px-4'>
         <PageHeading
-          data-cy="page-heading"
+          data-cy='page-heading'
           title={"Edit Listing " + listingInfo.title}
         ></PageHeading>
-        <div className="">
+        <div className=''>
           <FormControl isInvalid={isInvalidTitle}>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Title*</FormLabel>
               <Input
-                data-cy="edit-title-input"
+                data-cy='edit-title-input'
                 onChange={(e) => setTitle(e.target.value)}
-                type="text"
+                type='text'
                 value={title}
               ></Input>
               {isInvalidTitle ? (
-                <FormErrorMessage className="font-semibold">
+                <FormErrorMessage className='font-semibold'>
                   Title is required.
                 </FormErrorMessage>
               ) : (
@@ -238,18 +198,18 @@ export default function Edit() {
           </FormControl>
 
           <FormControl isInvalid={isInvalidPrice}>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Price*</FormLabel>
               <InputGroup>
                 <InputLeftElement
-                  pointerEvents="none"
-                  color="gray.300"
-                  fontSize="1.2em"
+                  pointerEvents='none'
+                  color='gray.300'
+                  fontSize='1.2em'
                 >
                   $
                 </InputLeftElement>
                 <Input
-                  data-cy="edit-price-input"
+                  data-cy='edit-price-input'
                   onChange={(e) => {
                     const value = e.target.value;
 
@@ -266,12 +226,12 @@ export default function Edit() {
                       }
                     }
                   }}
-                  type="number"
+                  type='number'
                   value={price}
                 ></Input>
               </InputGroup>
               {isInvalidPrice ? (
-                <FormErrorMessage className="font-semibold">
+                <FormErrorMessage className='font-semibold'>
                   Price is required.
                 </FormErrorMessage>
               ) : (
@@ -281,10 +241,10 @@ export default function Edit() {
           </FormControl>
 
           <FormControl>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Status*</FormLabel>
               <Select
-                data-cy="edit-status-dropdown"
+                data-cy='edit-status-dropdown'
                 className={`${
                   status === "AVAILABLE"
                     ? "text-green-700 font-semibold"
@@ -294,15 +254,15 @@ export default function Edit() {
                 value={status}
               >
                 <option
-                  className="text-green-700 font-semibold"
-                  value="AVAILABLE"
+                  className='text-green-700 font-semibold'
+                  value='AVAILABLE'
                 >
                   Available
                 </option>
-                <option className="text-red font-semibold" value="SOLD">
+                <option className='text-red font-semibold' value='SOLD'>
                   Sold
                 </option>
-                <option className="text-red font-semibold" value="REMOVED">
+                <option className='text-red font-semibold' value='REMOVED'>
                   Removed
                 </option>
               </Select>
@@ -310,39 +270,39 @@ export default function Edit() {
           </FormControl>
 
           <FormControl className={`${status === "SOLD" ? "" : "hidden"}`}>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Select Buyer</FormLabel>
-              <AutoComplete 
+              <AutoComplete
                 creatable
                 openOnFocus={true}
-                onSelectOption={(item) =>{
-                  setBuyerUsername(item.item.value)
+                onSelectOption={(item) => {
+                  setBuyerUsername(item.item.value);
                 }}
-                rollNavigation 
-                >
+                rollNavigation
+                placement="top"
+              >
                 <AutoCompleteInput
-                  data-cy="edit-buyer-autocomplete"
+                  data-cy='edit-buyer-autocomplete'
                   defaultValue={buyerUsername}
-                  placeholder="Search..."
+                  placeholder='Search...'
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setBuyerUsername(e.target.value)
                   }
                 />
                 <AutoCompleteList>
                   <AutoCompleteGroup title="" showDivider>
-                    {getUniqueBuyers(buyersArray).map(
-                      (buyer: User, index: number) => (
+                    {buyersArray
+                      .slice(0, 30)
+                      .map((buyer: UserSearchItem, index: number) => (
                         <AutoCompleteItem
                           key={`${index}`}
                           value={buyer.username}
-                          textTransform="capitalize"
                           align="center"
                         >
                           <Avatar size="sm" name={buyer.username} />
                           <Text ml="4">{buyer.username}</Text>
                         </AutoCompleteItem>
-                      )
-                    )}
+                      ))}
                   </AutoCompleteGroup>
                   <AutoCompleteCreatable></AutoCompleteCreatable>
                 </AutoCompleteList>
@@ -351,36 +311,36 @@ export default function Edit() {
           </FormControl>
 
           <FormControl>
-            <div className="my-4">
+            <div className='my-4'>
               <FormLabel>Charity</FormLabel>
 
               <Checkbox
-                data-cy="edit-charity-checkbox"
+                data-cy='edit-charity-checkbox'
                 isChecked={forCharity}
                 onChange={(e) => setForCharity(e.target.checked)}
-                size="md"
+                size='md'
               >
                 I'd like to donate the earnings from this listing to charity
               </Checkbox>
             </div>
           </FormControl>
 
-          <div className="my-5"></div>
+          <div className='my-5'></div>
 
           <FormControl>
-            <div className="my-5 flex">
+            <div className='my-5 flex'>
               <PriBlueButton
                 clickHandle={handleEdit}
-                data-cy="edit-listing-button"
+                data-cy='edit-listing-button'
                 isDisabled={isInvalidPrice || isInvalidTitle || isEditLoading}
-                title="Save Changes"
+                title='Save Changes'
               ></PriBlueButton>
 
               <InverseBlueButton
                 clickHandle={() => navigate(-1)}
-                className="ml-4"
-                data-cy="cancel-button"
-                title="Cancel"
+                className='ml-4'
+                data-cy='cancel-button'
+                title='Cancel'
               ></InverseBlueButton>
             </div>
           </FormControl>

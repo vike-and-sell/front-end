@@ -1,7 +1,8 @@
 import { FaArrowLeft } from "react-icons/fa6";
-import DefaultButton, {
+import {
   InvalidRedButton,
   InverseBlueButton,
+  PriBlueButton,
 } from "../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaEllipsisH, FaRegEdit } from "react-icons/fa";
@@ -25,7 +26,7 @@ import {
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
 import { useQuery, useQueries } from "@tanstack/react-query";
@@ -43,6 +44,8 @@ import axios from "axios";
 export default function IndividualListing() {
   const { listingID } = useParams();
   const navigate = useNavigate();
+  const [isChatLoading, setIsChatLoading] = useState<boolean>(false);
+  const [chatID, setChatID] = useState<string>();
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
@@ -202,6 +205,29 @@ export default function IndividualListing() {
     }
   }
 
+  const produceChat = async ()=> {
+    setIsChatLoading(true)
+    try{
+      const ChatResponse = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, 
+        {
+          listingId: Number(listingID)
+        },
+        {
+          withCredentials:true
+        }
+      )
+      setChatID(ChatResponse.data.chatId)
+      console.log(ChatResponse.data)
+      
+    } catch (error){
+      console.log(error) 
+    } finally {
+      onChatOpen();
+      setIsChatLoading(false);
+    }
+
+  }
+
   return (
     <main className="p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
       <div className="flex gap-2 items-center">
@@ -296,7 +322,7 @@ export default function IndividualListing() {
           <ModalContent m={10}>
             <ModalCloseButton ml={5} />
             <ModalBody my={3} mr={4}>
-              <Chat></Chat>
+              <Chat chatID={chatID}></Chat>
             </ModalBody>
           </ModalContent>
         </Modal>
@@ -342,12 +368,17 @@ export default function IndividualListing() {
             {sellerData.data.username}
           </span>
         </div>
-        <div className="flex gap-4">
-          <DefaultButton
-            title="Message Seller"
-            data-cy="message-seller-button"
-            clickHandle={onChatOpen}
-          ></DefaultButton>
+
+        <div className='flex gap-4'>
+          <PriBlueButton
+            title='Message Seller'
+            data-cy='message-seller-button'
+            clickHandle={ () =>{
+              produceChat();
+            }}
+            isLoading = {isChatLoading}
+          ></PriBlueButton>
+
         </div>
       </div>
       <RatingSection

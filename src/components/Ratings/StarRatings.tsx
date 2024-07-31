@@ -55,6 +55,7 @@ interface StarProps {
 function Star({ active, index, handleChange }: StarProps) {
   return (
     <GoStarFill
+      className={"star" + index.toString()}
       size='28px'
       color={active ? "#166aac" : "#9da3b0"}
       onClick={() => handleChange(index)}

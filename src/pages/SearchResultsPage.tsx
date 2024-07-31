@@ -75,10 +75,6 @@ export default function SearchResultsPage() {
 
   // Logic to partition search results correct
   if (searchResults) {
-    // const halfLength = Math.ceil(searchResults.users.length / 2);
-    // const subSearchResult = searchListings
-    //   ? searchResults.listings
-    //   : searchResults.users.slice(0, halfLength);
     const subSearchResult = searchListings
       ? searchResults.listings
       : searchResults.users;
@@ -87,6 +83,11 @@ export default function SearchResultsPage() {
       Math.ceil(subSearchResult.length / MAX_LISTINGS_PAGE),
       1
     );
+
+    const urlPage = page ? +page : 1;
+    if (urlPage > totalPages) {
+      navigate(`/search/${searchString}/1`);
+    }
 
     if (searchListings) {
       activePageListing = arrayPagination(
@@ -111,18 +112,18 @@ export default function SearchResultsPage() {
 
   return (
     <>
-      <main className="px-4">
+      <main className='px-4'>
         <PageHeading title={`Results for "${searchString}"`}></PageHeading>
-        <div className="flex justify-between">
-          <div className="flex items-center gap-4 mb-4" id="search-tool-bar">
+        <div className='flex justify-between'>
+          <div className='flex items-center gap-4 mb-4' id='search-tool-bar'>
             <FilterListing
               disableLocation={true}
               filterOptions={filterOptions}
               setFilterOptions={setFilterOptions}
             ></FilterListing>
-            <div className="flex gap-2 text-sm">
+            <div className='flex gap-2 text-sm'>
               <button
-                className={`px-3 py-1 ${
+                className={` listings-toggle px-3 py-1 ${
                   searchListings
                     ? "bg-pri-blue text-acc-blue"
                     : "bg-acc-blue text-pri-blue"
@@ -136,7 +137,7 @@ export default function SearchResultsPage() {
                 Listings
               </button>
               <button
-                className={`px-3 py-1 ${
+                className={`users-toggle px-3 py-1 ${
                   !searchListings
                     ? "bg-pri-blue text-acc-blue"
                     : "bg-acc-blue text-pri-blue"
@@ -168,21 +169,23 @@ export default function SearchResultsPage() {
           isSearchLoading ? (
             <ListingsGridSkeleton></ListingsGridSkeleton>
           ) : activePageListing.length == 0 ? (
-            <div className="h-[400px]">No listings found</div>
+            <div className='h-[400px]'>No listings found</div>
           ) : (
-            <ListingsGrid ref={scrollRef}>
-              {activePageListing.map((listing) => (
-                <ListingCard
-                  listingInfo={listing}
-                  key={listing.listingId + "listing"}
-                ></ListingCard>
-              ))}
-            </ListingsGrid>
+            <div className="w-full lg:max-h-[calc(100vh-250px)] lg:overflow-y-scroll">
+              <ListingsGrid ref={scrollRef}>
+                {activePageListing.map((listing) => (
+                  <ListingCard
+                    listingInfo={listing}
+                    key={listing.listingId + "listing"}
+                  ></ListingCard>
+                ))}
+              </ListingsGrid>
+            </div>
           )
         ) : isSearchLoading ? (
           <UserListingSkeleton></UserListingSkeleton>
         ) : activeUserListings.length == 0 ? (
-          <div className="h-[400px]">No users found</div>
+          <div className='h-[400px]'>No users found</div>
         ) : (
           <UserGrid ref={scrollRef}>
             {activeUserListings.map((user) => (

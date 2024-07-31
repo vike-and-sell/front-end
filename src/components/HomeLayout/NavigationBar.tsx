@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { IoSettingsSharp } from "react-icons/io5";
-import { FaListAlt } from "react-icons/fa";
+import { FaLightbulb, FaListAlt } from "react-icons/fa";
 import { TbMessageCircle2Filled } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
 import { MdSell, MdOutlineHandshake } from "react-icons/md";
@@ -25,6 +25,9 @@ function NavigationBar() {
       <nav data-cy="nav-bar" className="flex flex-col p-4 gap-4 items-center">
         <CustomNavLink data-cy="browse-nav" route="/browse/1" title="Browse">
           <FaShop></FaShop>
+        </CustomNavLink>
+        <CustomNavLink data-cy="recommend-nav" route="/recommendations/1" title="Recommendations">
+          <FaLightbulb></FaLightbulb>
         </CustomNavLink>
         <CustomNavLink route="/charity" title="Charities">
           <MdOutlineHandshake></MdOutlineHandshake>

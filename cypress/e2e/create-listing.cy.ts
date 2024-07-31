@@ -4,15 +4,12 @@ describe('User can create a listing', () => {
 
     cy.viewport('macbook-13')
     cy.visit('https://localhost:5173/login')
-
     cy.get('[data-cy="username-input"]').type('john_doe')
     cy.get('[data-cy="password-input"]').type('Password123!')
-    cy.get('[data-cy="signin-button"]').click()
+    cy.get('[data-cy="signin-button"]').should('be.visible').click();
     // Wait for navigation to complete
     cy.url().should('not.include', '/login')
-
     cy.wait(1000)
-
   })
 
   it('User can succesfully create a lsiting that is not marked for Charity', () => {
@@ -28,7 +25,7 @@ describe('User can create a listing', () => {
     //cy.get('[data-cy="create-listing-button"]').click()
   })
 
-  it('User can succesfully create a lsiting that is marked for Charity', () => {
+  it('User can succesfully create a listing that is marked for Charity', () => {
     
     cy.get('[data-cy="nav-bar-lg-div"]').should('exist').and('be.visible').click({ multiple: true })
     cy.get('[data-cy="nav-bar"]').should('exist').and('be.visible').click({ multiple: true, force: true })

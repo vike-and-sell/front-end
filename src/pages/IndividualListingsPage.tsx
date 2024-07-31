@@ -325,7 +325,7 @@ export default function IndividualListing() {
             <ModalContent m={10}>
               <ModalCloseButton ml={5} />
               <ModalBody my={3} mr={4}>
-                <Chat></Chat>
+                <Chat chatID={chatID}></Chat>
               </ModalBody>
             </ModalContent>
           </Modal>
@@ -372,14 +372,18 @@ export default function IndividualListing() {
             </span>
           </div>
           <div className='flex gap-4'>
-            <PriBlueButton
-              title='Message Seller'
-              data-cy='message-seller-button'
-              clickHandle={() => {
-                produceChat();
-              }}
-              isLoading={isChatLoading}
-            ></PriBlueButton>
+            {isUser ? (
+              ""
+            ) : (
+              <PriBlueButton
+                title='Message Seller'
+                data-cy='message-seller-button'
+                clickHandle={() => {
+                  produceChat();
+                }}
+                isLoading={isChatLoading}
+              ></PriBlueButton>
+            )}
           </div>
         </div>
         <RatingSection

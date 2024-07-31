@@ -12,5 +12,5 @@ export function UserListingSkeleton() {
 }
 
 export function UserCardSkeleton() {
-  return <Skeleton height='40px' width='100%'></Skeleton>;
+  return <Skeleton height='20px' width='80%'></Skeleton>;
 }

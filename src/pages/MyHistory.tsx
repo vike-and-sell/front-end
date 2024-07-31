@@ -8,10 +8,18 @@ import { useQuery } from "@tanstack/react-query";
 import ErrorPage from '../pages/ErrorPage';
 import axios from "axios";
 
+interface AccordionItem {
+    title: string;
+    index: number;
+    ids: unknown[];
+    page: number;
+}
+
 export default function MyHistory(){
     const [openIndex, setOpenIndex] = useState<number | null>(null);
+    const [controlIndex, setControlIndex] = useState<number[]>([]);
     const [isInit, setIsInit] = useState<boolean>(false);
-    const [accordionItems, setAccordionItems] = useState([
+    const [accordionItems, setAccordionItems] = useState<AccordionItem[]>([
         { title: 'Purchased', index: 0, ids: [], page: 1 },
         { title: 'Sold', index: 1, ids: [], page: 1 }
     ]);
@@ -24,8 +32,10 @@ export default function MyHistory(){
 
     useEffect(() => {
         if(openIndex != null){
-            console.log("opening pg, openIndex: " + openIndex)
+            setControlIndex([openIndex])
             navigate(`/myprofile/${accordionItems[openIndex].title}/${accordionItems[openIndex].page}`)
+        } else {
+            setControlIndex([])
         }
     }, [openIndex]);
 
@@ -33,13 +43,12 @@ export default function MyHistory(){
         if (!page || page === null) {
             setAccordionItems(prevItems => prevItems.map(item => ({ ...item, page: 1 })));
             setOpenIndex(null);
+            setControlIndex([]);
         } else {
             setAccordionItems(prevItems => prevItems.map(item => 
                 item.title === option ? { ...item, page: +page } : item
             ));
         }
-
-        console.log("rerender")
     }, [page]);
 
     const { 
@@ -55,9 +64,18 @@ export default function MyHistory(){
 
     useEffect(() => {
         if (userInfo) {
+            // Ensure no duplicate IDs
+            const uniquePurchasedIds = [...new Set(userInfo.itemsPurchased)];
+            const uniqueSoldIds= [...new Set(userInfo.itemsSold)];
+
+            // Filter out ids in itemsPurchased that are also in itemsSold
+            const filteredPurchasedIds = uniquePurchasedIds.filter(
+                (id) => !userInfo.itemsSold.includes(id)
+            );
+
             setAccordionItems(prevItems => [
-                { ...prevItems[0], ids: userInfo.itemsPurchased },
-                { ...prevItems[1], ids: userInfo.itemsSold }
+                { ...prevItems[0], ids: filteredPurchasedIds },
+                { ...prevItems[1], ids: uniqueSoldIds }
             ]);
           setIsInit(true);
         }
@@ -71,7 +89,7 @@ export default function MyHistory(){
     return (
         <main className='px-4'>
             <PageHeading title='Transaction History' />
-            <Accordion allowToggle>
+            <Accordion allowToggle index={controlIndex}>
                 {accordionItems.map((item) => (
                     <AccordionItem key={item.index}>
                         <AccordionButton onClick={() => handleToggle(item.index)}>

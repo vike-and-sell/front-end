@@ -27,7 +27,6 @@ export default function PaginatedListings({ listingIds, accordionIndex, indexTit
 
   useEffect(() => {
     setCurrentPage(page ? +page : 1);
-    console.log("pag list useEffect: " + page)
   }, [accordionIndex]);
 
   const currentListingIds = listingIds.slice(

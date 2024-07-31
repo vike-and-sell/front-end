@@ -427,6 +427,10 @@ export default function IndividualListing() {
       <div className="lg:w-1/5">
         <RecommendationsWidget />
       </div>
+
+      </div>
+
+      </div>
     </main>
   );
 }

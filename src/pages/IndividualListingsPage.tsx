@@ -136,7 +136,7 @@ export default function IndividualListing() {
         duration: 5000,
         isClosable: true,
       });
-      navigate("/myListings");
+      navigate("/mylistings/1");
     } catch (error) {
       toast.closeAll();
       toast({
@@ -206,55 +206,54 @@ export default function IndividualListing() {
     }
   }
 
-  const produceChat = async ()=> {
-    setIsChatLoading(true)
-    try{
-      const ChatResponse = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, 
+  const produceChat = async () => {
+    setIsChatLoading(true);
+    try {
+      const ChatResponse = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/chats`,
         {
-          listingId: Number(listingID)
+          listingId: Number(listingID),
         },
         {
-          withCredentials:true
+          withCredentials: true,
         }
-      )
-      setChatID(ChatResponse.data.chatId)
-      console.log(ChatResponse.data)
-      
-    } catch (error){
-      console.log(error) 
+      );
+      setChatID(ChatResponse.data.chatId);
+      console.log(ChatResponse.data);
+    } catch (error) {
+      console.log(error);
     } finally {
       onChatOpen();
       setIsChatLoading(false);
     }
-
-  }
+  };
 
   return (
-    <main className="p-4 flex flex-col lg:flex-row gap-4 lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
-      <div className="flex flex-col grow">
-        <div className="flex gap-2 items-center">
+    <main className='p-4 flex flex-col lg:flex-row gap-4 lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
+      <div className='flex flex-col grow'>
+        <div className='flex gap-2 items-center'>
           <button
-            className=" p-1 rounded-lg bg-pri-blue"
-            data-cy="back-button"
-            title="Back Button"
+            className=' p-1 rounded-lg bg-pri-blue'
+            data-cy='back-button'
+            title='Back Button'
             onClick={() => navigate(-1)}
           >
-            <FaArrowLeft size={15} color="white" />
+            <FaArrowLeft size={15} color='white' />
           </button>
           <h1
-            className="font-semibold text-pri-blue text-3xl p-0"
-            data-cy="listing-title"
+            className='font-semibold text-pri-blue text-3xl p-0'
+            data-cy='listing-title'
           >
             {listingInfo.title}
           </h1>
           <Menu>
             <MenuButton
               as={Button}
-              width="47px"
-              background="white"
-              data-cy="menu-button"
+              width='47px'
+              background='white'
+              data-cy='menu-button'
             >
-              <FaEllipsisH color="#166aac"></FaEllipsisH>
+              <FaEllipsisH color='#166aac'></FaEllipsisH>
             </MenuButton>
             <MenuList>
               {isUser ? (
@@ -281,6 +280,7 @@ export default function IndividualListing() {
               )}
             </MenuList>
           </Menu>
+
           <Modal
             finalFocusRef={finalRef}
             isOpen={isDeleteOpen}
@@ -294,82 +294,47 @@ export default function IndividualListing() {
               <ModalBody>
                 Are you sure you want to delete this listing?
               </ModalBody>
-              
-            <ModalFooter>
-              <InvalidRedButton
-                clickHandle={handleDelete}
-                data-cy="delete-listing"
-                title="Yes"
-                className="mr-3"
-              ></InvalidRedButton>
-              <InverseBlueButton
-                clickHandle={onDeleteClose}
-                data-cy="cancel-delete-listing"
-                title="No"
-              ></InverseBlueButton>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </div>
 
-      <div>
-        <Modal
-          finalFocusRef={finalRef}
-          isOpen={isChatOpen}
-          onClose={onChatClose}
-          scrollBehavior="outside"
-          size="full"
-          isCentered
-        >
-          <ModalOverlay />
-          <ModalContent m={10}>
-            <ModalCloseButton ml={5} />
-            <ModalBody my={3} mr={4}>
-              <Chat chatID={chatID}></Chat>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      </div>
-        
-      <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
-        <div className="flex items-center gap-3">
-          <div
-            className="text-green-700 font-bold text-2xl"
-            data-cy="listing-price"
-          >
-            ${listingInfo.price}
-          </div>
-          <Badge
-            colorScheme={`${
-              listingInfo.status == "AVAILABLE" ? "green" : "red"
-            }`}
-            data-cy="listing-status-badge"
-          >
-            {listingInfo.status}
-          </Badge>
-          {listingInfo?.forCharity ? (
-            <Tooltip
-              label="All profits from this item go to charity!"
-              aria-label="Marked for charity"
-              placement="auto-end"
-            >
-              <span>
-                <MdOutlineHandshake
-                  color="#166aac"
-                  size="18px"
-                ></MdOutlineHandshake>
-              </span>
-            </Tooltip>
-          ) : (
-            ""
-          )}
+              <ModalFooter>
+                <InvalidRedButton
+                  clickHandle={handleDelete}
+                  data-cy='delete-listing'
+                  title='Yes'
+                  className='mr-3'
+                ></InvalidRedButton>
+                <InverseBlueButton
+                  clickHandle={onDeleteClose}
+                  data-cy='cancel-delete-listing'
+                  title='No'
+                ></InverseBlueButton>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </div>
-        
-        <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
-          <div className="flex items-center gap-3">
+
+        <div>
+          <Modal
+            finalFocusRef={finalRef}
+            isOpen={isChatOpen}
+            onClose={onChatClose}
+            scrollBehavior='outside'
+            size='full'
+            isCentered
+          >
+            <ModalOverlay />
+            <ModalContent m={10}>
+              <ModalCloseButton ml={5} />
+              <ModalBody my={3} mr={4}>
+                <Chat></Chat>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        </div>
+        <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
+          <div className='flex items-center gap-3'>
             <div
-              className="text-green-700 font-bold text-2xl"
-              data-cy="listing-price"
+              className='text-green-700 font-bold text-2xl'
+              data-cy='listing-price'
             >
               ${listingInfo.price}
             </div>
@@ -377,20 +342,20 @@ export default function IndividualListing() {
               colorScheme={`${
                 listingInfo.status == "AVAILABLE" ? "green" : "red"
               }`}
-              data-cy="listing-status-badge"
+              data-cy='listing-status-badge'
             >
               {listingInfo.status}
             </Badge>
             {listingInfo?.forCharity ? (
               <Tooltip
-                label="All profits from this item go to charity!"
-                aria-label="Marked for charity"
-                placement="auto-end"
+                label='All profits from this item go to charity!'
+                aria-label='Marked for charity'
+                placement='auto-end'
               >
                 <span>
                   <MdOutlineHandshake
-                    color="#166aac"
-                    size="18px"
+                    color='#166aac'
+                    size='18px'
                   ></MdOutlineHandshake>
                 </span>
               </Tooltip>
@@ -399,37 +364,32 @@ export default function IndividualListing() {
             )}
           </div>
 
-        <div className="text-sm" data-cy="listing-time">
-          {timeSincePost(listingInfo.listedAt)}
-          <span className="font-bold" data-cy="listing-seller">
-            {" "}
-            {sellerData.data.username}
-          </span>
+          <div className='text-sm' data-cy='listing-time'>
+            {timeSincePost(listingInfo.listedAt)}
+            <span className='font-bold' data-cy='listing-seller'>
+              {" "}
+              {sellerData.data.username}
+            </span>
+          </div>
+          <div className='flex gap-4'>
+            <PriBlueButton
+              title='Message Seller'
+              data-cy='message-seller-button'
+              clickHandle={() => {
+                produceChat();
+              }}
+              isLoading={isChatLoading}
+            ></PriBlueButton>
+          </div>
         </div>
-
-        <div className='flex gap-4'>
-          <PriBlueButton
-            title='Message Seller'
-            data-cy='message-seller-button'
-            clickHandle={ () =>{
-              produceChat();
-            }}
-            isLoading = {isChatLoading}
-          ></PriBlueButton>
-        </div>
-          
         <RatingSection
           reviews={reviews}
           listingId={listingID}
           ratings={ratings}
         ></RatingSection>
       </div>
-      <div className="lg:w-1/5">
+      <div className='lg:w-1/5'>
         <RecommendationsWidget />
-      </div>
-
-      </div>
-
       </div>
     </main>
   );

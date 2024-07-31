@@ -134,6 +134,7 @@ export default function LoginPage() {
               Forget password?{" "}
             </span>
             <button
+              data-cy='recover-pass-button'
               className='text-white text-sm  underline'
               onClick={() => {
                 navigate("/unverified/recover");

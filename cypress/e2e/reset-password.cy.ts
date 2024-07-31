@@ -32,20 +32,21 @@ describe('User should be able to reset their password', () => {
     })
 
     it('User can reset with valid matching password',() => {
-        cy.get('[data-cy="email-input"]').type('janedoe')
-        cy.get('[data-cy="send-email-button"]').click()
-        cy.get("[data-status='success']");
+        cy.get('[data-cy="new-pass-input"]').type('NewPass123!')
+        cy.get('[data-cy="confirm-pass-input"]').type('NewPass123!')
+        cy.get('[data-cy="reset-pass-button"]').click()
     })
 
     it('User can not reset if valid password does not match confirm password',() => {
-        cy.get('[data-cy="email-input"]').type('janedoe')
-        cy.get('[data-cy="send-email-button"]').click()
-        cy.get("[data-status='success']");
+        cy.get('[data-cy="new-pass-input"]').type('NewPass123!')
+        cy.get('[data-cy="confirm-pass-input"]').type('NewPass123$')
+        cy.get('[data-cy="reset-pass-button"]').click()
+        cy.get("[data-cy='reset-error-msg']").should('be.visible');
     })
 
     it('User can not reset if new password is invalid',() => {
-        cy.get('[data-cy="email-input"]').type('janedoe')
-        cy.get('[data-cy="send-email-button"]').click()
-        cy.get("[data-status='success']");
+        cy.get('[data-cy="new-pass-input"]').type('New')
+        cy.get('[data-cy="reset-pass-button"]').click()
+        cy.get("[data-cy='reset-error-msg']").should('be.visible');
     })
 })

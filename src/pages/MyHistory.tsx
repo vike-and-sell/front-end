@@ -103,7 +103,7 @@ export default function MyHistory(){
                                 <div>Loading...</div>
                             ):(
                                 <PaginatedListings
-                                    listingIds={item.ids}
+                                    listingIds={item.ids as number[]}
                                     accordionIndex={item.index}
                                     indexTitle={item.title}
                                     isOpen={openIndex === item.index}

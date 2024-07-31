@@ -15,28 +15,30 @@ export function ListingCard({ listingInfo }: ListingIDProps) {
   return (
     <div
       onClick={() => navigate(`/listing/${listingInfo.listingId}`)}
-      className="flex flex-col shadow border-solid border-2 border-slate-300 aspect-square rounded-3xl p-4 justify-between overflow-y-auto transition-all cursor-pointer"
+      className='listing-card flex flex-col shadow border-solid border-2 border-slate-300 aspect-square rounded-3xl p-4 justify-between overflow-y-auto hover:scale-105 transition-all cursor-pointer'
     >
-      <div className="font-semibold text-lg lg:text-xl">{title}</div>
-      <div className="flex flex-col">
+      <div className='font-semibold  sm:text-sm md:text-base lg:text-xl'>
+        {title}
+      </div>
+      <div className='flex flex-col'>
         {listingInfo.forCharity ? (
-          <div className="self-end">
+          <div className='self-end'>
             <MdOutlineHandshake
-              color="#166aac"
-              size="18px"
+              color='#166aac'
+              size='18px'
             ></MdOutlineHandshake>
           </div>
         ) : (
           ""
         )}
-        <div className="flex justify-between lg:text-md items-center">
-          <span>{postedDate}</span>
+        <div className='flex justify-between items-baseline'>
+          <span className='text-sm '>{postedDate}</span>
           {listingInfo.status != "AVAILABLE" ? (
-            <Badge colorScheme="red" data-cy="listing-status-badge">
+            <Badge colorScheme='red' data-cy='listing-status-badge'>
               {listingInfo.status}
             </Badge>
           ) : (
-            <span className="text-green-700 font-bold">
+            <span className='text-green-700 font-bold text-sm md:text-base lg:text-lg'>
               ${listingInfo.price}
             </span>
           )}
@@ -48,7 +50,7 @@ export function ListingCard({ listingInfo }: ListingIDProps) {
 
 function getMonthAndDate(timestamp: string): string {
   const date = new Date(timestamp);
-  const month = date.toLocaleString("default", { month: "long" });
+  const month = date.toLocaleString("default", { month: "short" });
   const day = date.getDate();
   return `${month} ${day}`;
 }

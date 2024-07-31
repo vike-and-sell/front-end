@@ -69,7 +69,7 @@ const fetchSingleListing = async (listingID: string | undefined) => {
       withCredentials: true,
     }
   );
-  console.log("fetch single listing");
+ 
   if (response.status !== 200) {
     throw new Error(
       response.data?.message || "Fetching single listing data failed..."
@@ -204,8 +204,25 @@ const getCharities = async function () {
 
   return response.data;
 };
+
+const getRecommendations = async function (){
+  const response = await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/recommendations`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  if (response.status !== 200) {
+    throw new Error("Failed get recommendations");
+  }
+  
+  return response.data;
+};
+
 export {
   getCharities,
+  getRecommendations,
   queryListings,
   fetchUser,
   fetchOtherUser,

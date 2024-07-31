@@ -53,22 +53,22 @@ export default function LoginPage() {
 
   return (
     <>
-      <main className="flex flex-col sm:flex-row h-screen">
+      <main className='flex flex-col sm:flex-row h-screen'>
         {/* white logo box  */}
         <LoginHeading></LoginHeading>
 
         {/* blue inputs box */}
-        <div className="bg-pri-blue flex flex-col justify-center items-center gap-0 sm:gap-3 sm:flex-1 sm:order-1 sm:h-full h-2/3 overflow-clip">
-          <div className="flex flex-col px-10 gap-3">
-            <span className="text-white text-xl sm:text-2xl md:text-4xl font-bold flex self-start sm:py-1">
+        <div className='bg-pri-blue flex flex-col justify-center items-center gap-0 sm:gap-3 sm:flex-1 sm:order-1 sm:h-full h-2/3 overflow-clip'>
+          <div className='flex flex-col px-10 gap-3'>
+            <span className='text-white text-xl sm:text-2xl md:text-4xl font-bold flex self-start sm:py-1'>
               Sign In
             </span>
-            <span className="text-white text-sm sm:text-lg md:text-xl font-bold">
+            <span className='text-white text-sm sm:text-lg md:text-xl font-bold'>
               Sign In and Lead Green with other UVic Students
             </span>
 
             {statusBool ? (
-              <div className="text-dark-red font-bold text-center text-xs sm:text-sm">
+              <div className='text-dark-red font-bold text-center text-xs sm:text-sm'>
                 The credentials you entered do not match our records.
               </div>
             ) : (
@@ -76,14 +76,14 @@ export default function LoginPage() {
             )}
 
             <FormControl>
-              <FormLabel fontSize={[16, 19, 25, 27]} textColor="white">
+              <FormLabel fontSize={[16, 19, 25, 27]} textColor='white'>
                 Username
               </FormLabel>
               <Input
-                data-cy="username-input"
+                data-cy='username-input'
                 size={["sm", "md", "md", "md"]}
-                bg="white"
-                type="text"
+                bg='white'
+                type='text'
                 value={username}
                 onChange={handleUsernameChange}
                 onKeyDown={handleKeyDown}
@@ -91,14 +91,14 @@ export default function LoginPage() {
             </FormControl>
 
             <FormControl>
-              <FormLabel fontSize={[16, 19, 25, 27]} textColor="white">
+              <FormLabel fontSize={[16, 19, 25, 27]} textColor='white'>
                 Password
               </FormLabel>
               <Input
-                data-cy="password-input"
+                data-cy='password-input'
                 size={["sm", "md", "md", "md"]}
-                bg="white"
-                type="password"
+                bg='white'
+                type='password'
                 value={password}
                 onChange={handlePasswordChange}
                 onKeyDown={handleKeyDown}
@@ -106,22 +106,22 @@ export default function LoginPage() {
             </FormControl>
           </div>
 
-          <div className="p-4">
+          <div className='p-4'>
             <InverseBlueButton
-              data-cy="signin-button"
+              datacy='signin-button'
               clickHandle={onSignIn}
               isDisabled={isLoading}
               onKeyDown={handleKeyDown}
-              title="Sign In"
+              title='Sign In'
             ></InverseBlueButton>
           </div>
 
-          <div className="pb-0 sm:pb-1">
-            <span className="text-white text-sm font-bold">
+          <div className='pb-0 sm:pb-1'>
+            <span className='text-white text-sm font-bold'>
               Don't have an account?{" "}
             </span>
             <button
-              className="text-white text-sm  underline"
+              className='text-white text-sm  underline'
               onClick={() => {
                 navigate("/unverified/signup");
               }}
@@ -129,12 +129,12 @@ export default function LoginPage() {
               Create One
             </button>
           </div>
-          <div className="">
-            <span className="text-white text-sm font-bold">
+          <div className=''>
+            <span className='text-white text-sm font-bold'>
               Forget password?{" "}
             </span>
             <button
-              className="text-white text-sm  underline"
+              className='text-white text-sm  underline'
               onClick={() => {
                 navigate("/unverified/recover");
               }}

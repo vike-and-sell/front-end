@@ -8,9 +8,10 @@ import {
 
 import HomeLayout from "./layout/HomeLayout";
 import RegistrationLayout from "./layout/RegistrationLayout";
-import RecomendationsPage from "./pages/RecomendationsPage";
+import RecommendationsPage from "./pages/RecommendationsPage";
 import IndividualListingPage from "./pages/IndividualListingsPage";
 import Chat from "./pages/chat";
+import Settings from "./pages/SettingsPage";
 import BrowsePage from "./pages/BrowsePage";
 import Create from "./pages/CreateListing";
 import Edit from "./pages/EditListing";
@@ -29,6 +30,7 @@ import { AuthProvider } from "./utils/AuthContext";
 import MyListings from "./pages/MyListings";
 import SearchResultsPage from "./pages/SearchResultsPage";
 import CharityPage from "./pages/CharityPage";
+import MyHistory from "./pages/MyHistory";
 
 function App() {
   return (
@@ -43,10 +45,10 @@ function App() {
                     path="*"
                     element={<ErrorPage> Page Not Found</ErrorPage>}
                   />
-                  <Route index element={<Navigate to="/browse/1" />} />
+                  <Route index element={<Navigate to="/recommendations/1" />} />
                   <Route
-                    path="recomendations/:page"
-                    element={<RecomendationsPage />}
+                    path="recommendations/:page"
+                    element={<RecommendationsPage />}
                   />
                   <Route path="browse/:page" element={<BrowsePage />} />
                   <Route
@@ -55,6 +57,7 @@ function App() {
                   />
                   <Route path="chat" element={<Chat />} />
                   <Route path="mylistings/:page" element={<MyListings />} />
+                  <Route path="myprofile/:option?/:page?" element={<MyHistory/>} />
                   <Route path="create" element={<Create />} />
                   <Route path="edit/:listingID" element={<Edit />} />
                   <Route path="charity" element={<CharityPage />} />
@@ -66,6 +69,7 @@ function App() {
                     path="search/:searchString/:page"
                     element={<SearchResultsPage />}
                   />
+                  <Route path="settings" element={<Settings/>} />
                 </Route>
               </Route>
 

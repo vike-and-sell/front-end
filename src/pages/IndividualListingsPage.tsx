@@ -1,7 +1,8 @@
 import { FaArrowLeft } from "react-icons/fa6";
-import DefaultButton, {
+import {
   InvalidRedButton,
   InverseBlueButton,
+  PriBlueButton,
 } from "../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaEllipsisH, FaRegEdit } from "react-icons/fa";
@@ -23,8 +24,9 @@ import {
   ModalCloseButton,
   useDisclosure,
   Tooltip,
+  useToast,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
 import IndividualListingsPageSkeleton from "../components/Skeletons/IndividualListingSkeleton";
 import { useQuery, useQueries } from "@tanstack/react-query";
@@ -37,17 +39,20 @@ import {
 } from "../utils/api";
 import ErrorPage from "./ErrorPage";
 import Chat from "./chat";
+import axios from "axios";
 import RecommendationsWidget from "../components/RecommendationsWidget";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
   const navigate = useNavigate();
+  const [isChatLoading, setIsChatLoading] = useState<boolean>(false);
+  const [chatID, setChatID] = useState<string>();
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
     onClose: onDeleteClose,
   } = useDisclosure();
-
+  const toast = useToast();
   const {
     isOpen: isChatOpen,
     onOpen: onChatOpen,
@@ -109,8 +114,79 @@ export default function IndividualListing() {
   }
 
   // Still need to be implemented
-  const handleDelete = () => {};
-  const handleDoNotRecommend = () => {};
+  const handleDelete = async () => {
+    try {
+      toast({
+        title: "Deleting listing...",
+        status: "loading",
+        duration: 5000,
+        isClosable: true,
+      });
+      const response = await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/listings/${listingID}`,
+        { withCredentials: true }
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to delete listing");
+      }
+      toast.closeAll();
+      toast({
+        title: "Listing deleted",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/myListings");
+    } catch (error) {
+      toast.closeAll();
+      toast({
+        title: "Failed to delete",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      console.log(error);
+    }
+  };
+
+  const handleDoNotRecommend = async () => {
+    try {
+      toast({
+        title: "Ignoring listing...",
+        status: "loading",
+        duration: 5000,
+        isClosable: true,
+      });
+      const response = await axios.post(
+        `${
+          import.meta.env.VITE_REACT_APP_API_URL
+        }/recommendations/${listingID}/ignore`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to ignore listing");
+      }
+      toast.closeAll();
+      toast({
+        title: "Thank you for your feedback",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate(-1);
+    } catch (error) {
+      toast.closeAll();
+      toast({
+        title: "Failed to ignore",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   // Check if all data is loaded
   if (
@@ -128,6 +204,29 @@ export default function IndividualListing() {
     if (userData.data.userId == listingInfo.sellerId) {
       isUser = true;
     }
+  }
+
+  const produceChat = async ()=> {
+    setIsChatLoading(true)
+    try{
+      const ChatResponse = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, 
+        {
+          listingId: Number(listingID)
+        },
+        {
+          withCredentials:true
+        }
+      )
+      setChatID(ChatResponse.data.chatId)
+      console.log(ChatResponse.data)
+      
+    } catch (error){
+      console.log(error) 
+    } finally {
+      onChatOpen();
+      setIsChatLoading(false);
+    }
+
   }
 
   return (
@@ -182,7 +281,6 @@ export default function IndividualListing() {
               )}
             </MenuList>
           </Menu>
-
           <Modal
             finalFocusRef={finalRef}
             isOpen={isDeleteOpen}
@@ -196,42 +294,77 @@ export default function IndividualListing() {
               <ModalBody>
                 Are you sure you want to delete this listing?
               </ModalBody>
+              
+            <ModalFooter>
+              <InvalidRedButton
+                clickHandle={handleDelete}
+                data-cy="delete-listing"
+                title="Yes"
+                className="mr-3"
+              ></InvalidRedButton>
+              <InverseBlueButton
+                clickHandle={onDeleteClose}
+                data-cy="cancel-delete-listing"
+                title="No"
+              ></InverseBlueButton>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </div>
 
-              <ModalFooter>
-                <InvalidRedButton
-                  clickHandle={handleDelete}
-                  data-cy="delete-listing"
-                  title="Yes"
-                  className="mr-3"
-                ></InvalidRedButton>
-                <InverseBlueButton
-                  clickHandle={onDeleteClose}
-                  data-cy="cancel-delete-listing"
-                  title="No"
-                ></InverseBlueButton>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </div>
-
-        <div>
-          <Modal
-            finalFocusRef={finalRef}
-            isOpen={isChatOpen}
-            onClose={onChatClose}
-            scrollBehavior="outside"
-            size="full"
-            isCentered
+      <div>
+        <Modal
+          finalFocusRef={finalRef}
+          isOpen={isChatOpen}
+          onClose={onChatClose}
+          scrollBehavior="outside"
+          size="full"
+          isCentered
+        >
+          <ModalOverlay />
+          <ModalContent m={10}>
+            <ModalCloseButton ml={5} />
+            <ModalBody my={3} mr={4}>
+              <Chat chatID={chatID}></Chat>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </div>
+        
+      <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
+        <div className="flex items-center gap-3">
+          <div
+            className="text-green-700 font-bold text-2xl"
+            data-cy="listing-price"
           >
-            <ModalOverlay />
-            <ModalContent m={10}>
-              <ModalCloseButton ml={5} />
-              <ModalBody my={3} mr={4}>
-                <Chat></Chat>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
+            ${listingInfo.price}
+          </div>
+          <Badge
+            colorScheme={`${
+              listingInfo.status == "AVAILABLE" ? "green" : "red"
+            }`}
+            data-cy="listing-status-badge"
+          >
+            {listingInfo.status}
+          </Badge>
+          {listingInfo?.forCharity ? (
+            <Tooltip
+              label="All profits from this item go to charity!"
+              aria-label="Marked for charity"
+              placement="auto-end"
+            >
+              <span>
+                <MdOutlineHandshake
+                  color="#166aac"
+                  size="18px"
+                ></MdOutlineHandshake>
+              </span>
+            </Tooltip>
+          ) : (
+            ""
+          )}
         </div>
+        
         <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
           <div className="flex items-center gap-3">
             <div
@@ -266,21 +399,25 @@ export default function IndividualListing() {
             )}
           </div>
 
-          <div className="text-sm" data-cy="listing-time">
-            {timeSincePost(listingInfo.listedAt)}
-            <span className="font-bold" data-cy="listing-seller">
-              {" "}
-              {sellerData.data.username}
-            </span>
-          </div>
-          <div className="flex gap-4">
-            <DefaultButton
-              title="Message Seller"
-              data-cy="message-seller-button"
-              clickHandle={onChatOpen}
-            ></DefaultButton>
-          </div>
+        <div className="text-sm" data-cy="listing-time">
+          {timeSincePost(listingInfo.listedAt)}
+          <span className="font-bold" data-cy="listing-seller">
+            {" "}
+            {sellerData.data.username}
+          </span>
         </div>
+
+        <div className='flex gap-4'>
+          <PriBlueButton
+            title='Message Seller'
+            data-cy='message-seller-button'
+            clickHandle={ () =>{
+              produceChat();
+            }}
+            isLoading = {isChatLoading}
+          ></PriBlueButton>
+        </div>
+          
         <RatingSection
           reviews={reviews}
           listingId={listingID}
@@ -289,6 +426,10 @@ export default function IndividualListing() {
       </div>
       <div className="lg:w-1/5">
         <RecommendationsWidget />
+      </div>
+
+      </div>
+
       </div>
     </main>
   );

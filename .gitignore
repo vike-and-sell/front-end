@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Testing
+coverage/*
+
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -26,3 +30,4 @@ dist-ssr
 
 cdk/cdk.out
 cdk/cdk.context.json
+

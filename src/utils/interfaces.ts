@@ -13,7 +13,7 @@ export interface MessageType {
   content: string;
   senderId: string;
   receiverID: string;
-  timestamp: number;
+  timestamp: string;
 }
 
 export interface Listing {
@@ -52,14 +52,14 @@ export interface AuthContextType {
   user: User | null;
   loginUser: (username: string, password: string) => Promise<any>;
   logoutUser: () => Promise<any>;
-  requestAccount: (email: string, callback: string) => Promise<void>;
+  requestAccount: (email: string, callback: string) => Promise<any>;
   verifyAccount: (
     jwt: string,
     username: string,
     password: string,
     location: string
   ) => Promise<string>;
-  requestReset: (email: string, callback: string) => Promise<void>;
+  requestReset: (email: string, callback: string) => Promise<any>;
   verifyReset: (jwt: string, password: string) => Promise<void>;
   checkUserStatus: () => Promise<void>;
   isLoading: boolean;

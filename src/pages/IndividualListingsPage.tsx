@@ -24,6 +24,7 @@ import {
   ModalCloseButton,
   useDisclosure,
   Tooltip,
+  useToast,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import RatingSection from "../components/Ratings/RatingSection";
@@ -50,7 +51,7 @@ export default function IndividualListing() {
     onOpen: onDeleteOpen,
     onClose: onDeleteClose,
   } = useDisclosure();
-
+  const toast = useToast();
   const {
     isOpen: isChatOpen,
     onOpen: onChatOpen,
@@ -112,8 +113,79 @@ export default function IndividualListing() {
   }
 
   // Still need to be implemented
-  const handleDelete = () => {};
-  const handleDoNotRecommend = () => {};
+  const handleDelete = async () => {
+    try {
+      toast({
+        title: "Deleting listing...",
+        status: "loading",
+        duration: 5000,
+        isClosable: true,
+      });
+      const response = await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/listings/${listingID}`,
+        { withCredentials: true }
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to delete listing");
+      }
+      toast.closeAll();
+      toast({
+        title: "Listing deleted",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/myListings");
+    } catch (error) {
+      toast.closeAll();
+      toast({
+        title: "Failed to delete",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      console.log(error);
+    }
+  };
+
+  const handleDoNotRecommend = async () => {
+    try {
+      toast({
+        title: "Ignoring listing...",
+        status: "loading",
+        duration: 5000,
+        isClosable: true,
+      });
+      const response = await axios.post(
+        `${
+          import.meta.env.VITE_REACT_APP_API_URL
+        }/recommendations/${listingID}/ignore`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to ignore listing");
+      }
+      toast.closeAll();
+      toast({
+        title: "Thank you for your feedback",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate(-1);
+    } catch (error) {
+      toast.closeAll();
+      toast({
+        title: "Failed to ignore",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   // Check if all data is loaded
   if (
@@ -157,30 +229,30 @@ export default function IndividualListing() {
   }
 
   return (
-    <main className='p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]'>
-      <div className='flex gap-2 items-center'>
+    <main className="p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
+      <div className="flex gap-2 items-center">
         <button
-          className=' p-1 rounded-lg bg-pri-blue'
-          data-cy='back-button'
-          title='Back Button'
+          className=" p-1 rounded-lg bg-pri-blue"
+          data-cy="back-button"
+          title="Back Button"
           onClick={() => navigate(-1)}
         >
-          <FaArrowLeft size={15} color='white' />
+          <FaArrowLeft size={15} color="white" />
         </button>
         <h1
-          className='font-semibold text-pri-blue text-3xl p-0'
-          data-cy='listing-title'
+          className="font-semibold text-pri-blue text-3xl p-0"
+          data-cy="listing-title"
         >
           {listingInfo.title}
         </h1>
         <Menu>
           <MenuButton
             as={Button}
-            width='47px'
-            background='white'
-            data-cy='menu-button'
+            width="47px"
+            background="white"
+            data-cy="menu-button"
           >
-            <FaEllipsisH color='#166aac'></FaEllipsisH>
+            <FaEllipsisH color="#166aac"></FaEllipsisH>
           </MenuButton>
           <MenuList>
             {isUser ? (
@@ -223,14 +295,14 @@ export default function IndividualListing() {
             <ModalFooter>
               <InvalidRedButton
                 clickHandle={handleDelete}
-                data-cy='delete-listing'
-                title='Yes'
-                className='mr-3'
+                data-cy="delete-listing"
+                title="Yes"
+                className="mr-3"
               ></InvalidRedButton>
               <InverseBlueButton
                 clickHandle={onDeleteClose}
-                data-cy='cancel-delete-listing'
-                title='No'
+                data-cy="cancel-delete-listing"
+                title="No"
               ></InverseBlueButton>
             </ModalFooter>
           </ModalContent>
@@ -242,8 +314,8 @@ export default function IndividualListing() {
           finalFocusRef={finalRef}
           isOpen={isChatOpen}
           onClose={onChatClose}
-          scrollBehavior='outside'
-          size='full'
+          scrollBehavior="outside"
+          size="full"
           isCentered
         >
           <ModalOverlay />
@@ -255,11 +327,11 @@ export default function IndividualListing() {
           </ModalContent>
         </Modal>
       </div>
-      <div className='flex flex-col items-start gap-4 lg:gap-6 mb-12'>
-        <div className='flex items-center gap-3'>
+      <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
+        <div className="flex items-center gap-3">
           <div
-            className='text-green-700 font-bold text-2xl'
-            data-cy='listing-price'
+            className="text-green-700 font-bold text-2xl"
+            data-cy="listing-price"
           >
             ${listingInfo.price}
           </div>
@@ -267,20 +339,20 @@ export default function IndividualListing() {
             colorScheme={`${
               listingInfo.status == "AVAILABLE" ? "green" : "red"
             }`}
-            data-cy='listing-status-badge'
+            data-cy="listing-status-badge"
           >
             {listingInfo.status}
           </Badge>
           {listingInfo?.forCharity ? (
             <Tooltip
-              label='All profits from this item go to charity!'
-              aria-label='Marked for charity'
-              placement='auto-end'
+              label="All profits from this item go to charity!"
+              aria-label="Marked for charity"
+              placement="auto-end"
             >
               <span>
                 <MdOutlineHandshake
-                  color='#166aac'
-                  size='18px'
+                  color="#166aac"
+                  size="18px"
                 ></MdOutlineHandshake>
               </span>
             </Tooltip>
@@ -289,13 +361,14 @@ export default function IndividualListing() {
           )}
         </div>
 
-        <div className='text-sm' data-cy='listing-time'>
+        <div className="text-sm" data-cy="listing-time">
           {timeSincePost(listingInfo.listedAt)}
-          <span className='font-bold' data-cy='listing-seller'>
+          <span className="font-bold" data-cy="listing-seller">
             {" "}
             {sellerData.data.username}
           </span>
         </div>
+
         <div className='flex gap-4'>
           <PriBlueButton
             title='Message Seller'
@@ -305,6 +378,7 @@ export default function IndividualListing() {
             }}
             isLoading = {isChatLoading}
           ></PriBlueButton>
+
         </div>
       </div>
       <RatingSection

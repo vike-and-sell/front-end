@@ -134,7 +134,7 @@ export default function Edit() {
                 type="text"
               ></Input>
               {isInvalidTitle && isTitleTouched ? (
-                <FormErrorMessage className="font-semibold">
+                <FormErrorMessage className="font-semibold" data-cy="create-title-error-message">
                   Title is required.
                 </FormErrorMessage>
               ) : (
@@ -179,7 +179,7 @@ export default function Edit() {
                 ></Input>
               </InputGroup>
               {isInvalidPrice ? (
-                <FormErrorMessage className="font-semibold">
+                <FormErrorMessage className="font-semibold" data-cy="create-price-error-message">
                   Price is required.
                 </FormErrorMessage>
               ) : (
@@ -207,7 +207,7 @@ export default function Edit() {
           <FormControl>
             <div className="my-5 flex">
               <PriBlueButton
-                data-cy="create-listing-button"
+                datacy="create-listing-button"
                 isDisabled={
                   isInvalidPrice ||
                   (isInvalidTitle && isTitleTouched) ||

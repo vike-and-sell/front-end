@@ -83,7 +83,6 @@ export function InverseBlueButton({
   onKeyDown,
   datacy,
 }: DefaultButtonProps) {
-  console.log(datacy);
   return (
     <Button
       _active={{

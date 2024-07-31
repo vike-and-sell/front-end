@@ -112,18 +112,11 @@ export const AuthProvider = ({ children }: any) => {
             withCredentials: false,
           }
         )
-        .then(function (response) {
-          console.log(
-            "response " +
-              response.status +
-              " " +
-              response.data +
-              " " +
-              response.statusText
-          );
+        .then(function () {
+         
         });
     } catch (error) {
-      console.log(error);
+      console.error("Unable to request new account:", error);
       throw new Error("Unable to request new account");
     }
   };
@@ -149,7 +142,6 @@ export const AuthProvider = ({ children }: any) => {
           }
         )
         .then(function (response) {
-          console.log(response.status);
           if (response.status == 201) {
             navigate("/unverified/success");
             return new Promise((resolve) =>
@@ -158,14 +150,7 @@ export const AuthProvider = ({ children }: any) => {
           }
           if (response.status == 400) {
           }
-          console.log(
-            "response " +
-              response.status +
-              " " +
-              response.data +
-              " " +
-              response.statusText
-          );
+         
         });
     } catch (error: any) {
       if (error.response) {
@@ -192,7 +177,7 @@ export const AuthProvider = ({ children }: any) => {
       );
       return response;
     } catch (error) {
-      console.log(error);
+      console.error("Unable to request reset:", error);
     }
   };
 
@@ -209,18 +194,11 @@ export const AuthProvider = ({ children }: any) => {
             withCredentials: false,
           }
         )
-        .then(function (response) {
-          console.log(
-            "response " +
-              response.status +
-              " " +
-              response.data +
-              " " +
-              response.statusText
-          );
+        .then(function () {
+         
         });
     } catch (error) {
-      console.log(error);
+      console.error("Unable to verify reset:", error);
     }
   };
 

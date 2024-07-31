@@ -145,7 +145,7 @@ export default function IndividualListing() {
         duration: 5000,
         isClosable: true,
       });
-      console.log(error);
+      console.error("Unable to delete listing:", error);
     }
   };
 
@@ -219,9 +219,8 @@ export default function IndividualListing() {
         }
       );
       setChatID(ChatResponse.data.chatId);
-      console.log(ChatResponse.data);
     } catch (error) {
-      console.log(error);
+      console.error("Unable to message seller:", error);
     } finally {
       onChatOpen();
       setIsChatLoading(false);

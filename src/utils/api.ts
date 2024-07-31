@@ -186,7 +186,7 @@ const queryListings = async function (
   if (searchResponse.status !== 200) {
     throw new Error("Failed to search for items or users");
   }
-  console.log(searchResponse.data);
+  
   return searchResponse.data;
 };
 

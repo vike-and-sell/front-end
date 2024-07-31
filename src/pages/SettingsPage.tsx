@@ -37,7 +37,7 @@ export default function Settings() {
           setCurrentLocation(response.data.location);
         });
     } catch (error) {
-      console.log(error);
+      console.error("Unable to fetch user:", error);
     }
   };
 

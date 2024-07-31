@@ -34,9 +34,9 @@ export default function InfiniteScrollingListingView(
     const ch = t.clientHeight ?? window.outerHeight;
 
     const bottom = sh - st <= ch + 100;
-    // console.log(`${sh}, ${st}, ${ch + 100}`);
-    // console.log(`${sh - st} <= ${ch + 100}`);
-    // console.log(bottom);
+    console.log(`${sh}, ${st}, ${ch + 100}`);
+    console.log(`${sh - st} <= ${ch + 100}`);
+    console.log(bottom);
     if (bottom) {
       t.removeEventListener("scroll", oneTimeScrollListener);
       setIsLoadingMore(true);
@@ -63,7 +63,7 @@ export default function InfiniteScrollingListingView(
 
   return (
     <div
-      className="w-full lg:max-h-[calc(100vh-250px)] lg:overflow-y-scroll"
+      className='w-full lg:max-h-[calc(100vh-250px)] lg:overflow-y-scroll'
       ref={props.scrollRef}
     >
       <ListingsGrid isLoading={isLoadingMore}>

@@ -23,57 +23,73 @@ function NavigationBar() {
   return (
     <>
       <nav data-cy='nav-bar' className='flex flex-col p-4 gap-4 items-center'>
-        <CustomNavLink
-          data-cy='recommend-nav'
-          route='/recommendations/1'
-          title='Recommendations'
-        >
-          <FaLightbulb></FaLightbulb>
-        </CustomNavLink>
-        <CustomNavLink data-cy='browse-nav' route='/browse/1' title='Browse'>
-          <FaShop></FaShop>
-        </CustomNavLink>
 
-        <CustomNavLink route='/charity' title='Charities'>
-          <MdOutlineHandshake></MdOutlineHandshake>
-        </CustomNavLink>
-        <CustomNavLink route='/create' title='Create Listing'>
-          <MdSell></MdSell>
-        </CustomNavLink>
-        <CustomNavLink route='/mylistings/1' title='My Listings'>
-          <FaListAlt></FaListAlt>
-        </CustomNavLink>
-        <CustomNavLink
-          data-cy='my-profile-nav'
-          route='/myprofile'
-          title='My Profile'
-        >
-          <CgProfile></CgProfile>
-        </CustomNavLink>
+        <div data-cy='recommend-nav'>
+          <CustomNavLink
+            data-cy='recommend-nav'
+            route='/recommendations/1'
+            title='Recommendations'
+          >
+            <FaLightbulb></FaLightbulb>
+          </CustomNavLink>
+        </div>
+
+        <div data-cy='browse-nav'>
+          <CustomNavLink data-cy='browse-nav' route='/browse/1' title='Browse'>
+            <FaShop></FaShop>
+          </CustomNavLink>
+        </div>
+
+        <div data-cy='charity-nav'> 
+          <CustomNavLink route='/charity' title='Charities'>
+            <MdOutlineHandshake></MdOutlineHandshake>
+          </CustomNavLink>
+        </div> 
+
+        <div data-cy='create-listing-nav'>
+          <CustomNavLink route='/create' title='Create Listing'>
+            <MdSell></MdSell>
+          </CustomNavLink>
+        </div>
+
+        <div data-cy='my-listings-nav'>
+          <CustomNavLink route='/mylistings/1' title='My Listings'>
+            <FaListAlt></FaListAlt>
+          </CustomNavLink>
+        </div>
+
+        <div data-cy='my-profile-nav'>
+          <CustomNavLink
+            data-cy='my-profile-nav'
+            route='/myprofile'
+            title='My Profile'
+          >
+            <CgProfile></CgProfile>
+          </CustomNavLink>
+        </div>
+
         <div className='flex gap-3 items-center'>
           <TbMessageCircle2Filled color='white'></TbMessageCircle2Filled>
           <button
-            data-cy="my-messages-nav"
+            data-cy='my-messages-nav'
             onClick={onOpen}
-            className="text-white font-semibold"
-            title="My Messages"
+            className='text-white font-semibold'
+            title='My Messages'
           >
             My Messages
           </button>
         </div>
 
-        <div data-cy="settings-nav">
-          <CustomNavLink route='/settings' title='Settings'>
-            <IoSettingsSharp></IoSettingsSharp>
-          </CustomNavLink>
-        </div>
+        <CustomNavLink route='/settings' title='Settings'>
+          <IoSettingsSharp></IoSettingsSharp>
+        </CustomNavLink>
       </nav>
 
       <Modal
         finalFocusRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
-        size="full"
+        size='full'
       >
         <ModalOverlay />
         <ModalContent m={10}>
@@ -103,7 +119,7 @@ function CustomNavLink({
   return (
     <NavLink
       to={route}
-      className="text-white py-2 flex items-center gap-3 justify-center font-semibold"
+      className='text-white py-2 flex items-center gap-3 justify-center font-semibold'
       onClick={clickHandle}
     >
       {children} {title}

@@ -58,7 +58,7 @@ export interface AuthContextType {
     username: string,
     password: string,
     location: string
-  ) => Promise<void>;
+  ) => Promise<string>;
   requestReset: (email: string, callback: string) => Promise<any>;
   verifyReset: (jwt: string, password: string) => Promise<void>;
   checkUserStatus: () => Promise<void>;

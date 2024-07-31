@@ -156,6 +156,8 @@ export default function Edit() {
       });
   };
 
+  
+
   if (isLoading || isUserDataLoading) {
     return <EditCreateSkeleton></EditCreateSkeleton>;
   }
@@ -288,17 +290,17 @@ export default function Edit() {
                   }
                 />
                 <AutoCompleteList>
-                  <AutoCompleteGroup title='' showDivider>
-                    {getUniqueBuyers(buyersArray).map(
-                      (buyer: User, index: number) => (
+                  <AutoCompleteGroup title="" showDivider>
+                    {buyersArray
+                      .slice(0, 30)
+                      .map((buyer: UserSearchItem, index: number) => (
                         <AutoCompleteItem
                           key={`${index}`}
                           value={buyer.username}
-                          textTransform='capitalize'
-                          align='center'
+                          align="center"
                         >
-                          <Avatar size='sm' name={buyer.username} />
-                          <Text ml='4'>{buyer.username}</Text>
+                          <Avatar size="sm" name={buyer.username} />
+                          <Text ml="4">{buyer.username}</Text>
                         </AutoCompleteItem>
                       ))}
                   </AutoCompleteGroup>

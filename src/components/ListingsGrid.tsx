@@ -1,4 +1,3 @@
-import { Spinner } from "@chakra-ui/react";
 import React, { forwardRef } from "react";
 
 interface ListingGridProps {
@@ -8,7 +7,7 @@ interface ListingGridProps {
 
 // Using forwardRef to allow ref to be passed to the main element
 const ListingsGrid = forwardRef<HTMLDivElement, ListingGridProps>(
-  ({ children, isLoading }, ref) => {
+  ({ children }, ref) => {
     return (
       <main
         ref={ref}

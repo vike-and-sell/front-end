@@ -68,7 +68,7 @@ export default function LoginPage() {
             </span>
 
             {statusBool ? (
-              <div className='text-dark-red font-bold text-center text-xs sm:text-sm'>
+              <div className='text-dark-red font-bold text-center text-xs sm:text-sm' data-cy="login-error">
                 The credentials you entered do not match our records.
               </div>
             ) : (

@@ -20,7 +20,7 @@ describe('User can create a listing', () => {
     cy.url().should('include', '/create')
 
     cy.get('[data-cy="create-title-input"]').type('Sony Xperia A5')
-    cy.get('[data-cy="create-price-input"]').type('800')
+    cy.get('[data-cy="create-price-input"]').clear().type('800')
 
     //cy.get('[data-cy="create-listing-button"]').click()
   })
@@ -33,7 +33,7 @@ describe('User can create a listing', () => {
     cy.url().should('include', '/create')
 
     cy.get('[data-cy="create-title-input"]').type('Sony Xperia A5')
-    cy.get('[data-cy="create-price-input"]').type('800')
+    cy.get('[data-cy="create-price-input"]').clear().type('800')
 
     cy.get('[data-cy="create-charity-checkbox"]').click()
 
@@ -48,10 +48,25 @@ describe('User can create a listing', () => {
     cy.get('[data-cy="create-listing-nav"]').children().should('exist').click({ multiple: true, force: true })
     cy.url().should('include', '/create')
 
-    cy.get('[data-cy="create-title-input"]').type('Sony Xperia A5')
-    cy.get('[data-cy="create-title-input"]').clear()
-    cy.get('[data-cy="create-price-input"]').type('800')
+    cy.get('[data-cy="create-title-input"]').type('Sony Xperia A5').clear()
+    cy.get('[data-cy="create-price-input"]').clear().type('800')
+
+    cy.get('[data-cy="create-listing-button"]').click()
+    cy.get('[data-cy="create-title-error-message"]').should('exist').and('be.visible')
+  })
+
+  it('User can not create a listing without a price', () => {
     
+    cy.get('[data-cy="nav-bar-lg-div"]').should('exist').and('be.visible').click({ multiple: true })
+    cy.get('[data-cy="nav-bar"]').should('exist').and('be.visible').click({ multiple: true, force: true })
+    cy.get('[data-cy="create-listing-nav"]').children().should('exist').click({ multiple: true, force: true })
+    cy.url().should('include', '/create')
+
+    cy.get('[data-cy="create-title-input"]').type('Sony Xperia A5').clear()
+    cy.get('[data-cy="create-price-input"]').clear()
+
+    cy.get('[data-cy="create-listing-button"]').should('be.disabled')
+    cy.get('[data-cy="create-price-error-message"]').should('exist').and('be.visible')
   })
 
 

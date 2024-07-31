@@ -53,10 +53,10 @@ function NavigationBar() {
         <div className='flex gap-3 items-center'>
           <TbMessageCircle2Filled color='white'></TbMessageCircle2Filled>
           <button
-            data-cy='my-messages-nav'
+            data-cy="my-messages-nav"
             onClick={onOpen}
-            className='text-white font-semibold'
-            title='My Messages'
+            className="text-white font-semibold"
+            title="My Messages"
           >
             My Messages
           </button>
@@ -73,7 +73,7 @@ function NavigationBar() {
         finalFocusRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
-        size='full'
+        size="full"
       >
         <ModalOverlay />
         <ModalContent m={10}>
@@ -103,7 +103,7 @@ function CustomNavLink({
   return (
     <NavLink
       to={route}
-      className='text-white py-2 flex items-center gap-3 justify-center font-semibold'
+      className="text-white py-2 flex items-center gap-3 justify-center font-semibold"
       onClick={clickHandle}
     >
       {children} {title}

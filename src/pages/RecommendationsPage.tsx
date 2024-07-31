@@ -12,7 +12,6 @@ import { getRecommendations } from "../utils/api";
 import { useQuery } from "@tanstack/react-query";
 import ErrorPage from "./ErrorPage";
 import axios from "axios";
-import ButtonSkeleton from "../components/Skeletons/ButtonSkeleton";
 
 export default function RecommendationsPage() {
   const MAX_LISTINGS_PAGE = 30;

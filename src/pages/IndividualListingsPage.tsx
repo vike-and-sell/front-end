@@ -40,6 +40,7 @@ import {
 import ErrorPage from "./ErrorPage";
 import Chat from "./chat";
 import axios from "axios";
+import RecommendationsWidget from "../components/RecommendationsWidget";
 
 export default function IndividualListing() {
   const { listingID } = useParams();
@@ -229,69 +230,71 @@ export default function IndividualListing() {
   }
 
   return (
-    <main className="p-4 flex flex-col lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
-      <div className="flex gap-2 items-center">
-        <button
-          className=" p-1 rounded-lg bg-pri-blue"
-          data-cy="back-button"
-          title="Back Button"
-          onClick={() => navigate(-1)}
-        >
-          <FaArrowLeft size={15} color="white" />
-        </button>
-        <h1
-          className="font-semibold text-pri-blue text-3xl p-0"
-          data-cy="listing-title"
-        >
-          {listingInfo.title}
-        </h1>
-        <Menu>
-          <MenuButton
-            as={Button}
-            width="47px"
-            background="white"
-            data-cy="menu-button"
+    <main className="p-4 flex flex-col lg:flex-row gap-4 lg:overflow-y-scroll lg:max-h-[calc(100vh-150px)]">
+      <div className="flex flex-col grow">
+        <div className="flex gap-2 items-center">
+          <button
+            className=" p-1 rounded-lg bg-pri-blue"
+            data-cy="back-button"
+            title="Back Button"
+            onClick={() => navigate(-1)}
           >
-            <FaEllipsisH color="#166aac"></FaEllipsisH>
-          </MenuButton>
-          <MenuList>
-            {isUser ? (
-              <>
-                <MenuItem
-                  icon={<FaRegEdit />}
-                  onClick={() => navigate(`/edit/${listingID}`)}
-                >
-                  Edit Listing
-                </MenuItem>
-                <MenuItem icon={<AiOutlineDelete />} onClick={onDeleteOpen}>
-                  Delete Listing
-                </MenuItem>
-              </>
-            ) : (
-              <>
-                <MenuItem
-                  icon={<MdDoNotDisturb />}
-                  onClick={handleDoNotRecommend}
-                >
-                  Do Not Recommend
-                </MenuItem>
-              </>
-            )}
-          </MenuList>
-        </Menu>
-
-        <Modal
-          finalFocusRef={finalRef}
-          isOpen={isDeleteOpen}
-          onClose={onDeleteClose}
-          isCentered
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Delete Listing</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>Are you sure you want to delete this listing?</ModalBody>
-
+            <FaArrowLeft size={15} color="white" />
+          </button>
+          <h1
+            className="font-semibold text-pri-blue text-3xl p-0"
+            data-cy="listing-title"
+          >
+            {listingInfo.title}
+          </h1>
+          <Menu>
+            <MenuButton
+              as={Button}
+              width="47px"
+              background="white"
+              data-cy="menu-button"
+            >
+              <FaEllipsisH color="#166aac"></FaEllipsisH>
+            </MenuButton>
+            <MenuList>
+              {isUser ? (
+                <>
+                  <MenuItem
+                    icon={<FaRegEdit />}
+                    onClick={() => navigate(`/edit/${listingID}`)}
+                  >
+                    Edit Listing
+                  </MenuItem>
+                  <MenuItem icon={<AiOutlineDelete />} onClick={onDeleteOpen}>
+                    Delete Listing
+                  </MenuItem>
+                </>
+              ) : (
+                <>
+                  <MenuItem
+                    icon={<MdDoNotDisturb />}
+                    onClick={handleDoNotRecommend}
+                  >
+                    Do Not Recommend
+                  </MenuItem>
+                </>
+              )}
+            </MenuList>
+          </Menu>
+          <Modal
+            finalFocusRef={finalRef}
+            isOpen={isDeleteOpen}
+            onClose={onDeleteClose}
+            isCentered
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Delete Listing</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                Are you sure you want to delete this listing?
+              </ModalBody>
+              
             <ModalFooter>
               <InvalidRedButton
                 clickHandle={handleDelete}
@@ -327,6 +330,7 @@ export default function IndividualListing() {
           </ModalContent>
         </Modal>
       </div>
+        
       <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
         <div className="flex items-center gap-3">
           <div
@@ -360,6 +364,40 @@ export default function IndividualListing() {
             ""
           )}
         </div>
+        
+        <div className="flex flex-col items-start gap-4 lg:gap-6 mb-12">
+          <div className="flex items-center gap-3">
+            <div
+              className="text-green-700 font-bold text-2xl"
+              data-cy="listing-price"
+            >
+              ${listingInfo.price}
+            </div>
+            <Badge
+              colorScheme={`${
+                listingInfo.status == "AVAILABLE" ? "green" : "red"
+              }`}
+              data-cy="listing-status-badge"
+            >
+              {listingInfo.status}
+            </Badge>
+            {listingInfo?.forCharity ? (
+              <Tooltip
+                label="All profits from this item go to charity!"
+                aria-label="Marked for charity"
+                placement="auto-end"
+              >
+                <span>
+                  <MdOutlineHandshake
+                    color="#166aac"
+                    size="18px"
+                  ></MdOutlineHandshake>
+                </span>
+              </Tooltip>
+            ) : (
+              ""
+            )}
+          </div>
 
         <div className="text-sm" data-cy="listing-time">
           {timeSincePost(listingInfo.listedAt)}
@@ -378,14 +416,17 @@ export default function IndividualListing() {
             }}
             isLoading = {isChatLoading}
           ></PriBlueButton>
-
         </div>
+          
+        <RatingSection
+          reviews={reviews}
+          listingId={listingID}
+          ratings={ratings}
+        ></RatingSection>
       </div>
-      <RatingSection
-        reviews={reviews}
-        listingId={listingID}
-        ratings={ratings}
-      ></RatingSection>
+      <div className="lg:w-1/5">
+        <RecommendationsWidget />
+      </div>
     </main>
   );
 }

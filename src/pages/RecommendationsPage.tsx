@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import ErrorPage from "./ErrorPage";
 import axios from "axios";
 import { PriBlueButton } from "../components/Button";
+import ButtonSkeleton from "../components/Skeletons/ButtonSkeleton";
 
 export default function RecommendationsPage() {
   const MAX_LISTINGS_PAGE = 30;
@@ -88,21 +89,22 @@ export default function RecommendationsPage() {
 
   return (
     <>
-      <main className="px-4">
-        <PageHeading title="Your Recommendations"></PageHeading>
+      <main className='px-4'>
+        <PageHeading title='Your Recommendations'></PageHeading>
         {isListingPending ? (
           <>
-            <div className="flex justify-end">
+            <div className='flex justify-between mt-4 mb-4'>
+              <ButtonSkeleton></ButtonSkeleton>
               <PaginationBarSkeleton></PaginationBarSkeleton>
             </div>
             <ListingsGridSkeleton></ListingsGridSkeleton>
           </>
         ) : (
           <>
-            <div className="flex justify-between mt-4 mb-4">
+            <div className='flex justify-between mt-4 mb-4'>
               {showCharities ? (
                 <PriBlueButton
-                  title="Hide Charities"
+                  title='Hide Charities'
                   clickHandle={() => {
                     setShowCharities(false);
                     setCurrentPage(1);
@@ -114,7 +116,7 @@ export default function RecommendationsPage() {
                 ></PriBlueButton>
               ) : (
                 <PriBlueButton
-                  title="Show Charities"
+                  title='Show Charities'
                   clickHandle={() => {
                     setShowCharities(true);
                     setCurrentPage(1);
@@ -133,16 +135,20 @@ export default function RecommendationsPage() {
                 handlePrev={handlePrev}
               ></PaginationBar>
             </div>
-            <ListingsGrid ref={scrollRef}>
-              {activePageListing.map((listing) => {
-                return (
-                  <ListingCard
-                    listingInfo={listing}
-                    key={listing.listingId}
-                  ></ListingCard>
-                );
-              })}
-            </ListingsGrid>
+            {activePageListing.length != 0 ? (
+              <ListingsGrid ref={scrollRef}>
+                {activePageListing.map((listing) => {
+                  return (
+                    <ListingCard
+                      listingInfo={listing}
+                      key={listing.listingId}
+                    ></ListingCard>
+                  );
+                })}
+              </ListingsGrid>
+            ) : (
+              <div>No reccomendations, try browsing some more</div>
+            )}
           </>
         )}
       </main>

@@ -34,9 +34,9 @@ export default function InfiniteScrollingListingView(
     const ch = t.clientHeight ?? window.outerHeight;
 
     const bottom = sh - st <= ch + 100;
-    console.log(`${sh}, ${st}, ${ch + 100}`);
-    console.log(`${sh - st} <= ${ch + 100}`);
-    console.log(bottom);
+    // console.log(`${sh}, ${st}, ${ch + 100}`);
+    // console.log(`${sh - st} <= ${ch + 100}`);
+    // console.log(bottom);
     if (bottom) {
       t.removeEventListener("scroll", oneTimeScrollListener);
       setIsLoadingMore(true);

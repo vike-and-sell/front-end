@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FilterOptions } from "./interfaces";
+import { FilterOptions, Listing } from "./interfaces";
 
 const fetchUser = async () => {
   const response = await axios.get(
@@ -31,7 +31,10 @@ const fetchOtherUser = async (userId: string) => {
   return response.data;
 };
 
-const fetchBrowseListings = async (filterOptions: FilterOptions) => {
+const fetchBrowseListings = async (
+  filterOptions: FilterOptions,
+  offset: number = 0
+): Promise<Listing[]> => {
   let paramsString = "";
   Object.keys(filterOptions).forEach((key) => {
     const filter = filterOptions[key];
@@ -41,6 +44,7 @@ const fetchBrowseListings = async (filterOptions: FilterOptions) => {
       )}&`;
     }
   });
+  paramsString += `offset=${offset}`;
 
   const response = await axios.get(
     `${import.meta.env.VITE_REACT_APP_API_URL}/listings?${paramsString}`,
@@ -197,7 +201,7 @@ const getCharities = async function () {
   if (response.status !== 200) {
     throw new Error("Failed get charities");
   }
-  
+
   return response.data;
 };
 

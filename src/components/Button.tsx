@@ -5,6 +5,7 @@ interface DefaultButtonProps {
   clickHandle?: () => void;
   className?: string;
   isDisabled?: boolean;
+  isLoading?:boolean
   onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
   datacy?: string;
 }
@@ -46,7 +47,8 @@ export function PriBlueButton({
   clickHandle,
   className,
   isDisabled,
-  datacy = "default",
+  isLoading,
+  datacy = "default"
 }: DefaultButtonProps) {
   return (
     <Button
@@ -63,6 +65,7 @@ export function PriBlueButton({
       _focus={{}}
       fontWeight='semibold'
       _hover={{ bg: "#0f4a79" }}
+      isLoading={isLoading}
       isDisabled={isDisabled}
       onClick={clickHandle}
       transition='all 0.2s cubic-bezier(.08,.52,.52,1)'

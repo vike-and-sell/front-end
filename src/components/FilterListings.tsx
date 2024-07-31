@@ -30,7 +30,6 @@ export default function FilterListing({
 
   function toggleFilter() {
     setActive((prevActive) => !prevActive);
-    console.log(active);
   }
 
   // Sets up event listener to toggle on / off the filter menu

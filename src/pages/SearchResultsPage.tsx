@@ -171,14 +171,16 @@ export default function SearchResultsPage() {
           ) : activePageListing.length == 0 ? (
             <div className='h-[400px]'>No listings found</div>
           ) : (
-            <ListingsGrid ref={scrollRef}>
-              {activePageListing.map((listing) => (
-                <ListingCard
-                  listingInfo={listing}
-                  key={listing.listingId + "listing"}
-                ></ListingCard>
-              ))}
-            </ListingsGrid>
+            <div className="w-full lg:max-h-[calc(100vh-250px)] lg:overflow-y-scroll">
+              <ListingsGrid ref={scrollRef}>
+                {activePageListing.map((listing) => (
+                  <ListingCard
+                    listingInfo={listing}
+                    key={listing.listingId + "listing"}
+                  ></ListingCard>
+                ))}
+              </ListingsGrid>
+            </div>
           )
         ) : isSearchLoading ? (
           <UserListingSkeleton></UserListingSkeleton>

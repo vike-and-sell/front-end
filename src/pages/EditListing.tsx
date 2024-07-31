@@ -81,7 +81,7 @@ export default function Edit() {
     const dbFn = setTimeout(() => {
       axios
         .get(
-          `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${buyerUsername}`,
+          `${import.meta.env.VITE_REACT_APP_API_URL}/search?search=${buyerUsername}`,
           {
             withCredentials: true,
           }

@@ -94,8 +94,9 @@ export default function Settings() {
   return (
     <>
       <main className='px-4'>
-        <PageHeading title={"Settings"}></PageHeading>
-
+        <div className='mb-3'>
+          <PageHeading title={"Settings"}></PageHeading>
+        </div>
         <Accordion>
           <AccordionItem>
             <AccordionButton>

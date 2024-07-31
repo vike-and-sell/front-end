@@ -64,7 +64,7 @@ export default function BrowsePage() {
     <>
       <main className='px-4 overflow-y-hidden flex flex-col'>
         <PageHeading data-cy='page-heading' title='Browse Around'></PageHeading>
-        <div className='flex justify-between'>
+        <div className='flex justify-between mb-3 mt-3'>
           <FilterListing
             disableLocation={false}
             filterOptions={filterOptions}

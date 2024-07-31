@@ -34,6 +34,10 @@ export default function RecommendationsPage() {
 
   if (listings) {
     totalPages = Math.ceil(listings.length / MAX_LISTINGS_PAGE);
+    const urlPage = page ? +page : 1;
+    if (urlPage > totalPages) {
+      navigate(`/recommendations/1`);
+    }
     activePageListing = arrayPagination(
       listings,
       currentPage,

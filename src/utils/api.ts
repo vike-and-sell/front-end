@@ -175,7 +175,7 @@ const queryListings = async function (
   });
 
   const searchResponse = await axios.get(
-    `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/search?search=${encodeURIComponent(
       query
     )}${"&" + paramsString}`,
     {

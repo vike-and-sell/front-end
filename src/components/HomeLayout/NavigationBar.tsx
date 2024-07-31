@@ -23,33 +23,51 @@ function NavigationBar() {
   return (
     <>
       <nav data-cy='nav-bar' className='flex flex-col p-4 gap-4 items-center'>
-        <CustomNavLink
-          data-cy='recommend-nav'
-          route='/recommendations/1'
-          title='Recommendations'
-        >
-          <FaLightbulb></FaLightbulb>
-        </CustomNavLink>
-        <CustomNavLink data-cy='browse-nav' route='/browse/1' title='Browse'>
-          <FaShop></FaShop>
-        </CustomNavLink>
 
-        <CustomNavLink route='/charity' title='Charities'>
-          <MdOutlineHandshake></MdOutlineHandshake>
-        </CustomNavLink>
-        <CustomNavLink route='/create' title='Create Listing'>
-          <MdSell></MdSell>
-        </CustomNavLink>
-        <CustomNavLink route='/mylistings/1' title='My Listings'>
-          <FaListAlt></FaListAlt>
-        </CustomNavLink>
-        <CustomNavLink
-          data-cy='my-profile-nav'
-          route='/myprofile'
-          title='My Profile'
-        >
-          <CgProfile></CgProfile>
-        </CustomNavLink>
+        <div data-cy='recommend-nav'>
+          <CustomNavLink
+            data-cy='recommend-nav'
+            route='/recommendations/1'
+            title='Recommendations'
+          >
+            <FaLightbulb></FaLightbulb>
+          </CustomNavLink>
+        </div>
+
+        <div data-cy='browse-nav'>
+          <CustomNavLink data-cy='browse-nav' route='/browse/1' title='Browse'>
+            <FaShop></FaShop>
+          </CustomNavLink>
+        </div>
+
+        <div data-cy='charity-nav'> 
+          <CustomNavLink route='/charity' title='Charities'>
+            <MdOutlineHandshake></MdOutlineHandshake>
+          </CustomNavLink>
+        </div> 
+
+        <div data-cy='create-listing-nav'>
+          <CustomNavLink route='/create' title='Create Listing'>
+            <MdSell></MdSell>
+          </CustomNavLink>
+        </div>
+
+        <div data-cy='my-listings-nav'>
+          <CustomNavLink route='/mylistings/1' title='My Listings'>
+            <FaListAlt></FaListAlt>
+          </CustomNavLink>
+        </div>
+
+        <div data-cy='my-profile-nav'>
+          <CustomNavLink
+            data-cy='my-profile-nav'
+            route='/myprofile'
+            title='My Profile'
+          >
+            <CgProfile></CgProfile>
+          </CustomNavLink>
+        </div>
+
         <div className='flex gap-3 items-center'>
           <TbMessageCircle2Filled color='white'></TbMessageCircle2Filled>
           <button

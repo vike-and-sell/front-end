@@ -1,6 +1,7 @@
 import PageHeading from "../components/PageHeading";
 import { useNavigate } from "react-router-dom";
 import {
+  Checkbox,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -23,6 +24,7 @@ export default function Settings() {
   const [location, setLocation] = useState<string>("");
   const [isLocationTouched, setIsLocationTouched] = useState<boolean>(false);
   const [currentLocation, setCurrentLocation] = useState<string>("");
+  const [forCharity, setForCharity] = useState<boolean>(true);
   const locationRegex = /^[A-Za-z]\d[A-Za-z]\s?\d[A-Za-z]\d$/;
   const isValidLocation = locationRegex.test(location);
   const navigate = useNavigate();
@@ -35,9 +37,10 @@ export default function Settings() {
         })
         .then(function (response) {
           setCurrentLocation(response.data.location);
+          setForCharity(response.data.seeCharity);
         });
     } catch (error) {
-      console.log(error);
+      console.error("Unable to fetch user:", error);
     }
   };
 
@@ -91,46 +94,87 @@ export default function Settings() {
     }
   };
 
+  const handleConfirmCharity = async () => {
+    try {
+      toast({
+        title: "Updating charity preferences...",
+        status: "loading",
+        duration: 10000,
+        isClosable: true,
+      });
+      await axios
+        .patch(
+          `${import.meta.env.VITE_REACT_APP_API_URL}/users/me`,
+          { seeCharity: forCharity },
+          {
+            withCredentials: true,
+          }
+        )
+        .then(function (response) {
+          if (response.status != 200) {
+            throw new Error("Could not update charity preferences");
+          }
+          toast.closeAll();
+          toast({
+            title: "Charity preferences updated",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+
+          setCurrentLocation(location.substring(0, 3));
+        });
+    } catch (error) {
+      toast.closeAll();
+      toast({
+        title: "Failed to update",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <>
-      <main className='px-4'>
-        <div className='mb-3'>
+      <main className="px-4">
+        <div className="mb-3">
           <PageHeading title={"Settings"}></PageHeading>
         </div>
         <Accordion>
           <AccordionItem>
             <AccordionButton>
               <Box
-                as='button'
-                borderRadius='md'
+                as="button"
+                borderRadius="md"
                 px={4}
                 py={2}
-                className='bg-pri-blue text-white'
+                className="bg-pri-blue text-white"
               >
                 Change Location
                 <AccordionIcon></AccordionIcon>
               </Box>
             </AccordionButton>
             <AccordionPanel>
-              <div className='flex flex-col'>
-                <span className='font-semibold'>Current Location</span>
-                <span className='text-acc-gray'>{currentLocation}</span>
+              <div className="flex flex-col">
+                <span className="font-semibold">Current Location</span>
+                <span className="text-acc-gray">{currentLocation}</span>
               </div>
 
               <FormControl
                 isRequired
                 isInvalid={!isValidLocation && isLocationTouched}
               >
-                <div className='my-4 md:mr-80'>
+                <div className="my-4 md:mr-80">
                   <FormLabel>New Location</FormLabel>
                   <Input
                     value={location}
                     onChange={handleLocationChange}
-                    type='text'
-                    placeholder='e.g V8W 5A2'
+                    type="text"
+                    placeholder="e.g V8W 5A2"
                   ></Input>
                   {!isValidLocation && isLocationTouched ? (
-                    <FormErrorMessage className='font-semibold'>
+                    <FormErrorMessage className="font-semibold">
                       Enter a valid postal code
                     </FormErrorMessage>
                   ) : (
@@ -140,17 +184,17 @@ export default function Settings() {
               </FormControl>
 
               <FormControl>
-                <div className='my-5 flex'>
+                <div className="my-5 flex">
                   <PriBlueButton
                     isDisabled={!isValidLocation}
                     clickHandle={handleConfirm}
-                    title='Confirm'
+                    title="Confirm"
                   ></PriBlueButton>
 
                   <InverseBlueButton
                     clickHandle={() => navigate(-1)}
-                    className='ml-4'
-                    title='Cancel'
+                    className="ml-4"
+                    title="Cancel"
                   ></InverseBlueButton>
                 </div>
               </FormControl>
@@ -159,11 +203,11 @@ export default function Settings() {
           <AccordionItem>
             <AccordionButton>
               <Box
-                as='button'
-                borderRadius='md'
+                as="button"
+                borderRadius="md"
                 px={4}
                 py={2}
-                className='bg-pri-blue text-white'
+                className="bg-pri-blue text-white"
               >
                 Change Password
                 <AccordionIcon></AccordionIcon>
@@ -173,7 +217,7 @@ export default function Settings() {
               <div>
                 <span>Click </span>
                 <button
-                  className='underline'
+                  className="underline"
                   onClick={() => {
                     navigate("/unverified/recover");
                   }}
@@ -185,6 +229,24 @@ export default function Settings() {
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
+        <FormControl>
+          <div className="my-4">
+            <FormLabel>Charity</FormLabel>
+
+            <Checkbox
+              data-cy="edit-charity-checkbox"
+              isChecked={forCharity}
+              onChange={(e) => setForCharity(e.target.checked)}
+              size="md"
+            >
+              I want to see charities in recomended
+            </Checkbox>
+          </div>
+          <PriBlueButton
+            clickHandle={handleConfirmCharity}
+            title="Update charity preferences"
+          ></PriBlueButton>
+        </FormControl>
       </main>
     </>
   );

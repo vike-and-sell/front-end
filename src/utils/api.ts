@@ -175,7 +175,7 @@ const queryListings = async function (
   });
 
   const searchResponse = await axios.get(
-    `${import.meta.env.VITE_REACT_APP_API_URL}/search?q=${encodeURIComponent(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/search?search=${encodeURIComponent(
       query
     )}${"&" + paramsString}`,
     {
@@ -186,7 +186,7 @@ const queryListings = async function (
   if (searchResponse.status !== 200) {
     throw new Error("Failed to search for items or users");
   }
-  console.log(searchResponse.data);
+  
   return searchResponse.data;
 };
 

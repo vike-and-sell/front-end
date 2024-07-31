@@ -12,15 +12,12 @@ import { getRecommendations } from "../utils/api";
 import { useQuery } from "@tanstack/react-query";
 import ErrorPage from "./ErrorPage";
 import axios from "axios";
-import { PriBlueButton } from "../components/Button";
-import ButtonSkeleton from "../components/Skeletons/ButtonSkeleton";
 
 export default function RecommendationsPage() {
   const MAX_LISTINGS_PAGE = 30;
   const scrollRef = useRef<HTMLDivElement>(null);
   const { page } = useParams();
   const navigate = useNavigate();
-  const [showCharities, setShowCharities] = useState(true);
   const [currentPage, setCurrentPage] = useState(page ? +page : 1);
   let activePageListing: Listing[] = [];
   let totalPages = 0;
@@ -31,27 +28,20 @@ export default function RecommendationsPage() {
     isError,
     error,
   } = useQuery({
-    queryKey: [showCharities],
+    queryKey: [],
     queryFn: () => getRecommendations(),
   });
 
   if (listings) {
-    const subSearchResult = showCharities
-      ? listings
-      : listings.filter((listing: Listing) => !listing.forCharity);
-
-    totalPages = Math.max(
-      Math.ceil(subSearchResult.length / MAX_LISTINGS_PAGE),
-      1
-    );
+    totalPages = Math.max(Math.ceil(listings.length / MAX_LISTINGS_PAGE), 1);
 
     const urlPage = page ? +page : 1;
     if (urlPage > totalPages) {
-      navigate(`/search/${subSearchResult}/1`);
+      navigate(`/reccomendations/1`);
     }
 
     activePageListing = arrayPagination(
-      subSearchResult,
+      listings,
       currentPage,
       MAX_LISTINGS_PAGE
     );
@@ -89,45 +79,18 @@ export default function RecommendationsPage() {
 
   return (
     <>
-      <main className='px-4'>
-        <PageHeading title='Your Recommendations'></PageHeading>
+      <main className="px-4">
+        <PageHeading title="Your Recommendations"></PageHeading>
         {isListingPending ? (
           <>
-            <div className='flex justify-between mt-4 mb-4'>
-              <ButtonSkeleton></ButtonSkeleton>
+            <div className="flex justify-end mt-4 mb-4">
               <PaginationBarSkeleton></PaginationBarSkeleton>
             </div>
             <ListingsGridSkeleton></ListingsGridSkeleton>
           </>
         ) : (
           <>
-            <div className='flex justify-between mt-4 mb-4'>
-              {showCharities ? (
-                <PriBlueButton
-                  title='Hide Charities'
-                  clickHandle={() => {
-                    setShowCharities(false);
-                    setCurrentPage(1);
-                    if (scrollRef.current) {
-                      scrollRef.current.scrollTop = 0; // Using scrollTop property
-                    }
-                    navigate(`/recommendations/1`);
-                  }}
-                ></PriBlueButton>
-              ) : (
-                <PriBlueButton
-                  title='Show Charities'
-                  clickHandle={() => {
-                    setShowCharities(true);
-                    setCurrentPage(1);
-                    if (scrollRef.current) {
-                      scrollRef.current.scrollTop = 0; // Using scrollTop property
-                    }
-                    navigate(`/recommendations/1`);
-                  }}
-                ></PriBlueButton>
-              )}
-
+            <div className="flex justify-end mt-4 mb-4">
               <PaginationBar
                 currentPage={currentPage}
                 totalPages={totalPages}

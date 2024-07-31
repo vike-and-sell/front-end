@@ -43,7 +43,6 @@ export default function Chat({ chatID }: ChatProps) {
       const ChatIDResponse = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/chats`, {
           withCredentials: true
       });
-        //console.log(ChatIDResponse.data)
 
       const chatIDs: number[] = ChatIDResponse.data.map(Number); // Parse ChatIDs as numbers
       const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -62,7 +61,6 @@ export default function Chat({ chatID }: ChatProps) {
           .filter((Id: string) => auth?.user && Id !== auth.user.userId)
           .join("");
 
-        //console.log(interlocutorId);
         const interlocutorResponse = await axios.get(
           `${
             import.meta.env.VITE_REACT_APP_API_URL

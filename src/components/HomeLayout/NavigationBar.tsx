@@ -62,9 +62,11 @@ function NavigationBar() {
           </button>
         </div>
 
-        <CustomNavLink route='/settings' title='Settings'>
-          <IoSettingsSharp></IoSettingsSharp>
-        </CustomNavLink>
+        <div data-cy="settings-nav">
+          <CustomNavLink route='/settings' title='Settings'>
+            <IoSettingsSharp></IoSettingsSharp>
+          </CustomNavLink>
+        </div>
       </nav>
 
       <Modal

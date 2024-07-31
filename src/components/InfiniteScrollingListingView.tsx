@@ -63,7 +63,7 @@ export default function InfiniteScrollingListingView(
 
   return (
     <div
-      className="w-full lg:max-h-[calc(100vh-250px)] lg:overflow-y-scroll"
+      className='w-full lg:max-h-[calc(100vh-250px)] lg:overflow-y-scroll'
       ref={props.scrollRef}
     >
       <ListingsGrid isLoading={isLoadingMore}>

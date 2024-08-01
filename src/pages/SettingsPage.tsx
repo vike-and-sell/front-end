@@ -99,7 +99,7 @@ export default function Settings() {
         </div>
         <Accordion>
           <AccordionItem>
-            <AccordionButton>
+            <AccordionButton data-cy='change-location-menu-button'>
               <Box
                 as='button'
                 borderRadius='md'
@@ -114,7 +114,7 @@ export default function Settings() {
             <AccordionPanel>
               <div className='flex flex-col'>
                 <span className='font-semibold'>Current Location</span>
-                <span className='text-acc-gray'>{currentLocation}</span>
+                <span data-cy='current-location' className='text-acc-gray'>{currentLocation}</span>
               </div>
 
               <FormControl
@@ -124,6 +124,7 @@ export default function Settings() {
                 <div className='my-4 md:mr-80'>
                   <FormLabel>New Location</FormLabel>
                   <Input
+                    data-cy='location-input'
                     value={location}
                     onChange={handleLocationChange}
                     type='text'
@@ -142,6 +143,7 @@ export default function Settings() {
               <FormControl>
                 <div className='my-5 flex'>
                   <PriBlueButton
+                    data-cy='confirm-new-location-button'
                     isDisabled={!isValidLocation}
                     clickHandle={handleConfirm}
                     title='Confirm'
@@ -157,7 +159,7 @@ export default function Settings() {
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem>
-            <AccordionButton>
+            <AccordionButton data-cy='change-password-menu-button'>
               <Box
                 as='button'
                 borderRadius='md'
@@ -173,6 +175,7 @@ export default function Settings() {
               <div>
                 <span>Click </span>
                 <button
+                  data-cy='reset-link'
                   className='underline'
                   onClick={() => {
                     navigate("/unverified/recover");

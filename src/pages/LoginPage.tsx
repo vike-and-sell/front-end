@@ -121,6 +121,7 @@ export default function LoginPage() {
               Don't have an account?{" "}
             </span>
             <button
+              data-cy='create-account-button'
               className='text-white text-sm  underline'
               onClick={() => {
                 navigate("/unverified/signup");

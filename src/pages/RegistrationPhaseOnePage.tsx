@@ -48,11 +48,11 @@ export default function RegistrationPhaseOnePage() {
                     </span>
                 </div>
 
-                {statusBool? (<div className="text-red px-6 text-center">
+                {statusBool? (<div data-cy='error-msg' className="text-red px-6 text-center">
                                         Invalid email address. Please try again.
                                       </div>) : ("") }
                 
-                {successBool ? (<div className='text-rt-dark-blue px-6 text-center'>
+                {successBool ? (<div data-cy='success-msg' className='text-rt-dark-blue px-6 text-center'>
                                         Success! Check your email for a registration link.
                                       </div>) : ("")}
 
@@ -60,6 +60,7 @@ export default function RegistrationPhaseOnePage() {
                     <FormControl isRequired isInvalid={(isEmpty || !isValid) && isTouched}>
                         <FormLabel fontSize={[19,19,25,27]} textColor='rt-dark-blue'>Email Address</FormLabel>
                         <Input 
+                          data-cy='email-input'
                           variant='outline'
                           type='email'
                           value={email}
@@ -67,7 +68,7 @@ export default function RegistrationPhaseOnePage() {
                         {isEmpty && isTouched ? (
                             <FormErrorMessage>Email Address Required</FormErrorMessage>
                         ): !isValid && isTouched ?(
-                            <FormErrorMessage>Must Be a Valid UVic Email Address</FormErrorMessage>
+                            <FormErrorMessage data-cy='form-error-msg'>Must Be a Valid UVic Email Address</FormErrorMessage>
                         ):(
                             <FormHelperText></FormHelperText>
                         )}
@@ -91,6 +92,7 @@ export default function RegistrationPhaseOnePage() {
 
           <div className='p-5 self-center'>
             <PriBlueButton
+              data-cy='send-email-button'
               isDisabled={!isValid || isEmpty}
               clickHandle={handleCreate}
               title='Sign Up'>

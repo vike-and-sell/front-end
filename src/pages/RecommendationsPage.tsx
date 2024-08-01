@@ -104,6 +104,7 @@ export default function RecommendationsPage() {
             <div className='flex justify-between mt-4 mb-4'>
               {showCharities ? (
                 <PriBlueButton
+                  datacy='hide-btn'
                   title='Hide Charities'
                   clickHandle={() => {
                     setShowCharities(false);
@@ -116,6 +117,7 @@ export default function RecommendationsPage() {
                 ></PriBlueButton>
               ) : (
                 <PriBlueButton
+                  datacy='show-btn'
                   title='Show Charities'
                   clickHandle={() => {
                     setShowCharities(true);

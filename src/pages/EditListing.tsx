@@ -81,7 +81,9 @@ export default function Edit() {
     const dbFn = setTimeout(() => {
       axios
         .get(
-          `${import.meta.env.VITE_REACT_APP_API_URL}/search?search=${buyerUsername}`,
+          `${
+            import.meta.env.VITE_REACT_APP_API_URL
+          }/search?search=${buyerUsername}`,
           {
             withCredentials: true,
           }
@@ -156,8 +158,6 @@ export default function Edit() {
       });
   };
 
-  
-
   if (isLoading || isUserDataLoading) {
     return <EditCreateSkeleton></EditCreateSkeleton>;
   }
@@ -188,7 +188,7 @@ export default function Edit() {
                 value={title}
               ></Input>
               {isInvalidTitle ? (
-                <FormErrorMessage className='font-semibold'>
+                <FormErrorMessage className='font-semibold title-error'>
                   Title is required.
                 </FormErrorMessage>
               ) : (
@@ -231,7 +231,7 @@ export default function Edit() {
                 ></Input>
               </InputGroup>
               {isInvalidPrice ? (
-                <FormErrorMessage className='font-semibold'>
+                <FormErrorMessage className='font-semibold price-error'>
                   Price is required.
                 </FormErrorMessage>
               ) : (
@@ -254,15 +254,21 @@ export default function Edit() {
                 value={status}
               >
                 <option
-                  className='text-green-700 font-semibold'
+                  className='text-green-700 font-semibold available-option'
                   value='AVAILABLE'
                 >
                   Available
                 </option>
-                <option className='text-red font-semibold' value='SOLD'>
+                <option
+                  className='text-red font-semibold sold-option'
+                  value='SOLD'
+                >
                   Sold
                 </option>
-                <option className='text-red font-semibold' value='REMOVED'>
+                <option
+                  className='text-red font-semibold removed-option'
+                  value='REMOVED'
+                >
                   Removed
                 </option>
               </Select>
@@ -270,7 +276,7 @@ export default function Edit() {
           </FormControl>
 
           <FormControl className={`${status === "SOLD" ? "" : "hidden"}`}>
-            <div className='my-4'>
+            <div className='my-4 select-buyer'>
               <FormLabel>Select Buyer</FormLabel>
               <AutoComplete
                 creatable
@@ -279,7 +285,7 @@ export default function Edit() {
                   setBuyerUsername(item.item.value);
                 }}
                 rollNavigation
-                placement="top"
+                placement='top'
               >
                 <AutoCompleteInput
                   data-cy='edit-buyer-autocomplete'
@@ -290,17 +296,17 @@ export default function Edit() {
                   }
                 />
                 <AutoCompleteList>
-                  <AutoCompleteGroup title="" showDivider>
+                  <AutoCompleteGroup title='' showDivider>
                     {buyersArray
                       .slice(0, 30)
                       .map((buyer: UserSearchItem, index: number) => (
                         <AutoCompleteItem
                           key={`${index}`}
                           value={buyer.username}
-                          align="center"
+                          align='center'
                         >
-                          <Avatar size="sm" name={buyer.username} />
-                          <Text ml="4">{buyer.username}</Text>
+                          <Avatar size='sm' name={buyer.username} />
+                          <Text ml='4'>{buyer.username}</Text>
                         </AutoCompleteItem>
                       ))}
                   </AutoCompleteGroup>
@@ -331,7 +337,7 @@ export default function Edit() {
             <div className='my-5 flex'>
               <PriBlueButton
                 clickHandle={handleEdit}
-                data-cy='edit-listing-button'
+                datacy='edit-listing-button'
                 isDisabled={isInvalidPrice || isInvalidTitle || isEditLoading}
                 title='Save Changes'
               ></PriBlueButton>
@@ -339,7 +345,7 @@ export default function Edit() {
               <InverseBlueButton
                 clickHandle={() => navigate(-1)}
                 className='ml-4'
-                data-cy='cancel-button'
+                datacy='cancel-button'
                 title='Cancel'
               ></InverseBlueButton>
             </div>

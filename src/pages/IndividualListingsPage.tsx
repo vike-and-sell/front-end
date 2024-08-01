@@ -260,6 +260,7 @@ export default function IndividualListing() {
                   <MenuItem
                     icon={<FaRegEdit />}
                     onClick={() => navigate(`/edit/${listingID}`)}
+                    className='edit-listing-btn'
                   >
                     Edit Listing
                   </MenuItem>

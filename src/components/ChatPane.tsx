@@ -54,7 +54,7 @@ export default function ChatPane({ChatPaneItems, fromChatPane, ChatPaneDisplayTo
                             bg='rt-dark-blue'
                             className=""
                             color='#ffffff'
-                            data-cy="chat-pane-item"
+                            data-cy={`chat-pane-item-${index}`}
                             height='68px'
                             _hover={{ bg: '#0f4a79' }}
                             key={index}

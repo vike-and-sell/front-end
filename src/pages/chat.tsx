@@ -267,7 +267,7 @@ export default function Chat({ chatID }: ChatProps) {
           )}
         </div>
 
-        <div className='flex flex-wrap'>
+        <div className='flex flex-wrap' data-cy="text-area">
           <InputGroup>
             <Textarea
               colorScheme='teal'
@@ -290,6 +290,8 @@ export default function Chat({ chatID }: ChatProps) {
               resize='none'
               size='md'
               value={input}
+              data-cy="text-area"
+              
 
             />
             <InputRightElement pt={8} width='4rem'>

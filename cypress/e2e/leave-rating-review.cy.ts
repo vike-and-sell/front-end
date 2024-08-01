@@ -11,7 +11,7 @@ describe('User can leave a rating and review', () => {
     })
   
     it('User should be able to leave a rating and review', () => {
-      cy.visit('/listing/1')
+      cy.visit('/listing/90')
       cy.get(".review-textbox").click().type("demo review here");
       cy.get(".star4").click();
       cy.get("[data-cy='submit-review']").click();
@@ -19,10 +19,11 @@ describe('User can leave a rating and review', () => {
     })
 
     it('User tries to submit without adding any values', () => {
-        cy.visit('/listing/1')
+        cy.visit('/listing/90')
         cy.get("[data-cy='submit-review']").click();
-        cy.get(".textbox-error");
-        cy.get(".rating-error");
+        cy.wait(1000)
+        cy.get("[data-cy='review-textbox-error']").should('exist').and('be.visible')
+        cy.get("[data-cy='rating-error']").should('exist').and('be.visible')
       })
 
    

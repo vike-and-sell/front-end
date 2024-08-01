@@ -79,7 +79,7 @@ export default function UserReview({ listingId }: UserReview) {
         required
       ></Textarea>
       {formError && textInput === "" ? (
-        <FormErrorMessage className='textbox-error'>
+        <FormErrorMessage className='textbox-error' data-cy='review-textbox-error'>
           Please enter in a review message.
         </FormErrorMessage>
       ) : (
@@ -99,7 +99,7 @@ export default function UserReview({ listingId }: UserReview) {
         ></PriBlueButton>
       </div>
       {formError && ratingValue === 0 ? (
-        <FormErrorMessage className='rating-error'>
+        <FormErrorMessage className='rating-error' data-cy='rating-error'>
           Please enter in a rating.
         </FormErrorMessage>
       ) : (

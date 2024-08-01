@@ -67,7 +67,7 @@ export default function NewPasswordPage() {
                     </span> 
                 </div>
 
-                {statusBool? (<div className='text-red px-6 text-center'>
+                {statusBool? (<div data-cy='reset-error-msg' className='text-red px-6 text-center'>
                                 Invalid Input. Please see input fields for requirements and try again.
                               </div>) : ("") 
                 }
@@ -75,7 +75,7 @@ export default function NewPasswordPage() {
                 <div className='flex flex-col px-8 gap-6'>    
                     <FormControl isRequired isInvalid={(!isValidPassSymbols || !isValidPassLen) && isPasswordTouched}>
                         <FormLabel fontSize={[16,19,25,27]} textColor='rt-dark-blue'>New Password</FormLabel>
-                        <Input variant='outline' type='password' value={password} onChange={handlePasswordChange} data-cy="" />
+                        <Input data-cy='new-pass-input' variant='outline' type='password' value={password} onChange={handlePasswordChange} />
                         {!isValidPassSymbols && isPasswordTouched ? (
                             <FormErrorMessage>Must contain at least 1 of each character: uppercase, lowercase, number, special</FormErrorMessage>
                         ):!isValidPassLen && isPasswordTouched ? (
@@ -87,7 +87,7 @@ export default function NewPasswordPage() {
 
                     <FormControl isRequired isInvalid={!isValidConfPassword && isConfPasswordTouched}>
                         <FormLabel fontSize={[16,19,25,27]} textColor='rt-dark-blue'>Confirm Password</FormLabel>
-                        <Input variant='outline' type='password' value={confPassword} onChange={handleConfPasswordChange} />
+                        <Input data-cy='confirm-pass-input' variant='outline' type='password' value={confPassword} onChange={handleConfPasswordChange} />
                         {!isValidConfPassword && isConfPasswordTouched ? (
                             <FormErrorMessage>Must match password entered above</FormErrorMessage>
                         ):(
@@ -97,7 +97,7 @@ export default function NewPasswordPage() {
                 </div>    
 
                 <div className='flex flex-col justify-center items-center pb-5 self-center'>
-                        <button className='bg-pri-blue relative px-4 rounded-md text-white text-xl md:text-2xl font-semibold p-3'
+                        <button data-cy='reset-pass-button' className='bg-pri-blue relative px-4 rounded-md text-white text-xl md:text-2xl font-semibold p-3'
                                 onClick={onReset}
                         >
                             Reset Password

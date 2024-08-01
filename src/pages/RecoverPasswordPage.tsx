@@ -93,7 +93,7 @@ export default function RecoverPasswordPage() {
             </span>
 
             {statusBool ? (
-              <div className='text-white px-6 text-center'>
+              <div data-cy='error-msg' className='text-white px-6 text-center'>
                 This Email is Not Linked to an Account. Please enter a valid
                 email try again.
               </div>
@@ -107,6 +107,7 @@ export default function RecoverPasswordPage() {
               </FormLabel>
               <InputGroup>
                 <Input
+                  data-cy='email-input'
                   bg='white'
                   type='email'
                   value={email}
@@ -117,7 +118,7 @@ export default function RecoverPasswordPage() {
                 </InputRightAddon>
               </InputGroup>
               {!isValid && isEmailTouched ? (
-                <FormErrorMessage textColor='white'>
+                <FormErrorMessage data-cy='form-error-msg' textColor='white'>
                   Must Be a Valid UVic Email
                 </FormErrorMessage>
               ) : (
@@ -128,12 +129,14 @@ export default function RecoverPasswordPage() {
 
           <div className='p-5 flex gap-16'>
             <button
+              data-cy='send-email-button'
               className='bg-white relative px-4 rounded-md text-pri-blue font-semibold p-3'
               onClick={handleReset}
             >
               Send Email
             </button>
             <button
+              data-cy='cancel-button'
               className='bg-white relative px-4 rounded-md text-pri-blue font-semibold p-3'
               onClick={() => {
                 navigate(`/login`);

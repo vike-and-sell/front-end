@@ -143,7 +143,7 @@ export default function Settings() {
               <FormControl>
                 <div className='my-5 flex'>
                   <PriBlueButton
-                    data-cy='confirm-new-location-button'
+                    datacy='confirm-new-location-button'
                     isDisabled={!isValidLocation}
                     clickHandle={handleConfirm}
                     title='Confirm'
